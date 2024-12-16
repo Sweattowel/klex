@@ -1,0 +1,115 @@
+.NavBar {
+
+}
+.NavBarTitlingContainer{
+
+}
+.NavBarTitle{
+    font-style: italic;
+    background-color: red;
+    color: white;
+}
+.NavBarSubTitle{
+
+}
+.NavBarItemContainer{
+
+}
+.NavBarItems{
+    background-color: red;
+    color: white;
+    text-decoration: none;
+}
+
+@media (max-width: 756px){
+    .NavBar {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        margin-top: 0%;
+        padding-top: 0%;
+    }
+    .NavBarTitlingContainer{
+        height: 100%;
+        border-bottom: 1px solid white;
+    }
+    .NavBarTitle{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100vw;
+        margin-top: 0;
+    }
+    .NavBarSubTitle{
+        visibility: hidden;
+        height: 0;
+        width: 0;
+    }
+    .NavBarItemContainer{
+        display: flex;
+    }
+    .NavBarItems{
+        width: 25%;
+        text-align: center;
+    }
+    
+}
+@media (min-width: 757px){
+    .NavBar {
+        display: flex;
+        flex-direction: row;
+        width: 100vw;
+        height: 10vh;
+        border-bottom: 1px solid black;
+        justify-content: space-evenly;
+    }
+    .NavBarTitlingContainer{
+        width: 25vw;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .NavBarTitle{
+        display: flex;
+        font-style: italic;
+        font-size: 2.5rem;
+        height: 80%;
+        width: 100%;
+        padding: 0%;
+        margin: 0%;
+        justify-content: center;
+        align-items: center;
+
+        border-bottom-right-radius: 100%;
+        border-bottom-left-radius: -100%;
+    }
+    .NavBarSubTitle{
+        font-weight: lighter; 
+        font-size: smaller;
+        height: 20%;
+        width: 100%;
+        text-align: center;
+    }
+    .NavBarItemContainer{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        align-items: center;
+        width: 75vw;
+        height: 100%
+
+    }
+    .NavBarItems{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        border-radius: 5%;
+    }
+    .NavBarItems:hover {
+        background-color: rgb(245, 75, 75);
+    }
+    
+}

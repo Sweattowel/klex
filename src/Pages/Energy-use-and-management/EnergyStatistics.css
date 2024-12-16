@@ -1,0 +1,144 @@
+.EnergyUseContainer {
+
+}
+.EnergyUseTitle {
+    font-style: italic;
+}
+.MonthlyUseContainer{
+
+}
+.MonthlyUseItem{
+
+}
+.MonthlyUseTitle{
+
+}
+.MonthlyUseStatistic{
+
+}
+.MonthlyDayToDayContainer {
+
+}
+.MonthlyDayToDayItems {
+
+}
+.TotalUseContainer {
+
+}
+.TotalUseTitle {
+
+}
+.TotalUseAveragesContainer {
+
+}
+
+
+@media (max-width: 756px){
+    .EnergyUseContainer {
+
+    }
+    .EnergyUseTitle {
+        width: 90%;
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+        margin: auto;
+        border-bottom: 1px solid black;
+        text-align: center;
+        justify-content: center;
+    }
+    .MonthlyUseContainer{
+        display: flex;
+        flex-direction: column;
+    }
+    .MonthlyUseItemContainer{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    .MonthlyUseTitle{
+        text-align: center;
+    }
+    .MonthlyUseStatistic{
+        background-color: red;
+        color: white;
+        padding: 10px;
+    }
+    .MonthlyDayToDayContainer {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+        list-style: none;
+        padding: 10px;
+    }
+    .MonthlyDayToDayItems {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border-bottom: 1px solid black;
+        border-left: 1px solid black;
+        height: 60px;
+        width: 40%;
+    }
+    .PeakDay{
+        font-weight: bolder;
+    }
+    .TotalUseContainer {
+        padding: 2rem;
+        text-align: center;
+    }
+    .TotalUseTitle {
+        background-color: red;
+        color: white;
+    }
+    .TotalUseAveragesContainer {
+        padding-top: 2rem;
+    }
+}
+@media (min-width: 757px){
+    .EnergyUseContainer {
+        
+    }   
+    .EnergyUseTitle {
+        padding: 10px;
+        text-align: center;
+    }
+    .MonthlyUseContainer{
+        border: 1px solid black;
+        display: flex;
+        justify-content: space-evenly;
+    }
+    .MonthlyUseItemContainer{
+        width: 100%;
+        list-style: none;
+        padding: 10px;
+        border-left: 1px solid black;
+    }
+    .MonthlyUseTitle{
+       
+    }
+    .MonthlyUseStatistic{
+        border-bottom: 1px solid black;
+    }
+    .MonthlyDayToDayContainer {
+        list-style: none;
+    }
+    .MonthlyDayToDayItems {
+        display: flex;
+        justify-content: space-between;
+    }
+    .PeakDay{
+        font-weight: bolder;
+    }
+    .TotalUseContainer {
+        text-align: center;
+        padding: 10px;
+    }
+    .TotalUseTitle {
+        border-bottom: 1px solid black;
+    }
+    .TotalUseAveragesContainer {
+
+    }
+}
