@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "./EnergyStatistics.css";
+import EnergyChart from "./EnergyChart";
 
 const dummyData = [
     {
@@ -54,6 +55,7 @@ const dummyData = [
   
 export default function EnergyStatistics(){
     const [totalUse, setTotalUse] = useState(0);
+    const [ChartData, setChartData] = useState([]);
 
     useEffect(() => {
         const newTotalUse = dummyData.reduce(
@@ -61,6 +63,19 @@ export default function EnergyStatistics(){
         0
     );
     setTotalUse(newTotalUse)
+    // COLLECT AND TRANSFORM DATA FOR USE IN GRAPH
+    let newGraphData = [];
+    for (const Data of Object.entries(dummyData)){
+      let memory = 0;
+      let endingDay = 0;
+      for(const day of Data[1].EnergyUse){
+        memory += day
+        endingDay++
+      }
+      newGraphData.push(memory / endingDay)
+    };
+    setChartData(newGraphData);
+
     },[])
 
     return (
@@ -83,7 +98,7 @@ export default function EnergyStatistics(){
             </section>
             <ul className="MonthlyUseContainer">
                 {dummyData.map((Data, index) => (
-                    <li className="MonthlyUseItemContainer" key={index}>
+                    <li className="MonthlyUseItemContainer" key={index} id={index}>
                         <h2 className="MonthlyUseTitle">
                             {Data.Month}
                         </h2>
@@ -91,8 +106,21 @@ export default function EnergyStatistics(){
                             Monthly Total: {Data.EnergyUse.reduce((sum, currentValue) => {
                                                 return sum + currentValue
                                             }, 0)} kH
+                        <div className="MobileScrollButtonsContainer">
+                          <a className="MobileScrollButton"
+                            href={`#${Math.max(0, index - 1) }`}
+                          >
+                           up
+                          </a>
+                          <a className="MobileScrollButton"
+                            href={`#${Math.min(12, index + 1)}`}
+                          >
+                           down
+                          </a>
                         </div>
-                        <ul className="MonthlyDayToDayContainer">
+                        </div>
+                        
+                        <ul className="MonthlyDayToDayContainer" >
                             {Data.EnergyUse.map((DayUse, DayUseIndex) => (
                                 <li className="MonthlyDayToDayItems" key={DayUseIndex}>
                                     {DayUseIndex + 1}{getDayEnd(DayUseIndex + 1)}: {DayUse} kH <p className="PeakDay">{DayUse === Math.max(...Data.EnergyUse) ? "PEAK" : DayUse == Math.min(...Data.EnergyUse) ? "MIN" : ""}</p>
@@ -102,6 +130,10 @@ export default function EnergyStatistics(){
                     </li>
                 ))}
             </ul>
+            <section>
+              {ChartData && <EnergyChart ChartData={ChartData}/>}
+              
+            </section>
             <button onClick={() => console.log(dummyData)}>
                 Log
             </button>

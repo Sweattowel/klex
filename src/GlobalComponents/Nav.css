@@ -58,7 +58,7 @@
     .NavBar {
         display: flex;
         flex-direction: row;
-        width: 100vw;
+        width: 99vw;
         height: 10vh;
         border-bottom: 1px solid black;
         justify-content: space-evenly;
