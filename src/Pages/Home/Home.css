@@ -23,6 +23,15 @@
     .ReviewList{}
     .Review{}
     .ServiceSection{}   
+    .ServiceSection{}
+    .ServicesSectionTitle{}
+    .ServicesContainer{}
+    .Service{}
+    .ServiceName{}
+    .ServiceType{}
+    .ServiceDescription{}
+    .ServiceUsage{}
+    .ServiceLink{}
 }
 @media (min-width:757px) {
     .homeTitle{    }
@@ -33,15 +42,26 @@
         width: 90%;
         margin: auto;
         height: 50vh;
-        background-color: red;
     }
     .ProminentReview{
         background-color: white;
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
         height: 90%;
         width: 40%;
+    }
+    .ProminentReviewText{
+        background-color: rgb(248, 241, 241);
+        border-bottom-right-radius: 40%;
+        text-align: center;
+        height: 40%;
+        width: 90%;
+    }
+    .ProminentReviewName{
+        position: relative;
+        left: 40%;
     }
     .ProminentPicture{
         background-color: white;
@@ -71,6 +91,14 @@
         width: 90%;
         height: 30vh;
     }
+    .ReviewList li:nth-child(even) .ReviewText {
+        border-bottom-right-radius: 50%;
+    }
+    
+    .ReviewList li:nth-child(odd) .ReviewText {
+        border-bottom-left-radius: 50%;
+    }
+
     .Review{ 
         background-color: white;
         display: flex;
@@ -90,8 +118,6 @@
     .ReviewText{ 
         height: 40%;
         width: 100%;
-        border-bottom-right-radius: 50%;
-        border-bottom-right-radius: 50%;
         background-color:  rgb(248, 241, 241);
     }
     .ReviewRating{
@@ -101,6 +127,39 @@
         border-radius: 5%;
     }
     
-    .ServiceSection{}
+    .ServiceSection{
+        width: 90%;
+        display: flex;
+        flex-direction: column;
+        padding-top: 50px;
+        justify-content: center;
+    }
+    .ServicesSectionTitle{
+        text-align: center;
+        border-bottom: 1px solid;
+    }
+    .ServicesContainer{
+        
+    }
+    .Service{
+        height: 100%;
+        margin: 10px;
+    }
+    .ServiceName{
+        background-color: red;
+        color: white;
+        padding: 10px;
+        border-bottom-right-radius: 100%;
+    }
+    .ServiceType{
+        font-size: xx-small;
+        border-bottom: 1px solid;
+        width: 10%;
+    }
+    .ServiceDescription{
+        height: 80%;
+    }
+    .ServiceUsage{}
+    .ServiceLink{}
 }
 

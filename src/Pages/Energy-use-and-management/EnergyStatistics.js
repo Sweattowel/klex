@@ -62,7 +62,7 @@ export default function EnergyStatistics(){
             (sum, data) => sum + data.EnergyUse.reduce((monthSum, value) => monthSum + value, 0),
         0
     );
-    
+
     setTotalUse(newTotalUse)
     // COLLECT AND TRANSFORM DATA FOR USE IN GRAPH
     let newGraphData = [];
@@ -124,7 +124,7 @@ export default function EnergyStatistics(){
                         <ul className="MonthlyDayToDayContainer" >
                             {Data.EnergyUse.map((DayUse, DayUseIndex) => (
                                 <li className="MonthlyDayToDayItems" key={DayUseIndex}>
-                                    {DayUseIndex + 1}{getDayEnd(DayUseIndex + 1)} {DayUse} kH <sup className="PeakDay">{DayUse === Math.max(...Data.EnergyUse) ? "PEAK" : DayUse == Math.min(...Data.EnergyUse) ? "MIN" : ""}</sup>
+                                    {DayUseIndex + 1}{getDayEnd(DayUseIndex + 1)} {DayUse} kH <sup className="PeakDay">{DayUse === Math.max(...Data.EnergyUse) ? "PEAK" : DayUse === Math.min(...Data.EnergyUse) ? "MIN" : ""}</sup>
                                 </li>
                             ))}
                         </ul>
