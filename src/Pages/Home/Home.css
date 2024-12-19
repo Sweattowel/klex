@@ -15,22 +15,99 @@
 
 @media (max-width:756px) {
     .homeTitle{}
-    .ProminentContainer{}
-    .ProminentReview{}
-    .ProminentPicture{}
-    .ReviewListContainer{}
-    .ReviewListTitle{}
-    .ReviewList{}
-    .Review{}
-    .ServiceSection{}   
+    .ProminentContainer{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        margin: auto;
+    }
+    .ProminentReview{
+        width: 90%;
+        margin: auto;
+        text-align: center;
+        font-size: small;
+    }
+    .ProminentPicture{
+        padding-top: 10px;
+    }
+
+    .ReviewListContainer{
+        display: flex;
+    }
+    .ReviewListTitle{
+        background-color: red;
+        color: white;
+        display: flex;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+    }
+    .ReviewList{
+        display: flex;
+        flex-direction: column;
+        min-height: 80vh;
+        list-style: none;
+        justify-content: space-evenly;
+    }
+    .Review{
+        background-color: white;
+        border-left: 1px solid;
+        height: 100%;
+    }
+    .ReviewTitle{
+        background-color: red;
+        color: white;
+        text-align: center;
+    }
+    .ReviewText{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 50%;
+        text-align: center;
+    }
+    .ReviewRating{
+        background-color: red;
+        padding: 10px;
+        width: 50%;
+        text-align: center;
+        margin: auto;
+        color: rgb(241, 227, 146);
+    }
+ 
     .ServiceSection{}
-    .ServicesSectionTitle{}
-    .ServicesContainer{}
-    .Service{}
-    .ServiceName{}
-    .ServiceType{}
-    .ServiceDescription{}
-    .ServiceUsage{}
+    .ServicesSectionTitle{
+        background-color: red;
+        color: white;
+        margin-top: 10px;
+        text-align: center;
+    }
+    .ServicesContainer{
+        display: flex;
+        flex-direction: column;
+    }
+    .Service{
+        display: flex;
+        flex-direction: column;
+        border-bottom: 1px solid;
+        padding: 10px;
+    }
+    .ServiceName{
+        background-color: red;
+        color: white;
+        padding: 5px;
+    }
+    .ServiceType{
+        font-size: smaller;
+        border-bottom: 1px solid;
+        width: 40%;
+    }
+    .ServiceDescription{
+        padding-top: 10px;
+    }
+    .ServiceUsage{
+        padding-bottom: 10px;
+    }
     .ServiceLink{}
 }
 @media (min-width:757px) {
@@ -158,8 +235,11 @@
     }
     .ServiceDescription{
         height: 80%;
+        padding: 10px;
     }
-    .ServiceUsage{}
+    .ServiceUsage{
+        padding: 10px;
+    }
     .ServiceLink{}
 }
 
