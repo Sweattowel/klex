@@ -32,7 +32,6 @@
 
 }
 
-
 @media (max-width: 756px){
     .EnergyUseContainer {
 
@@ -57,6 +56,9 @@
     }
     .MonthlyUseTitle{
         text-align: center;
+        background-color: red;
+        color: white;
+        border-bottom: 1px solid white;
     }
     .MonthlyUseStatistic{
         display: flex;
@@ -134,19 +136,34 @@
     .MonthlyUseContainer{
         width: 90%;
         margin: auto;
-        border-bottom: 1px solid black;
         display: flex;
         justify-content: space-evenly;
+        columns: 6;
+        flex-wrap: wrap;
+        margin-bottom: 10px;
     }
 
     .MonthlyUseItemContainer{
-        width: 100%;
         list-style: none;
         padding: 10px;
-        border-left: 1px solid black;
+        box-shadow: 10px 10px 8px #dad8d8;
+        margin: 5px;
+        width: 14%;
+        background-color: white;
+        padding: 1px;
     }
-    .MonthlyUseItemContainer:first-child {
-        border: 0px solid black;
+    .MonthlyUseItemContainer:hover {
+        box-shadow: none;
+        padding: 0px;
+        border: 1px solid black;
+        scale: 110%;
+        transition: scale 0.5s;
+        z-index: 1;
+    }
+    .MonthlyUseItemContainer:not(hover) {
+        scale: 100%;
+        transition: scale 0.5s;
+        z-index: 0;
     }
     .MonthlyUseTitle{
         background-color: red;
@@ -165,10 +182,17 @@
     }
     .MonthlyDayToDayContainer {
         list-style: none;
+        columns: 2;
     }
     .MonthlyDayToDayItems {
         display: flex;
         justify-content: space-between;
+        padding: 5px;
+        font-size: small;
+    }
+    .MonthlyDayToDayItems:nth-child(even) {
+        border-bottom-right-radius: 90%;
+        background-color: rgb(248, 241, 241);
     }
     .PeakDay{
         font-weight: bolder;
