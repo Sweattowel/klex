@@ -1,0 +1,109 @@
+.AccountAndBilling{}
+    
+.AccountContainer{}
+.AccountTitle{}
+.AccountData{}
+.AccountTitle{}
+.AccountID{}
+.AccountEmail{}
+.AccountAge{}
+
+.BillingContainer{}
+.BillingTitle{}
+.BillingData{}
+.BillingPeriod{}
+.BillingLastBilled{}
+.BillingComingBill{}
+.BillingDiscrepencies{}
+
+@media (max-width: 756px){
+    .AccountAndBilling{}
+
+    .AccountContainer{}
+    .AccountTitle{}
+    .AccountData{}
+    .AccountDataTitle{}
+    .AccountID{}
+    .AccountEmail{}
+    .AccountAge{}
+
+    .BillingContainer{}
+    .BillingTitle{}
+    .BillingData{}
+    .BillingPeriod{}
+    .BillingLastBilled{}
+    .BillingComingBill{}
+    .BillingDiscrepencies{}
+}
+@media (min-width: 757px){
+    .AccountAndBilling{
+        display: flex;
+        flex-direction: column;
+        width: 90%;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        margin: auto;
+    }
+    
+    .AccountContainer{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 10px;
+        box-shadow: 10px 10px 8px #dad8d8;;
+    }
+    .AccountTitle{
+        background-color: red;
+        color: white;
+        padding: 5px;
+        border-bottom: 1px solid;
+    }
+    .AccountData{
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
+    }
+    .AccountDataTitle{
+        border-bottom: 1px solid;
+        width: 100%;
+    }
+    .AccountID{
+        border-top: 1px;
+        border-bottom-right-radius: 90%;
+        background-color: rgb(248, 241, 241);
+    }
+    .AccountEmail{
+        
+    }
+    .AccountAge{
+        border-bottom-right-radius: 90%;
+        background-color: rgb(248, 241, 241);
+    }
+
+    .BillingContainer{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 10px;
+        box-shadow: 10px 10px 8px #dad8d8;
+    }
+    .BillingTitle{
+        background-color: red;
+        color: white;
+        padding: 5px;
+        border-bottom: 1px solid;
+    }
+    .BillingData{
+        padding: 10px;
+    }
+    .BillingPeriod{
+        border-bottom-right-radius: 90%;
+        background-color: rgb(248, 241, 241);
+    }
+    .BillingLastBilled{}
+    .BillingComingBill{
+        border-bottom-right-radius: 90%;
+        background-color: rgb(248, 241, 241);
+    }
+    .BillingDiscrepencies{}
+}

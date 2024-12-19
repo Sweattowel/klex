@@ -5,7 +5,7 @@ import './index.css';
 import Home from './Pages/Home/Home';
 import Nav from './GlobalComponents/Navigation/Nav';
 import EnergyStatistics from './Pages/Energy-use-and-management/EnergyStatistics';
-import AccountView from './Pages/Account-and-billing/AccountView';
+import AccountAndBilling from './Pages/Account-and-billing/AccountAndBilling';
 import Contact from './Pages/Contact-and-Communication/Contact';
 import Tail from './GlobalComponents/Tail/Tail';
 
@@ -17,7 +17,7 @@ root.render(
       <Routes>
         <Route path="/" element={<Home />}/>
         <Route path="/EnergyStatistics/:UserID" element={<EnergyStatistics />}/>
-        <Route path="/Account/:UserID" element={<AccountView />}/>
+        <Route path="/Account/:UserID" element={<AccountAndBilling />}/>
         <Route path="/Contact" element={<Contact />}/>
       </Routes>    
     </BrowserRouter>

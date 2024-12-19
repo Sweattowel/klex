@@ -1,9 +1,53 @@
-.TailContainer {
-    display: flex;
-    border-top: 1px solid black;
-    width: 100%;
+.TailContainer{
     height: 70vh;
-    margin-top: 10px;
-    justify-content: center;
+    width: 100%;
+    border-top: 1px solid;
+    justify-content: space-evenly;
     align-items: center;
+}
+.PageLinkContainer{}
+.PageLink{}
+
+@media (max-width: 756px){
+    .TailContainer{}
+    .PageLinkContainer{}
+    .PageLink{}
+}
+@media (min-width: 757px){
+    .TailContainer{
+        display: flex;
+        flex-direction: column;
+    }
+    .TailTopContainer{
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        width: 100%;
+    }
+    .TailTitle{
+        background-color: red;
+        color: white;
+        width: 20%;
+        padding: 20px;
+        border-bottom-right-radius: 90%;
+        border-top-right-radius: 5%;
+        text-align: center;
+        font-size: 2rem;
+        font-style: italic;
+    }
+    .PageLinkContainer{
+        display: flex;
+        flex-direction: column;
+    }
+    .PageLink{}
+    .PageLink:hover{
+        opacity: 70%;
+    }
+    .TailBottomContainer{
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        width: 100%;
+    }
+        
 }
