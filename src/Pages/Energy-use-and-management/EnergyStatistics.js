@@ -198,12 +198,13 @@ export default function EnergyStatistics(){
               
             </section>
             <button className="ResetButton"
-            onClick={() => {
-              setChartData(generateYearlyGraph(dummyData))
-              setChartLabels(defaultGraphLabels)
-              setChartDesc("Average Monthly Use")
-            }}>
-                RESET
+              onClick={() => {
+                setChartData(generateYearlyGraph(dummyData))
+                setChartLabels(defaultGraphLabels)
+                setChartDesc("Average Monthly Use")
+              }}
+            >
+              RESET
             </button>
         </main>
     )
