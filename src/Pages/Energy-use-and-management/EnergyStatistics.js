@@ -53,7 +53,15 @@ const dummyData = [
     },
   ];
   
+  const measurementScales = [
+    {Name: "W", Multiplier: 0.001},
+    {Name: "kW", Multiplier: 1},
+    {Name: "MG", Multiplier: 1000},
+    {Name: "GW", Multiplier: 10000},
+  ];
+
 export default function EnergyStatistics(){
+    const [measureScale, setMeasureScale] = useState(1);
     const [totalUse, setTotalUse] = useState(0);
     const [ChartData, setChartData] = useState([]);
 
@@ -84,17 +92,36 @@ export default function EnergyStatistics(){
             <h1 className="EnergyUseTitle">
                 Enjoy a personalised report on your usage
             </h1>
-            <section className="TotalUseContainer">
-                <h2 className="TotalUseTitle">
-                    Total Usage {totalUse}
-                </h2>
+            <section className="TotalUseAndMeasurementContainer">
                 <div className="TotalUseAveragesContainer">
-                    <p>
-                        Average Monthly Use: {(totalUse / 12).toFixed(2)} 
-                    </p>
-                    <p>
-                        Average Daily Use: {(totalUse / 356).toFixed(2)} 
-                    </p>
+                <h2 className="TotalUseTitle">
+                    Total Usage {(totalUse / measurementScales[measureScale].Multiplier).toFixed(2)} {measurementScales[measureScale].Name}
+                </h2>   
+                <div className="AveragesContainer">
+                  <p className="MonthlyUseAverage">
+                      Average Monthly Use: {((totalUse / 12).toFixed(2) / measurementScales[measureScale].Multiplier).toFixed(2) } {measurementScales[measureScale].Name}
+                  </p>
+                  <p className="DailyUseAverage">
+                      Average Daily Use: {((totalUse / 356).toFixed(2) / measurementScales[measureScale].Multiplier).toFixed(2)} {measurementScales[measureScale].Name}
+                  </p>                  
+                </div>               
+
+                </div>
+                <div className="MeasurementContainer">
+                  <h2 className="MeasurementTitle">
+                    Measurement scale
+                  </h2>
+                  <li className="MeasurementsScaleContainer">
+                    {measurementScales.map((measurement, index) => (
+                      <button className={`MeasurementScales ${measurementScales[measureScale].Name === measurement.Name && "selected"}`}
+                        onClick={() => setMeasureScale(index)}
+                        key={index}
+                      >
+                        {measurement.Name}
+                      </button>
+                    ))}                    
+                  </li>
+
                 </div>
             </section>
             <ul className="MonthlyUseContainer">
@@ -104,9 +131,9 @@ export default function EnergyStatistics(){
                             {Data.Month}
                         </h2>
                         <div className="MonthlyUseStatistic">
-                            Monthly Total: {Data.EnergyUse.reduce((sum, currentValue) => {
+                            Monthly Total: {(Data.EnergyUse.reduce((sum, currentValue) => {
                                                 return sum + currentValue
-                                            }, 0)} kH
+                                            }, 0) / measurementScales[measureScale].Multiplier).toFixed(2)} {measurementScales[measureScale].Name}
                         <div className="MobileScrollButtonsContainer">
                           <a className="MobileScrollButton"
                             href={`#${Math.max(0, index - 1) }`}
@@ -124,7 +151,7 @@ export default function EnergyStatistics(){
                         <ul className="MonthlyDayToDayContainer" >
                             {Data.EnergyUse.map((DayUse, DayUseIndex) => (
                                 <li className="MonthlyDayToDayItems" key={DayUseIndex}>
-                                    {DayUseIndex + 1}{getDayEnd(DayUseIndex + 1)} {DayUse} kH <sup className="PeakDay">{DayUse === Math.max(...Data.EnergyUse) ? "PEAK" : DayUse === Math.min(...Data.EnergyUse) ? "MIN" : ""}</sup>
+                                    {DayUseIndex + 1}{getDayEnd(DayUseIndex + 1)} {(DayUse / measurementScales[measureScale].Multiplier).toFixed(2)} {measurementScales[measureScale].Name} <sup className="PeakDay">{DayUse === Math.max(...Data.EnergyUse) ? "PEAK" : DayUse === Math.min(...Data.EnergyUse) ? "MIN" : ""}</sup>
                                 </li>
                             ))}
                         </ul>
