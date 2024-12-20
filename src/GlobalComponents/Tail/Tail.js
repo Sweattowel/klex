@@ -26,7 +26,16 @@ export default function Tail() {
                 </ul>                
             </section>
             <section className="TailBottomContainer">
-                Lorem Ipsum est Lorem Ipsum est Lorem Ipsum est Lorem Ipsum est Lorem Ipsum est Lorem Ipsum est Lorem Ipsum est Lorem Ipsum est Lorem Ipsum est Lorem Ipsum est Lorem Ipsum est Lorem Ipsum est Lorem Ipsum est Lorem Ipsum est
+                <p className="TailBottomText">
+                    Lorem Ipsum est Lorem Ipsum est Lorem Ipsum est Lorem Ipsum est Lorem Ipsum est Lorem Ipsum est Lorem Ipsum est Lorem Ipsum est Lorem Ipsum est Lorem Ipsum est Lorem Ipsum est Lorem Ipsum est Lorem Ipsum est Lorem Ipsum est
+                </p>
+                <button className="ReturnToTopButton"
+                    onClick={() => 
+                        document.getElementById("TopOfPage").scrollIntoView({behavior: "smooth", block: "start"})
+                    }
+                >
+                    Return to top
+                </button>
             </section>
 
         </main>

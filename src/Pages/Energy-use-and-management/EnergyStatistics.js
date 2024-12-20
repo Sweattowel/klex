@@ -52,19 +52,34 @@ const dummyData = [
       EnergyUse: Array.from({ length: 31 }, () => Math.floor(Math.random() * 100) + 1),
     },
   ];
-  
+  const defaultGraphLabels = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec"
+  ];
   const measurementScales = [
     {Name: "W", Multiplier: 0.001},
     {Name: "kW", Multiplier: 1},
     {Name: "MG", Multiplier: 1000},
     {Name: "GW", Multiplier: 10000},
   ];
-
+/////////////////////////////////////////////////////////////////////////////////
 export default function EnergyStatistics(){
     const [measureScale, setMeasureScale] = useState(1);
     const [totalUse, setTotalUse] = useState(0);
-    const [ChartData, setChartData] = useState([]);
-
+    const [ChartData, setChartData] = useState(dummyData);
+    const [chartLabels, setChartLabels] = useState(defaultGraphLabels);
+    const [chartDesc, setChartDesc] = useState("Average monthly use");
+    
     useEffect(() => {
         const newTotalUse = dummyData.reduce(
             (sum, data) => sum + data.EnergyUse.reduce((monthSum, value) => monthSum + value, 0),
@@ -73,16 +88,7 @@ export default function EnergyStatistics(){
 
     setTotalUse(newTotalUse)
     // COLLECT AND TRANSFORM DATA FOR USE IN GRAPH
-    let newGraphData = [];
-    for (const Data of Object.entries(dummyData)){
-      let memory = 0;
-      let endingDay = 0;
-      for(const day of Data[1].EnergyUse){
-        memory += day
-        endingDay++
-      }
-      newGraphData.push(memory / endingDay)
-    };
+    let newGraphData = generateYearlyGraph(dummyData);
     setChartData(newGraphData);
 
     },[])
@@ -131,21 +137,50 @@ export default function EnergyStatistics(){
                             {Data.Month}
                         </h2>
                         <div className="MonthlyUseStatistic">
+                          <p>
                             Monthly Total: {(Data.EnergyUse.reduce((sum, currentValue) => {
                                                 return sum + currentValue
-                                            }, 0) / measurementScales[measureScale].Multiplier).toFixed(2)} {measurementScales[measureScale].Name}
+                                            }, 0) / measurementScales[measureScale].Multiplier).toFixed(2)} {measurementScales[measureScale].Name}                            
+                          </p>
+                          <button className={`SetMonthGraphButton ${ChartData === Data.EnergyUse && "selected"}`}
+                            onClick={() => {
+                              setChartData(Data.EnergyUse);
+                              setChartLabels(() => 
+                                new Array(Data.EnergyUse.length).fill().map((_, index) => index)
+                              );
+                              setChartDesc(`Daily use for ${Data.Month}`)
+                              
+                              document.querySelector(".GraphContainer").scrollIntoView({ behavior: "smooth", block: "start"})
+                            }}
+                          >
+                            SET
+                          </button>
                         <div className="MobileScrollButtonsContainer">
-                          <a className="MobileScrollButton"
-                            href={`#${Math.max(0, index - 1) }`}
+                          <button
+                            className="MobileScrollButton"
+                            id={index}
+                            onClick={() => {
+                              const prevElement = document.getElementById(Math.max(0, index - 1));
+                              if (prevElement) {
+                                prevElement.scrollIntoView({ behavior: "smooth", block: "start" });
+                              }
+                            }}
                           >
-                           up
-                          </a>
-                          <a className="MobileScrollButton"
-                            href={`#${Math.min(12, index + 1)}`}
+                            Up
+                          </button>
+                          <button
+                            className="MobileScrollButton"
+                            id={index}
+                            onClick={() => {
+                              const prevElement = document.getElementById(Math.min(12, index + 1));
+                              if (prevElement) {
+                                prevElement.scrollIntoView({ behavior: "smooth", block: "start" });
+                              }
+                            }}
                           >
-                           down
-                          </a>
-                        </div>
+                            Down
+                          </button>
+                          </div>
                         </div>
                         
                         <ul className="MonthlyDayToDayContainer" >
@@ -159,15 +194,37 @@ export default function EnergyStatistics(){
                 ))}
             </ul>
             <section>
-              {ChartData && <EnergyChart ChartData={ChartData}/>}
+              {ChartData && <EnergyChart ChartData={ChartData} Labels={chartLabels} DESC={chartDesc}/>}
               
             </section>
-            <button onClick={() => console.log(dummyData)}>
-                Log
+            <button className="ResetButton"
+            onClick={() => {
+              setChartData(generateYearlyGraph(dummyData))
+              setChartLabels(defaultGraphLabels)
+              setChartDesc("Average Monthly Use")
+            }}>
+                RESET
             </button>
         </main>
     )
 };
+
+
+function generateYearlyGraph(dummyData){
+  let result = []
+
+  for (const Data of Object.entries(dummyData)){
+    let memory = 0;
+    let endingDay = 0;
+    for(const day of Data[1].EnergyUse){
+      memory += day
+      endingDay++
+    }
+    result.push(memory / endingDay)
+  };
+
+  return result
+}
 
 function getDayEnd(day){
   if (day > 3 && day < 21) return "th";

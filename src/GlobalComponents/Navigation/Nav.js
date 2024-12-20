@@ -9,7 +9,7 @@ export default function Nav(){
     ]
     return (
         <main className="NavBar">
-            <section className="NavBarTitlingContainer">
+            <section className="NavBarTitlingContainer" id="TopOfPage">
                 <h1 className="NavBarTitle">
                     Klex
                 </h1>      

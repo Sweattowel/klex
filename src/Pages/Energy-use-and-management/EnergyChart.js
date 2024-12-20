@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -14,28 +14,11 @@ import "./EnergyStatistics.css";
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
-export default function EnergyChart({ ChartData }) {
-  if (!ChartData || !Array.isArray(ChartData)) {
-    return <div>No Data</div>;
-  }
+export default function EnergyChart({ ChartData, Labels, DESC  }) {
 
-  const labels = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dev"
-  ]
 
-  const data = {
-    labels,
+  const [data, setData] = useState({
+    Labels: Labels,
     datasets: [
       {
         label: "AVG Energy Usage",
@@ -46,15 +29,26 @@ export default function EnergyChart({ ChartData }) {
         pointRadius: 2,
       },
     ],
-  };
+  });
 
   const options = {
     responsive: true,
     plugins: {
       legend: { position: "top" },
-      title: { display: true, text: "Energy Usage Over Time" },
+      title: { display: true, text: DESC },
     },
   };
+
+  useEffect(() => {
+    setData((prevData) => ({
+      ...prevData,
+      labels: Labels,
+      datasets: prevData.datasets.map((dataset) => ({
+        ...dataset,
+        data: ChartData,
+      })),
+    }));
+  }, [ChartData, Labels, DESC]);
 
   return (
     <div className="GraphContainer">

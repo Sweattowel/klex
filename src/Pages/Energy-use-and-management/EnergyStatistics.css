@@ -169,7 +169,10 @@
         width: 100%;
         border: none;
     }
-
+    .SetMonthGraphButton{
+        width: 15%;
+        border: none;
+    }
     .MobileScrollButtonsContainer{
         width: 40%;
         display: flex;
@@ -177,7 +180,7 @@
         align-items: center;
     }
     .MobileScrollButton{
-        width: 45%;
+        width: 33%;
         height: 100%;
         display: flex;
         justify-content: center;
@@ -191,7 +194,18 @@
     .MobileScrollButton:hover{
         opacity: 70%;
     }
-    
+
+    .ResetButton{
+        display: flex;
+        color: white;
+        background-color: red;
+        border: none;
+        padding: 10px;
+        margin: auto;
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+
 }
 @media (min-width: 757px){
     .EnergyUseContainer {
@@ -344,5 +358,16 @@
         align-items: center;
         width: 90%;
         margin: auto;
+    }
+
+    .ResetButton{
+        display: flex;
+        color: white;
+        background-color: red;
+        border: none;
+        padding: 10px;
+        margin: auto;
+        margin-top: 5px;
+        margin-bottom: 5px;
     }
 }
