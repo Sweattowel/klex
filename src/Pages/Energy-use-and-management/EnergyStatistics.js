@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import "./EnergyStatistics.css";
 import EnergyChart from "./EnergyChart";
+import { useParams } from "react-router-dom";
+import API from "../../GlobalComponents/Interceptor/Interceptor";
+import Login from "../../GlobalComponents/Login/Login";
 
 const dummyData = [
     {
@@ -74,25 +77,62 @@ const dummyData = [
   ];
 /////////////////////////////////////////////////////////////////////////////////
 export default function EnergyStatistics(){
+    // SCALING AND MEASURMENT OF USE
     const [measureScale, setMeasureScale] = useState(1);
     const [totalUse, setTotalUse] = useState(0);
+    // DATA TO SEND INTO CHART COMPONENT
     const [ChartData, setChartData] = useState(dummyData);
     const [chartLabels, setChartLabels] = useState(defaultGraphLabels);
     const [chartDesc, setChartDesc] = useState("Average monthly use");
+    // COLLECTED ENERGY USE DATA
+    const [userEnergyYearData, setUserEnergyYearData] = useState(dummyData);
+    const { UserID } = useParams();
+    const [loading, setLoading] = useState(false);
     
+    // COLLECT USER DATA 
+    async function CollectUserData(){  
+      console.log(`Requesting Data for User:${UserID}`)
+      try {
+        setLoading(true)
+        const response = await API.get(`/api/CollectUserEnergyData/${UserID}`,
+          {
+            headers: {
+              "RequestType": "UserEnergyDataRequest",
+              "RequestDateSent": new Date().toISOString(),
+              "RelevantID": UserID,
+              "UserType": "StandardUser"
+            }
+          }
+        )
+
+        console.log(response.data);
+        setUserEnergyYearData(dummyData);
+
+      } catch (error) {
+        console.error(error, "Failed to complete request");
+      } finally {
+        setLoading(false);
+      }
+      
+    }
+
+
     useEffect(() => {
-        const newTotalUse = dummyData.reduce(
-            (sum, data) => sum + data.EnergyUse.reduce((monthSum, value) => monthSum + value, 0),
-        0
-    );
-
-    setTotalUse(newTotalUse)
-    // COLLECT AND TRANSFORM DATA FOR USE IN GRAPH
-    let newGraphData = generateYearlyGraph(dummyData);
-    setChartData(newGraphData);
-
+      // STARTUP METHODS
+      setTotalUse(collectTotal(userEnergyYearData))
+      // COLLECT AND TRANSFORM DATA FOR USE IN GRAPH
+      let newGraphData = generateYearlyGraph(dummyData);
+      setChartData(newGraphData);
+      CollectUserData()
     },[])
 
+    if (!UserID) {
+      return (
+        <main className="NoDataContingent">
+          <Login />
+        </main>
+      )
+    }
     return (
         <main className="EnergyUseContainer">
             <h1 className="EnergyUseTitle">
@@ -131,7 +171,7 @@ export default function EnergyStatistics(){
                 </div>
             </section>
             <ul className="MonthlyUseContainer">
-                {dummyData.map((Data, index) => (
+                {userEnergyYearData.map((Data, index) => (
                     <li className="MonthlyUseItemContainer" key={index} id={index}>
                         <h2 className="MonthlyUseTitle">
                             {Data.Month}
@@ -210,7 +250,13 @@ export default function EnergyStatistics(){
     )
 };
 
-
+function collectTotal(YearData){      
+  const newTotalUse = YearData.reduce(
+    (sum, data) => sum + data.EnergyUse.reduce((monthSum, value) => monthSum + value, 0),
+    0
+  );
+  return newTotalUse;
+}
 function generateYearlyGraph(dummyData){
   let result = []
 

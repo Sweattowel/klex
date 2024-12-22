@@ -1,10 +1,15 @@
+import { useContext } from "react";
 import "./Nav.css";
+import { UserContext } from "../Context/UserContextProvider";
 
 export default function Nav(){
+
+    const { UserData, setUserData } = useContext(UserContext);
+
     const navLinks = [
         {Name: "Home", Directory: "/"},
-        {Name: "Your Use", Directory: "/EnergyStatistics/101"},
-        {Name: "Transfer", Directory: "/Account/101"},
+        {Name: "Your Use", Directory: `/EnergyStatistics/?UserID=${UserData.ID || "NULL"}`},
+        {Name: "Transfer", Directory: `/Account/?UserID=${UserData.ID || "NULL"}`},
         {Name: "Contact", Directory: "/Contact"},
     ]
     return (

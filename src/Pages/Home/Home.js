@@ -54,7 +54,7 @@ export default function Home(){
     return (
         <main>
             <h1 className='homeTitle'>
-                Check it lout lout
+               Who are we?
             </h1>
 
             <section className='ProminentContainer'>
