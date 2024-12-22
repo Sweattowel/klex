@@ -1,8 +1,9 @@
 import { useParams } from "react-router-dom";
 import "./AccountAndBilling.css"
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { useState } from "react";
 import Login from "../../GlobalComponents/Login/Login";
+import { ThemeContext } from "../../GlobalComponents/Context/ThemeContextProvider";
 
 
 const DummyAccount = {
@@ -30,6 +31,7 @@ const DummyAccount = {
 
 
 export default function AccountAndBilling(){
+    const {theme, setTheme, themeAlt, setThemeAlt} = useContext(ThemeContext);
     const UserID = useParams();
     const [AccountData, setAccountData] = useState({
         AccountName: "",
@@ -49,15 +51,15 @@ export default function AccountAndBilling(){
         console.log(UserID)
     },[])
     
-    if (!AccountData || AccountData.AccountID === -1){
+    /*if (!AccountData || AccountData.AccountID === -1){
         return(
             <main>
                 <Login />
             </main>
         )
-    }
+    }*/
     return (
-        <main className="AccountAndBilling">
+        <main className={`AccountAndBilling ${theme}`}>
             <section className="AccountContainer">
                 <h1 className="AccountTitle">
                     Account: {AccountData.AccountName}
@@ -67,7 +69,7 @@ export default function AccountAndBilling(){
                         Your Information
                     </h3>
                     <p className="AccountID">ID: {AccountData.AccountID}</p>
-                    <p className="AccountEmail">EmailAddress: {AccountData.AccountEmail}</p>
+                    <p className={`AccountEmail ${themeAlt}`}>EmailAddress: {AccountData.AccountEmail}</p>
                     <p className="AccountAge">Your account is {GetAge(AccountData.AccountStartDate)} Days old </p>
                 </div>
             </section>
@@ -77,12 +79,12 @@ export default function AccountAndBilling(){
                 </h1>
                 <div className="BillingData">
                     <p className="BillingPeriod">{AccountData.AccountBillingPeriod} Billing period</p>
-                    <p className="BillingLastBilled">{AccountData.AccountLastBillDate.getFullYear()}/{AccountData.AccountLastBillDate.getMonth() + 1}/{AccountData.AccountLastBillDate.getDate()} Date last billed</p>
+                    <p className={`BillingLastBilled ${themeAlt}`}>{AccountData.AccountLastBillDate.getFullYear()}/{AccountData.AccountLastBillDate.getMonth() + 1}/{AccountData.AccountLastBillDate.getDate()} Date last billed</p>
                     <p className="BillingComingBill">{AccountData.AccountComingBillDate.getFullYear()}/{AccountData.AccountComingBillDate.getMonth() + 1}/{AccountData.AccountComingBillDate.getDate()} Coming Bill</p>
-                    <p className="BillingDiscrepenciesCount">{AccountData.AccountDiscrepency.Count} Discrepencies Noted</p>
-                    <ul className="BillingDiscrepenciesDateList">
+                    <p className={`BillingDiscrepenciesCount ${themeAlt}`}>{AccountData.AccountDiscrepency.Count} Discrepencies Noted</p>
+                    <ul className={`BillingDiscrepenciesDateList ${theme}`}>
                         {AccountData.AccountDiscrepency.DiscrepencyDates.map((Date, index) => (
-                            <li className="BillingDiscrepencies"
+                            <li className={`BillingDiscrepencies ${index  % 2 === 0 && themeAlt}`}
                                 key={index}
                             >   
                                 {Date.toISOString()}

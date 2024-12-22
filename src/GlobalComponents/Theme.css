@@ -1,0 +1,16 @@
+.Dark{
+    background-color: grey;
+    color: white;
+}
+.Light{
+    background-color: white;
+    color: black;
+}
+.altLight {
+    background-color: rgb(248, 241, 241);
+    color: black;
+}
+.altDark {
+    background-color: rgb(94, 87, 87);
+    color: white;
+}

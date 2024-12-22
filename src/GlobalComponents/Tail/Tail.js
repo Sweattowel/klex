@@ -1,4 +1,6 @@
+import { useContext } from "react"
 import "./Tail.css"
+import { ThemeContext } from "../Context/ThemeContextProvider";
 
 
 const Links = [
@@ -9,15 +11,17 @@ const Links = [
 ]
 
 export default function Tail() {
+
+    const {theme, setTheme, themeAlt, setThemeAlt} = useContext(ThemeContext);
     return (
-        <main className="TailContainer">
+        <main className={`TailContainer ${theme}`}>
             <section className="TailTopContainer">
                 <h2 className="TailTitle">
                     Klex
                 </h2>
                 <ul className="PageLinkContainer">
                     {Links.map((link, index) => (
-                        <a className="PageLink" href={link.Link}
+                        <a className={`PageLink ${themeAlt}`} href={link.Link}
                             key={index}    
                         >
                             {link.LinkName}
@@ -29,7 +33,7 @@ export default function Tail() {
                 <p className="TailBottomText">
                     Lorem Ipsum est Lorem Ipsum est Lorem Ipsum est Lorem Ipsum est Lorem Ipsum est Lorem Ipsum est Lorem Ipsum est Lorem Ipsum est Lorem Ipsum est Lorem Ipsum est Lorem Ipsum est Lorem Ipsum est Lorem Ipsum est Lorem Ipsum est
                 </p>
-                <button className="ReturnToTopButton"
+                <button className={`ReturnToTopButton ${themeAlt}`}
                     onClick={() => 
                         document.getElementById("TopOfPage").scrollIntoView({behavior: "smooth", block: "start"})
                     }

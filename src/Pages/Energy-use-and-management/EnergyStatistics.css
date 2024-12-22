@@ -88,7 +88,6 @@
     }
     .MonthlyDayToDayItems:nth-child(even){
         border-bottom-right-radius: 50%;
-        background-color: rgb(248, 241, 241);
     }
     .MonthlyDayToDayItems {
         display: flex;
@@ -195,7 +194,6 @@
         align-items: center;
         color: black;
         text-decoration: none;
-        background-color: white;
         border-radius: 5%;
         border: none;
     }
@@ -246,11 +244,10 @@
     .MonthlyUseItemContainer{
         list-style: none;
         padding: 10px;
-        box-shadow: 10px 10px 8px #dad8d8;
         margin: 5px;
         width: 14%;
-        background-color: white;
         padding: 1px;
+        border-left: 1px solid;
     }
     .MonthlyUseItemContainer:hover {
         box-shadow: none;
@@ -293,7 +290,6 @@
     }
     .MonthlyDayToDayItems:nth-child(even) {
         border-bottom-right-radius: 90%;
-        background-color: rgb(248, 241, 241);
     }
     .PeakDay{
         font-weight: bolder;
@@ -310,7 +306,6 @@
     .TotalUseAveragesContainer {
         width: 50%;
         height: 100%;
-        background-color: rgb(248, 241, 241);
         border-bottom-left-radius: 50%;
     }    
     .TotalUseTitle {
@@ -336,7 +331,6 @@
         width: 50%;
         height: 100%;
         padding-bottom: 6.5px;
-        background-color: rgb(248, 241, 241);
         border-bottom-right-radius: 50%;
     }
     .MeasurementTitle{

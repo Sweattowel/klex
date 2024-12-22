@@ -1,3 +1,5 @@
+import { useContext } from 'react';
+import { ThemeContext, ThemeContextProvider } from '../../GlobalComponents/Context/ThemeContextProvider';
 import './Home.css'
 
 const reviews = [
@@ -51,15 +53,17 @@ const services = [
 ];
 
 export default function Home(){
+    const {theme, setTheme, themeAlt, setThemeAlt} = useContext(ThemeContext);
+
     return (
-        <main>
+        <main className={`${theme}`}>
             <h1 className='homeTitle'>
                Who are we?
             </h1>
 
             <section className='ProminentContainer'>
                 <div className='ProminentReview'>
-                    <p className='ProminentReviewText'>
+                    <p className={`ProminentReviewText ${themeAlt}`}>
                     Lorem Ipsum Sum Lorem Ipsum SumLorem Ipsum Sum Lorem Ipsum SumLorem Ipsum Sum Lorem Ipsum SumLorem Ipsum Sum Lorem Ipsum SumLorem Ipsum Sum Lorem Ipsum SumLorem Ipsum Sum Lorem Ipsum SumLorem Ipsum Sum Lorem Ipsum SumLorem Ipsum Sum Lorem Ipsum SumLorem Ipsum Sum Lorem Ipsum SumLorem Ipsum Sum Lorem Ipsum Sum
                     </p>
                     <h2 className='ProminentReviewName'>
@@ -71,11 +75,11 @@ export default function Home(){
 
             <section className="ReviewListContainer">
                 <h2 className="ReviewListTitle">Our Reviews</h2>
-                <ul className="ReviewList">
+                <ul className={`ReviewList`}>
                     {reviews.map((review, index) => (
-                        <li key={index} className="Review">
-                            <h3 className="ReviewTitle">{review.ReviewName}</h3>
-                            <p className="ReviewText">{review.ReviewText}</p>
+                        <li key={index} className={`Review`}>
+                            <h3 className={`ReviewTitle`}>{review.ReviewName}</h3>
+                            <p className={`ReviewText ${themeAlt}`}>{review.ReviewText}</p>
                             <p className="ReviewRating">{review.ReviewRating} / 5</p>
                         </li>
                     ))}

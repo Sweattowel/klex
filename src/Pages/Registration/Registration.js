@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { ThemeContext } from "../../GlobalComponents/Context/ThemeContextProvider";
 import "./Registration.css"
 export default function Registration(){
-
+    const {theme, setTheme, themeAlt, setThemeAlt} = useContext(ThemeContext);
     const [registerFormData, setRegisterFormData] = useState({
         UserName: "",
         Email: "",
@@ -15,12 +16,12 @@ export default function Registration(){
     }
 
     return (
-        <main className="RegistrationPage">
+        <main className={`RegistrationPage ${theme}`}>
             <h2 className="RegisterTitle">
                 Register
             </h2>
             <section className="RegisterContainer">
-                <p className="RegisterSubtitle">
+                <p className={`RegisterSubtitle ${themeAlt}`}>
                     Having second thoughts? why not check out reviews and our catalogue while you decide <a href="/">CLICK HERE</a>
                 </p>
                 <form onSubmit={(e) => HandleRegister(e)} className="RegisterFormContainer">

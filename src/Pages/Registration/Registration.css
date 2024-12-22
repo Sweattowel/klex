@@ -7,12 +7,48 @@
 .RegisterSubmitButton{}
 
 @media (max-width: 756px) {
-    .RegistrationPage{}
-    .RegisterTitle{}
-    .RegisterContainer{}
-    .RegisterSubtitle{}
-    .RegisterFormContainer{}
-    .RegisterTextInput{}
+    .RegistrationPage{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 50vh;
+        margin: auto;
+        margin-bottom: 20px;
+        align-items: center;
+    }
+    .RegisterTitle{
+        background-color: red;
+        width: 100%;
+        text-align: center;
+        color: white;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+    .RegisterSubtitle{
+        height: 30%;
+        width: 100%;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-evenly;
+    }
+    .RegisterSubtitle a{
+        background-color: red;
+        padding: 5px;
+        text-decoration: none;
+        color: white;
+        width: 80%;
+    }
+    .RegisterFormContainer{
+        display: flex;
+        height: 80%;
+        flex-direction: column;
+        justify-content: space-evenly;
+    }
+    .RegisterTextInput{
+        padding: 10px;
+    }
     .RegisterSubmitButton{}
 }
 @media (min-width: 757px) {
@@ -53,7 +89,6 @@
         align-items: center;
         padding-right: 10px;
         padding-left: 10px;
-        background-color: rgb(248, 241, 241);
         text-align: center;
     }
     .RegisterSubtitle a{

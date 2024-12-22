@@ -1,7 +1,10 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import "./Login.css";
+import { ThemeContext } from "../Context/ThemeContextProvider";
 
 export default function Login(){
+    
+    const {theme, setTheme, themeAlt, setThemeAlt} = useContext(ThemeContext);
     const [loginFormData, setLoginFormData] = useState({
         UserName: "",
         Email: "",
@@ -14,12 +17,12 @@ export default function Login(){
     }
     
     return(
-        <main className="LoginPage">
+        <main className={`LoginPage ${theme}`}>
             <h2 className="LoginTitle">
                 Log in
             </h2>
             <section className="LoginContainer">
-                <p className="LoginSubtitle">
+                <p className={`LoginSubtitle ${themeAlt}`}>
                     Please Enter your details in here, Or if your not yet registered <a href="/UserRegistration">CLICK HERE</a>
                 </p>
                 <form onSubmit={(e) => HandleLogin(e)} className="LoginFormContainer">

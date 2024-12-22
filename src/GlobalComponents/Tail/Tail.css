@@ -36,7 +36,6 @@
         flex-direction: column;
     }
     .PageLink{
-        background-color: rgb(248, 241, 241);
         padding: 5px;
         margin: 5px;
         text-align: center;
@@ -55,7 +54,6 @@
     }
     .ReturnToTopButton{
         padding: 10px;
-        background-color: rgb(248, 241, 241);
         border: none;
         margin: 10px;
         color: red;
@@ -88,7 +86,6 @@
         flex-direction: column;
     }
     .PageLink{
-        background-color: rgb(248, 241, 241);
         padding: 5px;
         width: 20%;
         margin: 5px;
@@ -106,5 +103,13 @@
         text-align: center;
         width: 60%;
     }
-        
+    .ReturnToTopButton{
+        padding: 10px;
+        border: none;
+        margin: 10px;
+    }
+    .ReturnToTopButton:hover{
+        cursor: pointer;
+        opacity: 70%;
+    }
 }

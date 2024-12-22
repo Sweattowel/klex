@@ -56,14 +56,12 @@
         padding: 10px;
     }
     .AccountID{
-        background-color: rgb(248, 241, 241);
         padding: 5px;
     }
     .AccountEmail{
         padding: 5px;
     }
     .AccountAge{
-        background-color: rgb(248, 241, 241);
         padding: 5px;
     }
 
@@ -89,12 +87,10 @@
         padding-bottom: 10px;
     }
     .BillingPeriod{
-        background-color: rgb(248, 241, 241);
     }
     .BillingLastBilled{}
     .BillingComingBill{
         width: 100%;
-        background-color: rgb(248, 241, 241);
     }
     .BillingDiscrepenciesCount{
         padding: 10px;
@@ -117,7 +113,6 @@
         padding: 5px;
     }
     .BillingDiscrepencies:nth-child(even){
-        background-color: rgb(248, 241, 241);
     }
     .BillingDiscrepencies:last-child{
         border-bottom: none;
@@ -163,13 +158,11 @@
     .AccountID{
         border-top: 1px;
         border-bottom-right-radius: 90%;
-        background-color: rgb(248, 241, 241);
     }
     .AccountEmail{
     }
     .AccountAge{
         border-bottom-right-radius: 90%;
-        background-color: rgb(248, 241, 241);
     }
 
     .BillingContainer{
@@ -193,12 +186,10 @@
     }
     .BillingPeriod{
         border-bottom-right-radius: 90%;
-        background-color: rgb(248, 241, 241);
     }
     .BillingLastBilled{}
     .BillingComingBill{
         border-bottom-right-radius: 90%;
-        background-color: rgb(248, 241, 241);
     }
     .BillingDiscrepenciesCount{
         font-weight: bolder;
@@ -218,7 +209,6 @@
         text-align: end
     }
     .BillingDiscrepencies:nth-child(even){
-        background-color: rgb(248, 241, 241);
     }
     .BillingDiscrepencies:last-child{
         border-bottom: none;

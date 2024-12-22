@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import "./EnergyStatistics.css";
 import EnergyChart from "./EnergyChart";
 import { useParams } from "react-router-dom";
 import API from "../../GlobalComponents/Interceptor/Interceptor";
 import Login from "../../GlobalComponents/Login/Login";
+import { ThemeContext } from "../../GlobalComponents/Context/ThemeContextProvider";
 
 const dummyData = [
     {
@@ -77,6 +78,8 @@ const dummyData = [
   ];
 /////////////////////////////////////////////////////////////////////////////////
 export default function EnergyStatistics(){
+    // CONTEXT
+    const {theme, setTheme, themeAlt, setThemeAlt} = useContext(ThemeContext);
     // SCALING AND MEASURMENT OF USE
     const [measureScale, setMeasureScale] = useState(1);
     const [totalUse, setTotalUse] = useState(0);
@@ -126,15 +129,15 @@ export default function EnergyStatistics(){
       CollectUserData()
     },[])
 
-    if (!UserID) {
+    if (UserID) {
       return (
-        <main className="NoDataContingent">
+        <main className={`NoDataContingent ${theme}`}>
           <Login />
         </main>
       )
     }
     return (
-        <main className="EnergyUseContainer">
+        <main className={`EnergyUseContainer ${theme}`}>
             <h1 className="EnergyUseTitle">
                 Enjoy a personalised report on your usage
             </h1>
@@ -225,7 +228,7 @@ export default function EnergyStatistics(){
                         
                         <ul className="MonthlyDayToDayContainer" >
                             {Data.EnergyUse.map((DayUse, DayUseIndex) => (
-                                <li className="MonthlyDayToDayItems" key={DayUseIndex}>
+                                <li className={`MonthlyDayToDayItems ${DayUseIndex % 2 === 0 && themeAlt}`} key={DayUseIndex}>
                                     {DayUseIndex + 1}{getDayEnd(DayUseIndex + 1)} {(DayUse / measurementScales[measureScale].Multiplier).toFixed(2)} {measurementScales[measureScale].Name} <sup className="PeakDay">{DayUse === Math.max(...Data.EnergyUse) ? "PEAK" : DayUse === Math.min(...Data.EnergyUse) ? "MIN" : ""}</sup>
                                 </li>
                             ))}
@@ -233,7 +236,7 @@ export default function EnergyStatistics(){
                     </li>
                 ))}
             </ul>
-            <section>
+            <section className="Light">
               {ChartData && <EnergyChart ChartData={ChartData} Labels={chartLabels} DESC={chartDesc}/>}
               
             </section>
