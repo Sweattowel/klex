@@ -2,6 +2,7 @@ import { useContext } from "react";
 import "./Nav.css";
 import { UserContext } from "../Context/UserContextProvider";
 import { ThemeContext } from "../Context/ThemeContextProvider";
+import { Link } from "react-router-dom";
 
 export default function Nav(){
 
@@ -27,9 +28,9 @@ export default function Nav(){
 
             <ul className="NavBarItemContainer">
                 {navLinks.map((link, index) => (
-                    <a className="NavBarItems" href={link.Directory} key={index}>
+                    <Link className="NavBarItems" to={link.Directory} key={index}>
                         {link.Name}
-                    </a>
+                    </Link>
                 ))}
                 <button className="NavBarItems"
                     onClick={() => {

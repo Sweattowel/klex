@@ -19,8 +19,8 @@ root.render(
   <React.StrictMode>
     <UserContextProvider>
       <ThemeContextProvider>
-        <Nav />
         <BrowserRouter>
+          <Nav />
           <Routes>
             <Route path="/" element={<Home />}/>
             <Route path="/EnergyStatistics" element={<EnergyStatistics />}/>

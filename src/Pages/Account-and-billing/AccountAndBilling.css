@@ -122,7 +122,7 @@
     .AccountAndBilling{
         display: flex;
         flex-direction: column;
-        width: 90%;
+        width: 100%;
         min-height: 80vh;
         padding-top: 10px;
         padding-bottom: 10px;
@@ -134,8 +134,9 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        padding: 10px;
-        box-shadow: 10px 10px 8px #dad8d8;
+        width: 90%;
+        margin: auto;
+        box-shadow: 10px 10px 8px gray;
     }
     .AccountTitle{
         background-color: red;
@@ -169,8 +170,9 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        padding: 10px;
-        box-shadow: 10px 10px 8px #dad8d8;
+        width: 90%;
+        margin: auto;
+        box-shadow: 10px 10px 8px gray;
     }
     .BillingTitle{
         background-color: red;
