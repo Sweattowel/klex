@@ -23,7 +23,7 @@ export default function Login(){
             </h2>
             <section className="LoginContainer">
                 <p className={`LoginSubtitle ${themeAlt}`}>
-                    Please Enter your details in here, Or if your not yet registered <a href="/UserRegistration">CLICK HERE</a>
+                    Please Enter your details in here, Or if your not yet registered <a className={`${theme}`} href="/UserRegistration">CLICK HERE</a>
                 </p>
                 <form onSubmit={(e) => HandleLogin(e)} className="LoginFormContainer">
                     <h3>Username</h3>
@@ -38,7 +38,7 @@ export default function Login(){
                     <input onChange={(e) => setLoginFormData((prevData) => ({...prevData, Password: e.target.value}))} value={ loginFormData.Password}
                         className="LoginTextInput" placeholder="Enter Password"
                     />
-                    <button type="submit" className="LoginSubmitButton">
+                    <button type="submit" className={`LoginSubmitButton ${themeAlt}`}>
                         Login
                     </button>
                 </form>                

@@ -51,13 +51,13 @@ export default function AccountAndBilling(){
         console.log(UserID)
     },[])
     
-    /*if (!AccountData || AccountData.AccountID === -1){
+    if (!AccountData || AccountData.AccountID === -1){
         return(
-            <main>
+            <main className={`${theme}`}>
                 <Login />
             </main>
         )
-    }*/
+    }
     return (
         <main className={`AccountAndBilling ${theme}`}>
             <section className="AccountContainer">

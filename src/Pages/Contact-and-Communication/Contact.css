@@ -1,0 +1,113 @@
+.ContactPage{}
+.ContactPageTitle{}
+.ServiceSection{}
+.ServicesSectionTitle{}
+.ServicesContainer{}
+.Service{}
+.ServiceName{}
+.ServiceType{}
+.ServiceDescription{}
+.ServiceUsage{}
+.WorkDisplayItemContainer{}
+.WorkDisplayItem{}
+.WorkDisplayItemTitle{}
+.WorkDisplayItemPicture{}
+
+@media (max-width: 756px) {
+    .ContactPage{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100vw;
+        overflow: hidden;
+        text-align: center;
+    }
+    .ContactPageTitle{
+        background-color: red;
+        width: 100%;
+        text-align: center;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+    .ServiceSection{}
+    .ServicesSectionTitle{}
+    .ServicesContainer{}
+    .Service{
+        list-style: none;
+    }
+    .ServiceName{}
+    .ServiceType{}
+    .ServiceDescription{}
+    .ServiceUsage{}
+
+    .WorkDisplayItemContainer{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        width: 100%;
+    }
+    .WorkDisplayItem{
+        width: 80%;
+        margin: auto;
+    }
+    .WorkDisplayItemTitle{
+        text-align: center;
+        padding: 10px;
+    }
+    .WorkDisplayItemPicture{
+        width: 100%;
+    }  
+    .ContactInformation {
+        padding: 5px;
+        background-color: red;
+        font-size: small;
+    } 
+}
+
+@media (min-width: 757px) {
+    .ContactPage{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        max-width: 100%;
+    }
+    .ContactPageTitle{
+        background-color: red;
+        width: 100%;
+        text-align: center;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+    .ServiceSection{}
+    .ServicesSectionTitle{}
+    .ServicesContainer{}
+    .Service{
+        list-style: none;
+    }
+    .ServiceName{}
+    .ServiceType{}
+    .ServiceDescription{}
+    .ServiceUsage{}
+
+    .WorkDisplayItemContainer{
+        display: flex;
+        justify-content: space-evenly;
+        width: 100%;
+    }
+    .WorkDisplayItem{
+        width: 30%;
+    }
+    .WorkDisplayItemTitle{
+        text-align: center;
+        padding: 10px;
+    }
+    .WorkDisplayItemPicture{
+        width: 100%;
+    }
+    .ContactInformation {
+        padding: 5px;
+        background-color: red;
+    }
+}
