@@ -106,7 +106,7 @@ export default function Home(){
                             <p  className='ServiceUsage'>
                                 {service.SuccessfullUsage.split("@")[0]} {service.CallOutCount} {service.SuccessfullUsage.split("@")[1]}
                             </p>
-                            <a  className='ServiceLink'
+                            <a  className={`ServiceLink ${themeAlt}`}
                                 href={service.Link}
                             >
                                 Find out more

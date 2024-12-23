@@ -172,7 +172,7 @@
         align-items: center;
         width: 20%;
         text-align: center;
-        box-shadow: 10px 10px 8px #dad8d8;
+        box-shadow: 10px 10px 8px gray;
     }
     .ReviewTitle{
         border-bottom: 1px solid black;
@@ -226,6 +226,8 @@
     .ServiceUsage{
         padding: 10px;
     }
-    .ServiceLink{}
+    .ServiceLink{
+        padding: 10px;
+    }
 }
 

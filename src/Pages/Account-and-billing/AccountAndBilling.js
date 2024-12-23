@@ -61,7 +61,7 @@ export default function AccountAndBilling(){
     return (
         <main className={`AccountAndBilling ${theme}`}>
             <section className="AccountContainer">
-                <h1 className="AccountTitle">
+                <h1 className={`AccountTitle ${themeAlt}`}>
                     Account: {AccountData.AccountName}
                 </h1>
                 <div className="AccountData">
@@ -74,7 +74,7 @@ export default function AccountAndBilling(){
                 </div>
             </section>
             <section className="BillingContainer">
-                <h1 className="BillingTitle">
+                <h1 className={`BillingTitle ${themeAlt}`}>
                     Billing
                 </h1>
                 <div className="BillingData">

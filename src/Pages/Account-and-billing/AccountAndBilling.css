@@ -36,8 +36,6 @@
 
     }
     .AccountTitle{
-        background-color: red;
-        color: white;
         width: 100%;
         padding-top: 10px;
         padding-bottom: 10px;
@@ -51,8 +49,6 @@
         text-align: center;
     }
     .AccountDataTitle{
-        background-color: red;
-        color: white;
         padding: 10px;
     }
     .AccountID{
@@ -73,8 +69,6 @@
         align-items: center;
     }
     .BillingTitle{
-        background-color: red;
-        color: white;
         width: 100%;
         padding-top: 10px;
         padding-bottom: 10px;
@@ -104,7 +98,6 @@
         width: 90%;
         margin: auto;
         border: 1px solid;
-        background-color: white;
     }
     .BillingDiscrepencies{
         border-bottom: 1px solid;
@@ -136,11 +129,9 @@
         justify-content: space-between;
         width: 90%;
         margin: auto;
-        box-shadow: 10px 10px 8px gray;
+        box-shadow: 10px 10px 8px darkgray;
     }
     .AccountTitle{
-        background-color: red;
-        color: white;
         padding: 5px;
         border-bottom: 1px solid;
     }
@@ -175,8 +166,6 @@
         box-shadow: 10px 10px 8px gray;
     }
     .BillingTitle{
-        background-color: red;
-        color: white;
         padding: 5px;
         border-bottom: 1px solid;
     }
