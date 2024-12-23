@@ -52,9 +52,6 @@ export default function EnergyChart({ ChartData, Labels, DESC  }) {
 
   return (
     <div className="GraphContainer">
-        <h1 className="GraphTitle">
-            Graphing
-        </h1>
         <Line className="Graph" data={data} options={options} />
     </div>
   );

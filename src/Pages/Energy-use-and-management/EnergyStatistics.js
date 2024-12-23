@@ -175,65 +175,53 @@ export default function EnergyStatistics(){
             <ul className="MonthItemsContainer">
                 {userEnergyYearData.map((Data, index) => (
                     <li className="MonthItem" key={index} id={index}>
-                        <h2 className="MonthItemTitle">
-                            {Data.Month}
-                        </h2>
-                        <div className="MonthItemStatistic">
-                          <p>
-                            Monthly Total: {(Data.EnergyUse.reduce((sum, currentValue) => {
-                                                return sum + currentValue
-                                            }, 0) / measurementScales[measureScale].Multiplier).toFixed(2)} {measurementScales[measureScale].Name}                            
-                          </p>
-                          <button className={`SetMonthGraphButton ${ChartData === Data.EnergyUse && "selected"}`}
-                            onClick={() => {
-                              setChartData(Data.EnergyUse);
-                              setChartLabels(() => 
-                                new Array(Data.EnergyUse.length).fill().map((_, index) => index)
-                              );
-                              setChartDesc(`Daily use for ${Data.Month}`)
-                              
-                              document.querySelector(".GraphContainer").scrollIntoView({ behavior: "smooth", block: "start"})
-                            }}
-                          >
-                            SET
-                          </button>
-                        <div className="ScrollButtonsContainer">
-                          <button
-                            className="ScrollButton"
-                            id={index}
-                            onClick={() => {
-                              const prevElement = document.getElementById(Math.max(0, index - 1));
-                              if (prevElement) {
-                                prevElement.scrollIntoView({ behavior: "smooth", block: "start" });
-                              }
-                            }}
-                          >
-                            Up
-                          </button>
-                          <button
-                            className="ScrollButton"
-                            id={index}
-                            onClick={() => {
-                              const prevElement = document.getElementById(Math.min(12, index + 1));
-                              if (prevElement) {
-                                prevElement.scrollIntoView({ behavior: "smooth", block: "start" });
-                              }
-                            }}
-                          >
-                            Down
-                          </button>
-                          </div>
-                        </div>
-                        
-                        <ul className="DailyEnergyUseContainer" >
-                            {Data.EnergyUse.map((DayUse, DayUseIndex) => (
-                                <li className={`DailyEnergyUseItem ${DayUseIndex % 2 === 0 && themeAlt}`} key={DayUseIndex}>
-                                    {DayUseIndex + 1}{getDayEnd(DayUseIndex + 1)} {(DayUse / measurementScales[measureScale].Multiplier).toFixed(2)} {measurementScales[measureScale].Name} <sup className="PeakDay">{DayUse === Math.max(...Data.EnergyUse) ? "PEAK" : DayUse === Math.min(...Data.EnergyUse) ? "MIN" : ""}</sup>
-                                </li>
-                            ))}
-                        </ul>
+                      <section className="MonthItemTitleButtonAndStatistics">
+                          <h2 className="MonthItemTitle">
+                              {Data.Month}
+                          </h2>
+                          <div className="MonthItemStatistic">
+                            <p className="MonthlyItemTotalUse">
+                              Monthly Total: {(Data.EnergyUse.reduce((sum, currentValue) => {
+                                                  return sum + currentValue
+                                              }, 0) / measurementScales[measureScale].Multiplier).toFixed(2)} {measurementScales[measureScale].Name}                            
+                            </p>
+                          <div className="ScrollButtonsContainer">
+                            <button
+                              className="ScrollButton"
+                              id={index}
+                              onClick={() => {
+                                const prevElement = document.getElementById(Math.max(0, index - 1));
+                                if (prevElement) {
+                                  prevElement.scrollIntoView({ behavior: "smooth", block: "center" });
+                                }
+                              }}
+                            >
+                              Up
+                            </button>
+                            <button
+                              className="ScrollButton"
+                              id={index}
+                              onClick={() => {
+                                const prevElement = document.getElementById(Math.min(12, index + 1));
+                                if (prevElement) {
+                                  prevElement.scrollIntoView({ behavior: "smooth", block: "center" });
+                                }
+                              }}
+                            >
+                              Down
+                            </button>
+                            </div>
+                          </div>   
+                          <ul className="DailyEnergyUseContainer" >
+                              {Data.EnergyUse.map((DayUse, DayUseIndex) => (
+                                  <li className={`DailyEnergyUseItem ${DayUseIndex % 2 === 0 && themeAlt}`} key={DayUseIndex}>
+                                      {DayUseIndex + 1}{getDayEnd(DayUseIndex + 1)} {(DayUse / measurementScales[measureScale].Multiplier).toFixed(2)} {measurementScales[measureScale].Name} <sup className="PeakDay">{DayUse === Math.max(...Data.EnergyUse) ? "PEAK" : DayUse === Math.min(...Data.EnergyUse) ? "MIN" : ""}</sup>
+                                  </li>
+                              ))}
+                          </ul>                                          
+                      </section>
                         <section className="MonthGraph">
-                          <EnergyChart ChartData={ChartData} Labels={chartLabels} DESC={chartDesc}/>                          
+                          <EnergyChart ChartData={Data.EnergyUse} Labels={new Array(Data.EnergyUse.length).fill().map((_, i) => i)} DESC={`${Data.Month} Data`}/>                          
                         </section>
                     </li>
                 ))}
@@ -242,15 +230,6 @@ export default function EnergyStatistics(){
               {ChartData && <EnergyChart ChartData={ChartData} Labels={chartLabels} DESC={chartDesc}/>}
               
             </section>
-            <button className="ResetGraphButton"
-              onClick={() => {
-                setChartData(generateYearlyGraph(dummyData))
-                setChartLabels(defaultGraphLabels)
-                setChartDesc("Average Monthly Use")
-              }}
-            >
-              RESET
-            </button>
         </main>
     )
 };

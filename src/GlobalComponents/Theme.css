@@ -1,5 +1,5 @@
 .Dark{
-    background-color: grey;
+    background-color: #1E1E1E;
     color: white;
 }
 .Light{
@@ -11,6 +11,6 @@
     color: black;
 }
 .altDark {
-    background-color: gray;
+    background-color: black;
     color: white;
 }
