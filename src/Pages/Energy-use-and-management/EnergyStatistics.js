@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import "./EnergyStatistics.css";
+//import "./EnergyStatistics.css";
 import EnergyChart from "./EnergyChart";
 import { useParams } from "react-router-dom";
 import API from "../../GlobalComponents/Interceptor/Interceptor";
@@ -137,8 +137,8 @@ export default function EnergyStatistics(){
       )
     }
     return (
-        <main className={`EnergyUseContainer ${theme}`}>
-            <h1 className="EnergyUseTitle">
+        <main className={`EnergyStatisticsPage ${theme}`}>
+            <h1 className="EnergyStatisticsPageTitle">
                 Enjoy a personalised report on your usage
             </h1>
             <section className="TotalUseAndMeasurementContainer">
@@ -154,7 +154,6 @@ export default function EnergyStatistics(){
                       Average Daily Use: {((totalUse / 356).toFixed(2) / measurementScales[measureScale].Multiplier).toFixed(2)} {measurementScales[measureScale].Name}
                   </p>                  
                 </div>               
-
                 </div>
                 <div className="MeasurementContainer">
                   <h2 className="MeasurementTitle">
@@ -173,13 +172,13 @@ export default function EnergyStatistics(){
 
                 </div>
             </section>
-            <ul className="MonthlyUseContainer">
+            <ul className="MonthItemsContainer">
                 {userEnergyYearData.map((Data, index) => (
-                    <li className="MonthlyUseItemContainer" key={index} id={index}>
-                        <h2 className="MonthlyUseTitle">
+                    <li className="MonthItem" key={index} id={index}>
+                        <h2 className="MonthItemTitle">
                             {Data.Month}
                         </h2>
-                        <div className="MonthlyUseStatistic">
+                        <div className="MonthItemStatistic">
                           <p>
                             Monthly Total: {(Data.EnergyUse.reduce((sum, currentValue) => {
                                                 return sum + currentValue
@@ -198,9 +197,9 @@ export default function EnergyStatistics(){
                           >
                             SET
                           </button>
-                        <div className="MobileScrollButtonsContainer">
+                        <div className="ScrollButtonsContainer">
                           <button
-                            className="MobileScrollButton"
+                            className="ScrollButton"
                             id={index}
                             onClick={() => {
                               const prevElement = document.getElementById(Math.max(0, index - 1));
@@ -212,7 +211,7 @@ export default function EnergyStatistics(){
                             Up
                           </button>
                           <button
-                            className="MobileScrollButton"
+                            className="ScrollButton"
                             id={index}
                             onClick={() => {
                               const prevElement = document.getElementById(Math.min(12, index + 1));
@@ -226,21 +225,24 @@ export default function EnergyStatistics(){
                           </div>
                         </div>
                         
-                        <ul className="MonthlyDayToDayContainer" >
+                        <ul className="DailyEnergyUseContainer" >
                             {Data.EnergyUse.map((DayUse, DayUseIndex) => (
-                                <li className={`MonthlyDayToDayItems ${DayUseIndex % 2 === 0 && themeAlt}`} key={DayUseIndex}>
+                                <li className={`DailyEnergyUseItem ${DayUseIndex % 2 === 0 && themeAlt}`} key={DayUseIndex}>
                                     {DayUseIndex + 1}{getDayEnd(DayUseIndex + 1)} {(DayUse / measurementScales[measureScale].Multiplier).toFixed(2)} {measurementScales[measureScale].Name} <sup className="PeakDay">{DayUse === Math.max(...Data.EnergyUse) ? "PEAK" : DayUse === Math.min(...Data.EnergyUse) ? "MIN" : ""}</sup>
                                 </li>
                             ))}
                         </ul>
+                        <section className="MonthGraph">
+                          <EnergyChart ChartData={ChartData} Labels={chartLabels} DESC={chartDesc}/>                          
+                        </section>
                     </li>
                 ))}
             </ul>
-            <section className="Light">
+            <section className="YearGraph Light">
               {ChartData && <EnergyChart ChartData={ChartData} Labels={chartLabels} DESC={chartDesc}/>}
               
             </section>
-            <button className="ResetButton"
+            <button className="ResetGraphButton"
               onClick={() => {
                 setChartData(generateYearlyGraph(dummyData))
                 setChartLabels(defaultGraphLabels)
