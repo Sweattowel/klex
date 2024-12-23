@@ -16,8 +16,6 @@
 
 }
 .NavBarItems{
-    background-color: red;
-    color: white;
     text-decoration: none;
 }
 
@@ -58,7 +56,7 @@
     .NavBar {
         display: flex;
         flex-direction: row;
-        width: 99vw;
+        max-width: 100vw;
         height: 10vh;
         border-bottom: 1px solid black;
         justify-content: space-evenly;

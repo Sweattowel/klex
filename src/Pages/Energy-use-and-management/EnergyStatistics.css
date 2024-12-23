@@ -39,17 +39,15 @@
     .EnergyStatisticsPage{
         display: flex;
         flex-direction: column;
-        width: 95%;
+        width: 100%;
         max-width: 95%;
         margin: auto;
         justify-content: space-evenly;
         align-items: center;
     }
     .EnergyStatisticsPageTitle{
-        background-color: red;
         min-width: 100%;
-        color: white;
-        padding: 10px;
+        padding: 5px;
         border-top: 1px solid;
         text-align: center;
     }
@@ -59,8 +57,7 @@
         display: flex;
         justify-content: space-evenly;
         min-width: 100%;
-        background-color: whitesmoke;
-        padding: 10px;
+        padding: 5px;
     }
     .TotalUseAveragesContainer{
         width: 50%;
@@ -87,8 +84,6 @@
     .MeasurementScales{
         width: 20%;
         padding: 5px;
-        background-color: red;
-        color: white;
         border: none;
     }
 
@@ -97,7 +92,7 @@
         flex-direction: column;
         justify-content: space-evenly;
         width: 100%;
-        padding: 10px;
+        padding: 5px;
     }
     .MonthItem{
         height: 80vh;
@@ -108,19 +103,16 @@
         justify-content: center;
     }
     .MonthItemTitle{
-        background-color: red;
-        color: white;
-        padding: 10px;
+        padding: 5px;
     }
     .MonthItemStatistic{
-        background-color: whitesmoke;
     }
     .MonthlyItemTotalUse{
         border-bottom: 1px solid black;
-        padding: 10px;
+        padding: 5px;
         width: 70%;
         text-align: end;
-        margin: 10px;
+        margin: 5px;
         margin-left: 0px;
         margin-top: 0px;
     }
@@ -128,10 +120,9 @@
         display: flex;
         width: 100%;
         justify-content: space-evenly;
-        margin: 10px;
+        margin: 5px;
     }
     .ScrollButton{
-        background-color: red;
         color: whitesmoke;
         padding: 5px;
         width: 25%;
@@ -163,11 +154,9 @@
     }
 
     .ResetGraphButton{
-        background-color: red;
-        padding: 10px;
-        color: white;
+        padding: 5px;
         border: 1px solid;
-        margin: 10px;
+        margin: 5px;
     }
     .GraphContainer{
         width: 100%;
@@ -178,16 +167,16 @@
     .EnergyStatisticsPage{
         display: flex;
         flex-direction: column;
-        width: 99%;
+        
+        max-width: 100%;
         margin: auto;
         justify-content: space-evenly;
         align-items: center;
     }
     .EnergyStatisticsPageTitle{
-        background-color: red;
-        min-width: 100%;
-        color: white;
-        padding: 10px;
+        width: 100%;
+        padding-top: 5px;
+        padding-bottom: 5px;
         text-align: center;
     }
 
@@ -196,8 +185,8 @@
         display: flex;
         justify-content: space-evenly;
         min-width: 100%;
-        background-color: whitesmoke;
-        padding: 10px;
+        padding-top: 5px;
+        padding-bottom: 5px;
     }
     .TotalUseAveragesContainer{
         width: 50%;
@@ -224,8 +213,6 @@
     .MeasurementScales{
         width: 20%;
         padding: 5px;
-        background-color: red;
-        color: white;
         border: none;
     }
 
@@ -245,19 +232,16 @@
         width: 50%;
     }
     .MonthItemTitle{
-        background-color: red;
-        color: white;
-        padding: 10px;
+        padding: 5px;
     }
     .MonthItemStatistic{
-        background-color: whitesmoke;
     }
     .MonthlyItemTotalUse{
         border-bottom: 1px solid black;
-        padding: 10px;
+        padding: 5px;
         width: 25%;
         text-align: end;
-        margin: 10px;
+        margin: 5px;
         margin-left: 0px;
         margin-top: 0px;
     }
@@ -267,7 +251,6 @@
         justify-content: space-evenly;
     }
     .ScrollButton{
-        background-color: red;
         color: whitesmoke;
         padding: 5px;
         width: 25%;
@@ -282,7 +265,7 @@
         border-top: 1px solid;
     }
     .DailyEnergyUseItem{
-        padding: 15px
+        padding: 5px
     }
 
     .MonthGraph{
@@ -292,6 +275,7 @@
         justify-content: center;
         align-items: center;
         text-align: center;
+        margin: auto;
     }
     .YearGraph{
         width: 80%;
@@ -301,14 +285,15 @@
     }
 
     .ResetGraphButton{
-        background-color: red;
-        padding: 10px;
-        color: white;
+        padding: 5px;
         border: 1px solid;
-        margin: 10px;
+        margin: 5px;
     }
     .GraphContainer{
         width: 100%;
         height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 }

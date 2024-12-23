@@ -57,11 +57,11 @@ export default function Home(){
 
     return (
         <main className={`${theme}`}>
-            <h1 className='homeTitle'>
+            <h1 className={`homeTitle ${themeAlt}`}>
                Who are we?
             </h1>
 
-            <section className='ProminentContainer'>
+            <section className={`ProminentContainer ${theme}`}>
                 <div className='ProminentReview'>
                     <p className={`ProminentReviewText ${themeAlt}`}>
                     Lorem Ipsum Sum Lorem Ipsum SumLorem Ipsum Sum Lorem Ipsum SumLorem Ipsum Sum Lorem Ipsum SumLorem Ipsum Sum Lorem Ipsum SumLorem Ipsum Sum Lorem Ipsum SumLorem Ipsum Sum Lorem Ipsum SumLorem Ipsum Sum Lorem Ipsum SumLorem Ipsum Sum Lorem Ipsum SumLorem Ipsum Sum Lorem Ipsum SumLorem Ipsum Sum Lorem Ipsum Sum
@@ -86,7 +86,7 @@ export default function Home(){
                 </ul>
             </section>
             <section className='ServiceSection'>
-                <h2 className='ServicesSectionTitle'>
+                <h2 className={`ServicesSectionTitle ${themeAlt}`}>
                     Our Services
                 </h2>
                 <ul className='ServicesContainer'>
@@ -94,7 +94,7 @@ export default function Home(){
                         <li className='Service'
                             key={index}
                         >
-                            <h2 className='ServiceName'>
+                            <h2 className={`ServiceName ${themeAlt}`}>
                                 {service.ServiceName}
                             </h2>
                             <p  className='ServiceType'>

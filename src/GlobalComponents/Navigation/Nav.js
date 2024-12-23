@@ -18,7 +18,7 @@ export default function Nav(){
     return (
         <main className={`NavBar ${theme}`}>
             <section className="NavBarTitlingContainer" id="TopOfPage">
-                <h1 className="NavBarTitle">
+                <h1 className={`NavBarTitle ${themeAlt}`}>
                     Klex
                 </h1>      
                 <h2 className="NavBarSubTitle">
@@ -28,11 +28,11 @@ export default function Nav(){
 
             <ul className="NavBarItemContainer">
                 {navLinks.map((link, index) => (
-                    <Link className="NavBarItems" to={link.Directory} key={index}>
+                    <Link className={`NavBarItems ${themeAlt}`} to={link.Directory} key={index}>
                         {link.Name}
                     </Link>
                 ))}
-                <button className="NavBarItems"
+                <button className={`NavBarItems ${themeAlt}`}
                     onClick={() => {
                         setTheme(theme === "Dark" ? "Light" : "Dark")
                         setThemeAlt(themeAlt === "altDark" ? "altLight" : "altDark")

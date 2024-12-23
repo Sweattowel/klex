@@ -138,7 +138,7 @@ export default function EnergyStatistics(){
     }
     return (
         <main className={`EnergyStatisticsPage ${theme}`}>
-            <h1 className="EnergyStatisticsPageTitle">
+            <h1 className={`EnergyStatisticsPageTitle ${themeAlt}`}>
                 Enjoy a personalised report on your usage
             </h1>
             <section className="TotalUseAndMeasurementContainer">
@@ -176,7 +176,7 @@ export default function EnergyStatistics(){
                 {userEnergyYearData.map((Data, index) => (
                     <li className="MonthItem" key={index} id={index}>
                       <section className="MonthItemTitleButtonAndStatistics">
-                          <h2 className="MonthItemTitle">
+                          <h2 className={`MonthItemTitle ${themeAlt}`}>
                               {Data.Month}
                           </h2>
                           <div className="MonthItemStatistic">
@@ -187,7 +187,7 @@ export default function EnergyStatistics(){
                             </p>
                           <div className="ScrollButtonsContainer">
                             <button
-                              className="ScrollButton"
+                              className={`ScrollButton ${themeAlt}`}
                               id={index}
                               onClick={() => {
                                 const prevElement = document.getElementById(Math.max(0, index - 1));
@@ -199,7 +199,7 @@ export default function EnergyStatistics(){
                               Up
                             </button>
                             <button
-                              className="ScrollButton"
+                              className={`ScrollButton ${themeAlt}`}
                               id={index}
                               onClick={() => {
                                 const prevElement = document.getElementById(Math.min(12, index + 1));
@@ -220,13 +220,13 @@ export default function EnergyStatistics(){
                               ))}
                           </ul>                                          
                       </section>
-                        <section className="MonthGraph">
+                        <section className={`MonthGraph ${themeAlt}`}>
                           <EnergyChart ChartData={Data.EnergyUse} Labels={new Array(Data.EnergyUse.length).fill().map((_, i) => i)} DESC={`${Data.Month} Data`}/>                          
                         </section>
                     </li>
                 ))}
             </ul>
-            <section className="YearGraph Light">
+            <section className={`YearGraph ${themeAlt}`}>
               {ChartData && <EnergyChart ChartData={ChartData} Labels={chartLabels} DESC={chartDesc}/>}
               
             </section>
