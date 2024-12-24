@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -11,10 +11,12 @@ import {
   Legend,
 } from "chart.js";
 import "./EnergyStatistics.css";
+import { ThemeContext } from "../../GlobalComponents/Context/ThemeContextProvider";
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 export default function EnergyChart({ ChartData, Labels, DESC  }) {
+  const {theme, setTheme, themeAlt, setThemeAlt} = useContext(ThemeContext);
 
 
   const [data, setData] = useState({
@@ -23,8 +25,8 @@ export default function EnergyChart({ ChartData, Labels, DESC  }) {
       {
         label: "AVG Energy Usage",
         data: ChartData,
-        borderColor: "black",
-        backgroundColor: "black",
+        borderColor: `gray`,
+        backgroundColor: themeAlt,
         tension: 0.3,
         pointRadius: 2,
       }
@@ -52,7 +54,7 @@ export default function EnergyChart({ ChartData, Labels, DESC  }) {
 
   return (
     <div className="GraphContainer">
-        <Line className="Graph" data={data} options={options} />
+        <Line className={`Graph ${theme}`} data={data} options={options} />
     </div>
   );
 }

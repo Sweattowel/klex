@@ -1,19 +1,45 @@
 import { useContext, useState } from "react";
 import "./Login.css";
 import { ThemeContext } from "../Context/ThemeContextProvider";
+import { neon } from "@neondatabase/serverless";
+import { UserContext } from "../Context/UserContextProvider";
 
 export default function Login(){
     
     const {theme, setTheme, themeAlt, setThemeAlt} = useContext(ThemeContext);
+    const {UserData, setUserData} = useContext(UserContext);
+
     const [loginFormData, setLoginFormData] = useState({
         UserName: "",
         Email: "",
         Password: "",
     });
-    function HandleLogin(e){
+    async function HandleLogin(e){
         e.preventDefault();
 
-        console.log("{HAHA");
+        try {
+            const sql = neon(process.env.REACT_APP_DATABASE_URL);
+            
+            const response = await sql`
+                SELECT * FROM "Klex_UserData_General"
+                WHERE "AccountName" = ${loginFormData.UserName} AND "AccountEmail" = ${loginFormData.Email} AND "AccountPassword" = ${loginFormData.Password};
+            `
+            if(response[0]){
+                const dataToPlace = response[0];
+
+                setUserData((prevData) => ({
+                    ...prevData,
+                    AccountName: dataToPlace.AccountName,
+                    AccountEmail: dataToPlace.AccountEmail,
+                    AccountID: dataToPlace.AccountID,
+                    AccountPassword: dataToPlace.AccountPassword,
+                    AccountStartDate: dataToPlace.AccountStartDate,
+                }));
+                console.log("Logged in")
+            }
+        } catch (error) {
+            console.error(error)
+        }
     }
     
     return(

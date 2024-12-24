@@ -11,8 +11,8 @@ export default function Nav(){
 
     const navLinks = [
         {Name: "Home", Directory: "/"},
-        {Name: "Your Use", Directory: `/EnergyStatistics/?UserID=${UserData.ID || "NULL"}`},
-        {Name: "Transfer", Directory: `/Account/?UserID=${UserData.ID || "NULL"}`},
+        {Name: "Your Use", Directory: `/EnergyStatistics/${UserData.AccountID || "NULL"}`},
+        {Name: "Transfer", Directory: `/Account/${UserData.AccountID || "NULL"}`},
         {Name: "Contact", Directory: "/Contact"},
     ]
     return (

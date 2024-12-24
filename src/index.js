@@ -23,8 +23,8 @@ root.render(
           <Nav />
           <Routes>
             <Route path="/" element={<Home />}/>
-            <Route path="/EnergyStatistics" element={<EnergyStatistics />}/>
-            <Route path="/Account" element={<AccountAndBilling />}/>
+            <Route path="/EnergyStatistics/:UserID" element={<EnergyStatistics />}/>
+            <Route path="/Account/:UserID" element={<AccountAndBilling />}/>
             <Route path="/Contact" element={<Contact />}/>
             <Route path='/UserRegistration' element={<Registration/>}/>
           </Routes>    

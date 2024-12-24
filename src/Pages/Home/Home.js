@@ -81,9 +81,9 @@ export default function Home(){
                 <h2 className="ReviewListTitle">Our Reviews</h2>
                 <ul className={`ReviewList`}>
                     {reviews.map((review, index) => (
-                        <li key={index} className={`Review`}>
+                        <li key={index} className={`Review ${themeAlt}`}>
                             <h3 className={`ReviewTitle`}>{review.ReviewName}</h3>
-                            <p className={`ReviewText ${themeAlt}`}>{review.ReviewText}</p>
+                            <p className={`ReviewText ${theme}`}>{review.ReviewText}</p>
                             <p className="ReviewRating">{review.ReviewRating} / 5</p>
                         </li>
                     ))}
