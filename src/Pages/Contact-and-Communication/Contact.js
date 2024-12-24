@@ -155,8 +155,11 @@ export default function Contact() {
                                     </div>
                                 ))}                                
                             </section>
-                            <p className={`ContactInformation ${themeAlt}`}>Section Email: {service.Email}</p>
-                            <p className={`ContactInformation ${themeAlt}`}>Section Phone: {service.Phone}</p>
+                            <div className={`ContactInformationContainer ${themeAlt}`}>
+                                <p className={`ContactInformation`}>Section Email: {service.Email}</p>
+                                <p className={`ContactInformation`}>Section Phone: {service.Phone}</p>                                
+                            </div>
+
                         </li>
                     ))}
                 </ul>

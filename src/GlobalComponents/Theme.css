@@ -3,12 +3,12 @@
     color: white;
 }
 .Light{
-    background-color: white;
+    background-color: rgb(245, 245, 245);
     color: black;
 }
 .altLight {
-    background-color: whitesmoke;
-    color: black;
+    background-color: rgb(220, 220, 220);
+    color: wh;
 }
 .altDark {
     background-color: #181717;

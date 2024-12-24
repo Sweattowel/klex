@@ -17,191 +17,74 @@
 .BillingDiscrepencies{}
 
 @media (max-width: 756px){
-    .AccountAndBilling{
-        display: flex;
-        flex-direction: column;
-        justify-content: space-evenly;
-        align-items: center;
-        height: 100%;
 
-    }
-
-    .AccountContainer{
-        display: flex;
-        flex-direction: column;
-        justify-content: space-evenly;
-        align-items: center;
-        height: 50vh;
-        width: 100%;
-
-    }
-    .AccountTitle{
-        width: 100%;
-        padding-top: 10px;
-        padding-bottom: 10px;
-        text-align: center;
-    }
-    .AccountData{
-        display: flex;
-        height: 20vh;
-        width: 100%;
-        flex-direction: column;
-        text-align: center;
-    }
-    .AccountDataTitle{
-        padding: 10px;
-    }
-    .AccountID{
-        padding: 5px;
-    }
-    .AccountEmail{
-        padding: 5px;
-    }
-    .AccountAge{
-        padding: 5px;
-    }
-
-    .BillingContainer{
-        height: 50vh;
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-    .BillingTitle{
-        width: 100%;
-        padding-top: 10px;
-        padding-bottom: 10px;
-        text-align: center;
-    }
-    .BillingData{
-        text-align: center;
-        width: 100%;
-        padding-top: 10px;
-        padding-bottom: 10px;
-    }
-    .BillingPeriod{
-    }
-    .BillingLastBilled{}
-    .BillingComingBill{
-        width: 100%;
-    }
-    .BillingDiscrepenciesCount{
-        padding: 10px;
-        margin-bottom: 10px;
-        border-bottom: 1px solid;
-    }
-    .BillingDiscrepenciesDateList{
-        overflow-y: scroll;
-        min-height: 10vh;
-        max-height: 25vh;
-        width: 90%;
-        margin: auto;
-        border: 1px solid;
-    }
-    .BillingDiscrepencies{
-        border-bottom: 1px solid;
-        width: 75%;
-        text-align: end;
-        padding: 5px;
-    }
-    .BillingDiscrepencies:nth-child(even){
-    }
-    .BillingDiscrepencies:last-child{
-        border-bottom: none;
-    }
 }
 @media (min-width: 757px){
-    .AccountAndBilling{
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        min-height: 80vh;
-        padding-top: 10px;
-        padding-bottom: 10px;
-        margin: auto;
-        justify-content: space-evenly;
-    }
-    
-    .AccountContainer{
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        width: 90%;
-        margin: auto;
-        box-shadow: 10px 10px 8px darkgray;
-    }
+    .AccountAndBilling{}
+    .AccountContainer{}
     .AccountTitle{
-        padding: 5px;
-        border-bottom: 1px solid;
+        background-color: red;
+        color: white;
+        text-align: center;
     }
-    .AccountData{
+    .AccountDivisionContainer{
         display: flex;
         flex-direction: column;
-        padding: 10px;
-    }
-    .AccountDataTitle{
-        border-bottom: 1px solid;
-        width: 100%;
-    }
-    .AccountData p{
-        padding: 5px;
-    }
-    .AccountID{
-        border-top: 1px;
-        border-bottom-right-radius: 90%;
-    }
-    .AccountEmail{
-    }
-    .AccountAge{
-        border-bottom-right-radius: 90%;
-    }
-
-    .BillingContainer{
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
         width: 90%;
         margin: auto;
-        box-shadow: 10px 10px 8px gray;
     }
-    .BillingTitle{
+    .AccountDivisionTitle{
+        width: 100%;
         padding: 5px;
+    }
+    .AccountDivisionItem{
         border-bottom: 1px solid;
-    }
-    .BillingData{
-        padding: 10px;
-    }
-    .BillingData p {
+        width: 30%;
         padding: 5px;
+        text-align: end;
     }
-    .BillingPeriod{
-        border-bottom-right-radius: 90%;
-    }
-    .BillingLastBilled{}
-    .BillingComingBill{
-        border-bottom-right-radius: 90%;
-    }
-    .BillingDiscrepenciesCount{
-        font-weight: bolder;
-    }
-    .BillingDiscrepenciesDateList{
-        overflow-y: scroll;
-        padding: 10px;
-        border: 1px solid;
-        width: 50%;
-        max-height: 25vh;
-        min-height: 10vh;
-    }
-    .BillingDiscrepencies{
+    .AccountDivisionList{
+        display: fdlex;
+        flex-direction: column;
+        border: 1px solid black;
         list-style: none;
+        width: 40%;
+        align-content: center;
+        justify-content: center;
+        max-height: 40vh;
+        padding: 5px;
+        overflow-y: scroll;
+    }
+    .AccountDivisionListItemContainer{
+        display: flex;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        width: 100%;
+        margin: auto;
+    }
+    .AccountDivisionListItem{
+        border-bottom: 1px solid black;
+        min-width: 20%;
+        max-width: 60%;
+        text-align: center;
+    }
+    .AccountDivisionDivision{
+        padding: 5px;
+    }
+    .AccountDivisionDivisionItem{
+        padding: 5px;
         border-bottom: 1px solid;
-        width: 50%;
-        text-align: end
+        text-align: end;
+        width: 40%;
     }
-    .BillingDiscrepencies:nth-child(even){
-    }
-    .BillingDiscrepencies:last-child{
-        border-bottom: none;
+    .SaveButton{
+        display: flex;
+        background-color: red;
+        margin: auto;
+        width: 20%;
+        justify-content: center;
+        color: white;
+        padding: 5px;
+        padding-bottom: 10px;
     }
 }

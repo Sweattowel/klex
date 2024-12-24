@@ -23,11 +23,11 @@ export default function EnergyChart({ ChartData, Labels, DESC  }) {
       {
         label: "AVG Energy Usage",
         data: ChartData,
-        borderColor: "rgba(75, 192, 192, 1)",
-        backgroundColor: "rgba(75, 192, 192, 0.2)",
+        borderColor: "black",
+        backgroundColor: "black",
         tension: 0.3,
         pointRadius: 2,
-      },
+      }
     ],
   });
 
@@ -36,7 +36,7 @@ export default function EnergyChart({ ChartData, Labels, DESC  }) {
     plugins: {
       legend: { position: "top" },
       title: { display: true, text: DESC },
-    },
+    }
   };
 
   useEffect(() => {
