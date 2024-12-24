@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import { ThemeContext, ThemeContextProvider } from '../../GlobalComponents/Context/ThemeContextProvider';
 import './Home.css'
+import { useInView } from 'react-intersection-observer';
 
 const reviews = [
     {ReviewName: "Cliff Unger", ReviewText: "Lorem Ipsum Sum", ReviewRating: 5},
@@ -54,6 +55,9 @@ const services = [
 
 export default function Home(){
     const {theme, setTheme, themeAlt, setThemeAlt} = useContext(ThemeContext);
+    const [ ref1, inView1 ] = useInView({triggerOnce: true, threshold: 0.1 })
+    const [ ref2, inView2 ] = useInView({triggerOnce: true, threshold: 0.1 })
+    const [ ref3, inView3 ] = useInView({triggerOnce: true, threshold: 0.1 })
 
     return (
         <main className={`${theme}`}>
@@ -61,7 +65,7 @@ export default function Home(){
                Who are we?
             </h1>
 
-            <section className={`ProminentContainer ${theme}`}>
+            <section className={`ProminentContainer ${theme} slide-in-element ${inView1 ? 'visible' : ''}`} ref={ref1}>
                 <div className='ProminentReview'>
                     <p className={`ProminentReviewText ${themeAlt}`}>
                     Lorem Ipsum Sum Lorem Ipsum SumLorem Ipsum Sum Lorem Ipsum SumLorem Ipsum Sum Lorem Ipsum SumLorem Ipsum Sum Lorem Ipsum SumLorem Ipsum Sum Lorem Ipsum SumLorem Ipsum Sum Lorem Ipsum SumLorem Ipsum Sum Lorem Ipsum SumLorem Ipsum Sum Lorem Ipsum SumLorem Ipsum Sum Lorem Ipsum SumLorem Ipsum Sum Lorem Ipsum Sum
@@ -73,7 +77,7 @@ export default function Home(){
                 <img className='ProminentPicture'  src='https://media.istockphoto.com/id/1428504492/photo/female-engineers-at-work-at-the-power-plant.jpg?s=612x612&w=0&k=20&c=3WAUWL3yneoSHTfvECSxlQWY4uA1y-KjoBR9XYMW65M=' alt='Employees within worksite wearing safety gear, observing work' />
             </section>
 
-            <section className="ReviewListContainer">
+            <section className={`ReviewListContainer slide-in-element ${inView2 ? 'visible' : ''}`} ref={ref2} >
                 <h2 className="ReviewListTitle">Our Reviews</h2>
                 <ul className={`ReviewList`}>
                     {reviews.map((review, index) => (
@@ -85,7 +89,7 @@ export default function Home(){
                     ))}
                 </ul>
             </section>
-            <section className='ServiceSection'>
+            <section className={`ServiceSection slide-in-element ${inView3 ? 'visible' : ''}`} ref={ref3}>
                 <h2 className={`ServicesSectionTitle ${themeAlt}`}>
                     Our Services
                 </h2>

@@ -19,6 +19,7 @@
         flex-direction: column;
         width: 100%;
         margin: auto;
+        margin-top: 2vh;
     }
     .ProminentReview{
         width: 90%;
@@ -42,12 +43,13 @@
     .ReviewList{
         display: flex;
         flex-direction: column;
-        min-height: 80vh;
+        height: 100%;
         list-style: none;
         justify-content: space-evenly;
     }
     .Review{
-        border-left: 1px solid;
+        border: 1px solid;
+        border-bottom: none;
         height: 100%;
     }
     .ReviewTitle{
@@ -58,12 +60,15 @@
         justify-content: center;
         align-items: center;
         height: 50%;
+        padding-top: 10px;
+        padding-bottom: 10px;
         text-align: center;
     }
     .ReviewRating{
-
-        padding: 10px;
-        width: 50%;
+        background-color: red;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        width: 100%;
         text-align: center;
         margin: auto;
         color: rgb(241, 227, 146);
@@ -110,17 +115,22 @@
         align-items: center;
         width: 90%;
         margin: auto;
-        height: 50vh;
+        height: 60vh;
+        margin-bottom: 10vh;
     }
     .ProminentReview{
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        font-size: small;
         height: 90%;
         width: 40%;
     }
     .ProminentReviewText{
+        display: flex;
+        justify-content: center;
+        align-items: center;
         border-bottom-right-radius: 40%;
         text-align: center;
         height: 40%;
@@ -155,7 +165,7 @@
         display: flex;
         justify-content: space-evenly;
         width: 90%;
-        height: 30vh;
+        height: 60vh;
     }
     .ReviewList li:nth-child(even) .ReviewText {
         border-bottom-right-radius: 50%;
@@ -171,6 +181,8 @@
         justify-content: space-evenly;
         align-items: center;
         width: 20%;
+        height: 50%;
+        margin: auto;
         text-align: center;
         box-shadow: 10px 10px 8px gray;
     }
@@ -183,7 +195,7 @@
         width: 100%;
     }
     .ReviewRating{
-
+        background-color: red;
         padding: 10px;
         color: rgb(241, 227, 146);
         border-radius: 5%;
@@ -205,6 +217,7 @@
     }
     .Service{
         height: 100%;
+        padding: 10px;
         margin: 10px;
     }
     .ServiceName{

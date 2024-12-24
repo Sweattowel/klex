@@ -44,3 +44,14 @@ code {
     cursor: pointer;
   }  
 }
+
+.slide-in-element {
+  opacity: 0;
+  transform: translateX(-100px);
+  transition: all 1s ease-in-out;
+}
+
+.slide-in-element.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
