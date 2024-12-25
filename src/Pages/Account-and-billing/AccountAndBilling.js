@@ -6,42 +6,67 @@ import { neon } from "@neondatabase/serverless";
 import Login from "../../GlobalComponents/Login/Login";
 import { UserContext } from "../../GlobalComponents/Context/UserContextProvider";
 import { useParams } from "react-router-dom";
+import Loading from "../../GlobalComponents/Loading/Loading";
 
 export default function AccountAndBilling(){
     const {theme, setTheme, themeAlt, setThemeAlt} = useContext(ThemeContext);
     const {UserData, setUserData} = useContext(UserContext);
     const {UserID} = useParams();
+    const [loading, setLoading] = useState(false);
     
 
     useEffect(() => {
-        if (UserID){
-            HandleCollectData();
+        if (UserData.AccountID){
+            InitData();
         }
     },[])
     
 
     
-    async function HandleCollectData(){
+    async function InitData(){
         try {
-            const sql = neon(process.env.REACT_APP_DATABASE_URL)
-            const CleanUserID = Number(UserID);
-            console.log(UserID, CleanUserID, "USERID HERE");
-
-            if (isNaN(CleanUserID)) {
-                throw new Error(`Invalid UserID: ${UserID}. Expected a valid integer.`);
-            }
-            return
-            const response = await sql`
-                SELECT * 
-                FROM "Klex_UserData_General"
-                WHERE "AccountID" = ${CleanUserID};
-            `;
+            setLoading(true);
+            const DB = neon(process.env.REACT_APP_DATABASE_URL)
             
-            if (response){
-                console.log(response);
-            }
+
+            const Billings = await DB`
+                SELECT * 
+                FROM "Klex_UserData_PriorBillings"
+                WHERE "AccountID" = ${UserData.AccountID};
+            `;
+            const SubScriptionDetails = await DB`
+                SELECT * 
+                FROM "Klex_UserData_SubscriptionDetails"
+                WHERE "AccountID" = ${UserData.AccountID};
+            `;
+            const Discrepancies = await DB`
+                SELECT * 
+                FROM "Klex_UserData_Discrepency"
+                WHERE "AccountID" = ${UserData.AccountID};
+            `;
+            const AccountSettings = await DB`
+                SELECT * 
+                FROM "Klex_UserData_AccountSettings"
+                WHERE "AccountID" = ${UserData.AccountID};
+            `;
+            console.log(Billings,
+                SubScriptionDetails,
+                Discrepancies,
+                AccountSettings,
+            "HERE DUMB CUNT")
+                return
+            setUserData((prevData) => ({
+                ...prevData,
+                AccountPriorBillings: [{...Billings[0]}],
+                SubScriptionDetails: {...SubScriptionDetails},
+                Discrepancies: [{...Discrepancies}],
+                AccountSettings: {...AccountSettings}
+            }))
+            
         } catch (error) {
             console.error(error);
+        } finally {
+            setLoading(false);
         }
     };    
 
@@ -50,6 +75,11 @@ export default function AccountAndBilling(){
             <main className={`${theme}`}>
                 <Login />
             </main>
+        )
+    }
+    if (loading) {
+        return (
+            <Loading />
         )
     }
     return (
@@ -62,16 +92,21 @@ export default function AccountAndBilling(){
                     <h2 className={`AccountDivisionTitle ${themeAlt}`}>
                         General Information
                     </h2>
-                    <p className="AccountDivisionItem">{UserData.AccountName}</p>
-                    <p className="AccountDivisionItem">{UserData.AccountID}</p>
-                    <p className="AccountDivisionItem">{UserData.AccountEmail}</p>
-                    <p className="AccountDivisionItem">{UserData.AccountBillingPeriod}</p>
-                    <p className="AccountDivisionItem">
-                        {UserData.AccountLastBillDate.toISOString().split("T")[0]}
-                    </p>
-                    <p className="AccountDivisionItem">
-                        {UserData.AccountComingBillDate.toISOString().split("T")[0]}
-                    </p>
+                    <p className="AccountDivisionItem">Name: {UserData.AccountName}</p>
+                    <p className="AccountDivisionItem">ID: {UserData.AccountID}</p>
+                    <p className="AccountDivisionItem">Email Address: {UserData.AccountEmail}</p>
+                    <p className="AccountDivisionItem">Billing Period{UserData.AccountBillingPeriod}</p>
+                    {UserData.AccountBillingPeriod &&
+                        <div>
+                            <p className="AccountDivisionItem">
+                                Last bill date: {UserData.AccountLastBillDate === null ? UserData.AccountLastBillDate.toISOString().split("T")[0] : "NO DATA"}
+                            </p>
+                            <p className="AccountDivisionItem">
+                                Coming bill date: {UserData.AccountComingBillDate === null ? UserData.AccountComingBillDate.toISOString().split("T")[0] : "NO DATA"}
+                            </p>                            
+                        </div>
+                    }
+
                     <p className="AccountDivisionItem">
                         {GetAge(UserData.LastLoginDate)} Days since last login
                     </p>
@@ -84,13 +119,13 @@ export default function AccountAndBilling(){
                         Billings
                     </h2>
                     <ul className="AccountDivisionList">
-                        {UserData.AccountPriorBillings.map((Billing, index) => (
+                        {UserData.AccountBillingPeriod && UserData.AccountPriorBillings.map((Billing, index) => (
                             <li key={index} className="AccountDivisionListItemContainer">
                                 <p className="AccountDivisionListItem">
-                                    {Billing.Date.toISOString().split("T")[0]}
+                                    BilledDate: {Billing.Date.toISOString().split("T")[0]}
                                 </p>
-                                <p className="AccountDivisionListItem">{Billing.Amount}</p>
-                                <p className="AccountDivisionListItem">{Billing.Status}</p>
+                                <p className="AccountDivisionListItem">Value: {Billing.Amount}</p>
+                                <p className="AccountDivisionListItem">Status: {Billing.Status}</p>
                             </li>
                         ))}
                     </ul>
@@ -99,15 +134,15 @@ export default function AccountAndBilling(){
                             Subscription Details
                         </h3>
                         <p className="AccountDivisionDivisionItem">
-                            {UserData.SubScriptionDetails.CurrentPlan}
+                            CurrentPlan: {UserData.SubScriptionDetails.CurrentPlan}
                         </p>
                         <p className="AccountDivisionDivisionItem">
-                            {UserData.SubScriptionDetails.AutoRenew
-                                ? "AutoRenew"
-                                : "No AutoRenew"}
+                            Renew automatically? {UserData.SubScriptionDetails.AutoRenew
+                                ? "Yes"
+                                : "No"}
                         </p>
                         <p className="AccountDivisionDivisionItem">
-                            {UserData.SubScriptionDetails.FollowUpDate.toISOString().split("T")[0]}
+                            FollowUpDate: {UserData.SubScriptionDetails.FollowUpDate && UserData.SubScriptionDetails.FollowUpDate.toISOString().split("T")[0]}
                         </p>
                     </div>
                 </div>
@@ -120,25 +155,25 @@ export default function AccountAndBilling(){
                         <h3 className={`${themeAlt}`}>
                             Notification Preferences
                         </h3>
-                        <p className="AccountDivisionDivisionItem">{UserData.AccountSettings.NotificationPreferences.Email ? "ON" : "OFF"}</p>
-                        <p className="AccountDivisionDivisionItem">{UserData.AccountSettings.NotificationPreferences.PushNotifications ? "ON" : "OFF"}</p>
-                        <p className="AccountDivisionDivisionItem">{UserData.AccountSettings.NotificationPreferences.SMS ? "ON" : "OFF"}</p>
+                        <p className="AccountDivisionDivisionItem">Email: {UserData.AccountSettings.NotificationPreferences.Email && UserData.AccountSettings.NotificationPreferences.Email ? "ON" : "OFF"}</p>
+                        <p className="AccountDivisionDivisionItem">Push Notifications: {UserData.AccountSettings.NotificationPreferences.PushNotifications ? "ON" : "OFF"}</p>
+                        <p className="AccountDivisionDivisionItem">SMS: {UserData.AccountSettings.NotificationPreferences.SMS ? "ON" : "OFF"}</p>
                     </div>
                     <div className="AccountDivisionDivision">
                         <h3 className={`${themeAlt}`}>
                             Privacy Settings
                         </h3>
-                        <p className="AccountDivisionDivisionItem">{UserData.AccountSettings.PrivacySettings.DataShare ? "ON" : "OFF"}</p>
-                        <p className="AccountDivisionDivisionItem">{UserData.AccountSettings.PrivacySettings.SensitiveData ? "ON" : "OFF"}</p>
+                        <p className="AccountDivisionDivisionItem">Share data: {UserData.AccountSettings.PrivacySettings.DataShare ? "ON" : "OFF"}</p>
+                        <p className="AccountDivisionDivisionItem">Account is sensitive: {UserData.AccountSettings.PrivacySettings.SensitiveData ? "ON" : "OFF"}</p>
                     </div>
                     <div className="AccountDivisionDivision">
                         <h3 className={`${themeAlt}`}>
                             Other
                         </h3>
-                        <p className="AccountDivisionItem">{UserData.AccountSettings.PushAdvertisement}</p>
-                        <p className="AccountDivisionItem">{UserData.AccountSettings.SelectedTheme}</p>                        
-                        <p className="AccountDivisionItem">{UserData.LanguageAndLocation.Language}</p>                        
-                        <p className="AccountDivisionItem">{UserData.LanguageAndLocation.TimeZone}</p>                         
+                        <p className="AccountDivisionItem">Receive Product Offers: {UserData.AccountSettings.PushAdvertisement}</p>
+                        <p className="AccountDivisionItem">SelectedTheme: {UserData.AccountSettings.SelectedTheme}</p>                        
+                        <p className="AccountDivisionItem">Language: {UserData.LanguageAndLocation.Language}</p>                        
+                        <p className="AccountDivisionItem">TimeZone: {UserData.LanguageAndLocation.TimeZone}</p>                         
                     </div>
                 </div>
                 <div className="AccountDivisionContainer">
@@ -164,18 +199,18 @@ export default function AccountAndBilling(){
                         <ul className="AccountDivisionList">
                             {UserData.PriorSupport.map((Support, index) => (
                                 <li key={index} className="AccountDivisionListItemContainer">
-                                    <p className="AccountDivisionListItem">{Support.CustomerSupportOfficer}</p>
-                                    <p className="AccountDivisionListItem">{Support.CustomerSupportOfficerID}</p>
-                                    <p className="AccountDivisionListItem">{Support.Issue}</p>
-                                    <p className="AccountDivisionListItem">{Support.TicketID}</p>
-                                    <p className="AccountDivisionListItem">{Support.TicketStatus}</p>
+                                    <p className="AccountDivisionListItem">Officer: {Support.CustomerSupportOfficer}</p>
+                                    <p className="AccountDivisionListItem">OfficerID: {Support.CustomerSupportOfficerID}</p>
+                                    <p className="AccountDivisionListItem">Issue: {Support.Issue}</p>
+                                    <p className="AccountDivisionListItem">TicketID: {Support.TicketID}</p>
+                                    <p className="AccountDivisionListItem">Status: {Support.TicketStatus}</p>
                                 </li>
                             ))}
                         </ul>
                     </div>
                 </div>
                 <button className="SaveButton"
-                    onClick={() => HandleCollectData()}
+                    onClick={() => InitData()}
                 >
                     SAVE
                 </button>

@@ -129,7 +129,7 @@ export default function EnergyStatistics(){
       CollectUserData()
     },[])
 
-    if (UserID) {
+    if (!UserID) {
       return (
         <main className={`NoDataContingent ${theme}`}>
           <Login />

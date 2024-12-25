@@ -4,10 +4,10 @@ export const UserContext = createContext();
 
 export const UserContextProvider = ( { children } ) => {
     const [ UserData, setUserData ] = useState({
-        AccountName: "John Doe",
-        AccountEmail: "johndoe@example.com",
-        AccountID: 101,
-        AccountPassword: "TEST",
+        AccountName: "",
+        AccountEmail: "",
+        AccountID: -1,
+        AccountPassword: "",
         AccountStartDate: new Date("2022-01-15"),
         AccountBillingPeriod: "Monthly",
         AccountLastBillDate: new Date("2024-11-01"),

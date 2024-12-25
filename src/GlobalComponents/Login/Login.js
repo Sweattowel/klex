@@ -18,24 +18,30 @@ export default function Login(){
         e.preventDefault();
 
         try {
-            const sql = neon(process.env.REACT_APP_DATABASE_URL);
+            const DB = neon(process.env.REACT_APP_DATABASE_URL);
             
-            const response = await sql`
+            const response = await DB`
                 SELECT * FROM "Klex_UserData_General"
                 WHERE "AccountName" = ${loginFormData.UserName} AND "AccountEmail" = ${loginFormData.Email} AND "AccountPassword" = ${loginFormData.Password};
             `
             if(response[0]){
                 const dataToPlace = response[0];
+                const currDate = new Date();
 
-                setUserData((prevData) => ({
-                    ...prevData,
-                    AccountName: dataToPlace.AccountName,
-                    AccountEmail: dataToPlace.AccountEmail,
-                    AccountID: dataToPlace.AccountID,
-                    AccountPassword: dataToPlace.AccountPassword,
-                    AccountStartDate: dataToPlace.AccountStartDate,
-                }));
-                console.log("Logged in")
+                const VerifyLogin = await DB`
+                    UPDATE "Klex_UserData_General"
+                    SET "LastLoginDate" = ${currDate}, "CountLogins" = ${Number(dataToPlace.CountLogins) + 1}
+                    WHERE "AccountID" = ${Number(dataToPlace.AccountID)}
+                `
+                if (VerifyLogin){
+                    console.log(response[0])
+                    setUserData((prevData) => ({
+                        ...prevData,
+                        ...dataToPlace
+                    }));
+                    console.log("Logged in")                    
+                }
+
             }
         } catch (error) {
             console.error(error)
