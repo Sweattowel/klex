@@ -3,6 +3,7 @@ import "./Login.css";
 import { ThemeContext } from "../Context/ThemeContextProvider";
 import { neon } from "@neondatabase/serverless";
 import { UserContext } from "../Context/UserContextProvider";
+import API from "../Interceptor/Interceptor";
 
 export default function Login(){
     
@@ -18,31 +19,26 @@ export default function Login(){
         e.preventDefault();
 
         try {
-            const DB = neon(process.env.REACT_APP_DATABASE_URL);
-            
-            const response = await DB`
-                SELECT * FROM "Klex_UserData_General"
-                WHERE "AccountName" = ${loginFormData.UserName} AND "AccountEmail" = ${loginFormData.Email} AND "AccountPassword" = ${loginFormData.Password};
-            `
-            if(response[0]){
-                const dataToPlace = response[0];
-                const currDate = new Date();
-
-                const VerifyLogin = await DB`
-                    UPDATE "Klex_UserData_General"
-                    SET "LastLoginDate" = ${currDate}, "CountLogins" = ${Number(dataToPlace.CountLogins) + 1}
-                    WHERE "AccountID" = ${Number(dataToPlace.AccountID)}
-                `
-                if (VerifyLogin){
-                    console.log(response[0])
-                    setUserData((prevData) => ({
-                        ...prevData,
-                        ...dataToPlace
-                    }));
-                    console.log("Logged in")                    
-                }
-
+            const response = await API.post(`API/UserData/UserLogin`, loginFormData, {
+                headers: {
+                    RequestType: "LoginRequest",
+                    RequestDateSent: new Date(),
+                    RelevantID: `NULL`,
+                    UserType: "N/A"
+                }  
+            })
+            if (response.status === 200){
+                setUserData((prevData) => ({
+                    ...prevData,
+                    ...response.data.UserData
+                }));
+                console.log(response.data, "   v28CYN5 4T")
+                setTheme(response.data.SelectedTheme[0].SelectedTheme);
+                setThemeAlt(response.data.SelectedTheme[0].SelectedTheme === "Light" ? "altLight" : "altDark")
+                console.log("Logged in")                    
             }
+
+            
         } catch (error) {
             console.error(error)
         }

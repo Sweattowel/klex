@@ -126,7 +126,7 @@ export default function EnergyStatistics(){
       // COLLECT AND TRANSFORM DATA FOR USE IN GRAPH
       let newGraphData = generateYearlyGraph(dummyData);
       setChartData(newGraphData);
-      CollectUserData()
+      //CollectUserData()
     },[])
 
     if (!UserID) {

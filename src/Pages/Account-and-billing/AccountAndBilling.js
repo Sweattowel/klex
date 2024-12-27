@@ -7,6 +7,8 @@ import Login from "../../GlobalComponents/Login/Login";
 import { UserContext } from "../../GlobalComponents/Context/UserContextProvider";
 import { useParams } from "react-router-dom";
 import Loading from "../../GlobalComponents/Loading/Loading";
+import axios from "axios";
+import API from "../../GlobalComponents/Interceptor/Interceptor";
 
 export default function AccountAndBilling(){
     const {theme, setTheme, themeAlt, setThemeAlt} = useContext(ThemeContext);
@@ -16,60 +18,64 @@ export default function AccountAndBilling(){
     
 
     useEffect(() => {
-        if (UserData.AccountID){
-            InitData();
+        if (UserData.AccountID && UserData.AccountCreated !== ""){
+            CollectUserData();
         }
     },[])
     
 
     
-    async function InitData(){
+    async function CollectUserData(){
         try {
-            setLoading(true);
-            const DB = neon(process.env.REACT_APP_DATABASE_URL)
-            
 
-            const Billings = await DB`
-                SELECT * 
-                FROM "Klex_UserData_PriorBillings"
-                WHERE "AccountID" = ${UserData.AccountID};
-            `;
-            const SubScriptionDetails = await DB`
-                SELECT * 
-                FROM "Klex_UserData_SubscriptionDetails"
-                WHERE "AccountID" = ${UserData.AccountID};
-            `;
-            const Discrepancies = await DB`
-                SELECT * 
-                FROM "Klex_UserData_Discrepency"
-                WHERE "AccountID" = ${UserData.AccountID};
-            `;
-            const AccountSettings = await DB`
-                SELECT * 
-                FROM "Klex_UserData_AccountSettings"
-                WHERE "AccountID" = ${UserData.AccountID};
-            `;
-            console.log(Billings,
-                SubScriptionDetails,
-                Discrepancies,
-                AccountSettings,
-            "HERE DUMB CUNT")
+            setLoading(true);
+            if (!UserData.AccountID){
                 return
-            setUserData((prevData) => ({
-                ...prevData,
-                AccountPriorBillings: [{...Billings[0]}],
-                SubScriptionDetails: {...SubScriptionDetails},
-                Discrepancies: [{...Discrepancies}],
-                AccountSettings: {...AccountSettings}
-            }))
+            }
+            const FormData = {
+                AccountID: UserData.AccountID,
+                AccountName: UserData.AccountName
+            }
+            if (!FormData.AccountID || !FormData.AccountName) return;
+
+            const response = await API.get(`/API/UserData/CollectSingleUser/${UserData.AccountID}`, {}, 
+                {
+                    headers: {
+                        RequestType: "CollectUserDataRequest",
+                        RequestDateSent: new Date(),
+                        RelevantID: `${UserData.AccountID}`,
+                        UserType: "Standard"
+                    }             
+                });
+
+            if (response.status === 200) {
+                console.log(response)
+                setUserData((prevData) => ({...prevData, ...response.data}))
+                console.log(UserData)
+            }
             
         } catch (error) {
             console.error(error);
         } finally {
+            setTimeout(() => setLoading(false), 200000)
             setLoading(false);
         }
-    };    
-
+    };  
+      
+    async function Test() {
+        try {
+            const Test1 = await axios.get("http://localhost:3001/API/TEST");
+            const Test2 = await axios.get("http://localhost:3001/API/USERDATAHANDLER/TEST");
+            const Test3 = await axios.get("http://localhost:3001/API/USERDATAENERGYHANDLER/TEST");
+            console.log(
+                Test1, "Test1", 
+                Test2, "Test2", 
+                Test3, "Test3", )
+                ;
+        } catch (error) {
+            console.error(error);
+        }
+    }
     if (!UserData || UserData.AccountID === -1){
         return(
             <main className={`${theme}`}>
@@ -111,7 +117,7 @@ export default function AccountAndBilling(){
                         {GetAge(UserData.LastLoginDate)} Days since last login
                     </p>
                     <p className="AccountDivisionItem">
-                        {GetAge(UserData.AccountStartDate)} Days old
+                        {GetAge(UserData.AccountCreated)} Days old
                     </p>
                 </div>
                 <div className="AccountDivisionContainer">
@@ -210,9 +216,14 @@ export default function AccountAndBilling(){
                     </div>
                 </div>
                 <button className="SaveButton"
-                    onClick={() => InitData()}
+                    onClick={() => CollectUserData()}
                 >
                     SAVE
+                </button>
+                <button className="SaveButton"
+                    onClick={() => Test()}
+                >
+                    TestConnection
                 </button>
             </section>
         </main>
