@@ -31,15 +31,7 @@ export default function Nav(){
                     <Link className={`NavBarItems ${themeAlt}`} to={link.Directory} key={index}>
                         {link.Name}
                     </Link>
-                ))}
-                <button className={`NavBarItems ${themeAlt}`}
-                    onClick={() => {
-                        setTheme(theme === "Dark" ? "Light" : "Dark")
-                        setThemeAlt(themeAlt === "altDark" ? "altLight" : "altDark")
-                    }}
-                >
-                    {theme}
-                </button>                
+                ))}           
             </ul>
 
         </main>

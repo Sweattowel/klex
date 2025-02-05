@@ -1,7 +1,6 @@
 import { useContext, useState } from "react";
 import "./Login.css";
 import { ThemeContext } from "../Context/ThemeContextProvider";
-import { neon } from "@neondatabase/serverless";
 import { UserContext } from "../Context/UserContextProvider";
 import API from "../Interceptor/Interceptor";
 
@@ -32,7 +31,6 @@ export default function Login(){
                     ...prevData,
                     ...response.data.UserData
                 }));
-                console.log(response.data, "   v28CYN5 4T")
                 setTheme(response.data.SelectedTheme[0].SelectedTheme);
                 setThemeAlt(response.data.SelectedTheme[0].SelectedTheme === "Light" ? "altLight" : "altDark")
                 console.log("Logged in")                    

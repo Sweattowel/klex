@@ -2,18 +2,14 @@ import "./AccountAndBilling.css"
 import { useContext, useEffect } from "react";
 import { useState } from "react";
 import { ThemeContext } from "../../GlobalComponents/Context/ThemeContextProvider";
-import { neon } from "@neondatabase/serverless";
 import Login from "../../GlobalComponents/Login/Login";
 import { UserContext } from "../../GlobalComponents/Context/UserContextProvider";
-import { useParams } from "react-router-dom";
 import Loading from "../../GlobalComponents/Loading/Loading";
-import axios from "axios";
 import API from "../../GlobalComponents/Interceptor/Interceptor";
 
 export default function AccountAndBilling(){
     const {theme, setTheme, themeAlt, setThemeAlt} = useContext(ThemeContext);
     const {UserData, setUserData} = useContext(UserContext);
-    const {UserID} = useParams();
     const [loading, setLoading] = useState(false);
     
 
@@ -23,21 +19,16 @@ export default function AccountAndBilling(){
         }
     },[])
     
-
-    
     async function CollectUserData(){
         try {
 
             setLoading(true);
-            if (!UserData.AccountID){
+            if (!UserData.AccountID || !UserData.AccountName) return;
+            let cachedData = sessionStorage.getItem("AccountData");
+            if (cachedData && cachedData !== ""){
+                setUserData((prevData) => ({...prevData, ...JSON.parse(cachedData)}));
                 return
             }
-            const FormData = {
-                AccountID: UserData.AccountID,
-                AccountName: UserData.AccountName
-            }
-            if (!FormData.AccountID || !FormData.AccountName) return;
-
             const response = await API.get(`/API/UserData/CollectSingleUser/${UserData.AccountID}`, {}, 
                 {
                     headers: {
@@ -49,9 +40,8 @@ export default function AccountAndBilling(){
                 });
 
             if (response.status === 200) {
-                console.log(response)
-                setUserData((prevData) => ({...prevData, ...response.data}))
-                console.log(UserData)
+                setUserData((prevData) => ({...prevData, ...response.data}));
+                sessionStorage.setItem("AccountData", JSON.stringify(response));
             }
             
         } catch (error) {
@@ -62,20 +52,6 @@ export default function AccountAndBilling(){
         }
     };  
       
-    async function Test() {
-        try {
-            const Test1 = await axios.get("http://localhost:3001/API/TEST");
-            const Test2 = await axios.get("http://localhost:3001/API/USERDATAHANDLER/TEST");
-            const Test3 = await axios.get("http://localhost:3001/API/USERDATAENERGYHANDLER/TEST");
-            console.log(
-                Test1, "Test1", 
-                Test2, "Test2", 
-                Test3, "Test3", )
-                ;
-        } catch (error) {
-            console.error(error);
-        }
-    }
     if (!UserData || UserData.AccountID === -1){
         return(
             <main className={`${theme}`}>
@@ -101,7 +77,7 @@ export default function AccountAndBilling(){
                     <p className="AccountDivisionItem">Name: {UserData.AccountName}</p>
                     <p className="AccountDivisionItem">ID: {UserData.AccountID}</p>
                     <p className="AccountDivisionItem">Email Address: {UserData.AccountEmail}</p>
-                    <p className="AccountDivisionItem">Billing Period{UserData.AccountBillingPeriod}</p>
+                    <p className="AccountDivisionItem">Billing Period: {UserData.AccountBillingPeriod || "None"}</p>
                     {UserData.AccountBillingPeriod &&
                         <div>
                             <p className="AccountDivisionItem">
@@ -161,25 +137,131 @@ export default function AccountAndBilling(){
                         <h3 className={`${themeAlt}`}>
                             Notification Preferences
                         </h3>
-                        <p className="AccountDivisionDivisionItem">Email: {UserData.AccountSettings.NotificationPreferences.Email && UserData.AccountSettings.NotificationPreferences.Email ? "ON" : "OFF"}</p>
-                        <p className="AccountDivisionDivisionItem">Push Notifications: {UserData.AccountSettings.NotificationPreferences.PushNotifications ? "ON" : "OFF"}</p>
-                        <p className="AccountDivisionDivisionItem">SMS: {UserData.AccountSettings.NotificationPreferences.SMS ? "ON" : "OFF"}</p>
+                        <p className="AccountDivisionDivisionItem">
+                            Email: 
+                            <button
+                                onClick={() => 
+                                    setUserData((prevData) => ({...prevData, AccountSettings: {
+                                        ...prevData.AccountSettings,
+                                            NotificationPreferences: {
+                                                ...prevData.AccountSettings.NotificationPreferences,
+                                                Email: !prevData.AccountSettings.NotificationPreferences.Email
+                                            }
+                                    }}))
+                                }
+                            > 
+                                {UserData.AccountSettings.NotificationPreferences.Email && UserData.AccountSettings.NotificationPreferences.Email ? "ON" : "OFF"}
+                            </button> 
+                        </p>
+                        <p className="AccountDivisionDivisionItem">
+                            Push Notifications: 
+                            <button
+                                onClick={() => 
+                                    setUserData((prevData) => ({...prevData, AccountSettings: {
+                                        ...prevData.AccountSettings,
+                                            NotificationPreferences: {
+                                                ...prevData.AccountSettings.NotificationPreferences,
+                                                PushNotifications: !prevData.AccountSettings.NotificationPreferences.PushNotifications
+                                            }
+                                    }}))
+                                }
+                            > 
+                                {UserData.AccountSettings.NotificationPreferences.PushNotifications ? "ON" : "OFF"}
+                            </button> 
+                        </p>
+                        <p className="AccountDivisionDivisionItem">
+                            SMS: 
+                            <button
+                                onClick={() => 
+                                    setUserData((prevData) => ({...prevData, AccountSettings: {
+                                        ...prevData.AccountSettings,
+                                            NotificationPreferences: {
+                                                ...prevData.AccountSettings.NotificationPreferences,
+                                                SMS: !UserData.AccountSettings.NotificationPreferences.SMS
+                                            }
+                                    }}))
+                                }
+                            > 
+                                {UserData.AccountSettings.NotificationPreferences.SMS ? "ON" : "OFF"}
+                            </button>  
+                        </p>
                     </div>
                     <div className="AccountDivisionDivision">
                         <h3 className={`${themeAlt}`}>
                             Privacy Settings
                         </h3>
-                        <p className="AccountDivisionDivisionItem">Share data: {UserData.AccountSettings.PrivacySettings.DataShare ? "ON" : "OFF"}</p>
-                        <p className="AccountDivisionDivisionItem">Account is sensitive: {UserData.AccountSettings.PrivacySettings.SensitiveData ? "ON" : "OFF"}</p>
+                        <p className="AccountDivisionDivisionItem">
+                            Share data: 
+                            <button
+                                onClick={() => 
+                                    setUserData((prevData) => ({...prevData, AccountSettings: {
+                                        ...prevData.AccountSettings,
+                                            PrivacySettings: {
+                                                ...prevData.AccountSettings.PrivacySettings,
+                                                DataShare: !UserData.AccountSettings.PrivacySettings.DataShare
+                                            }
+                                    }}))
+                                }
+                            > 
+                                {UserData.AccountSettings.PrivacySettings.DataShare ? "ON" : "OFF"}
+                            </button> 
+                        </p>
+                        <p className="AccountDivisionDivisionItem">
+                            Account is sensitive: 
+                            <button
+                                onClick={() => 
+                                    setUserData((prevData) => ({...prevData, AccountSettings: {
+                                        ...prevData.AccountSettings,
+                                            PrivacySettings: {
+                                                ...prevData.AccountSettings.PrivacySettings,
+                                                SensitiveData: !UserData.AccountSettings.PrivacySettings.SensitiveData
+                                            }
+                                    }}))
+                                }
+                            > 
+                                {UserData.AccountSettings.PrivacySettings.SensitiveData ? "ON" : "OFF"}
+                            </button> 
+                        </p>
                     </div>
                     <div className="AccountDivisionDivision">
                         <h3 className={`${themeAlt}`}>
                             Other
                         </h3>
-                        <p className="AccountDivisionItem">Receive Product Offers: {UserData.AccountSettings.PushAdvertisement}</p>
-                        <p className="AccountDivisionItem">SelectedTheme: {UserData.AccountSettings.SelectedTheme}</p>                        
-                        <p className="AccountDivisionItem">Language: {UserData.LanguageAndLocation.Language}</p>                        
-                        <p className="AccountDivisionItem">TimeZone: {UserData.LanguageAndLocation.TimeZone}</p>                         
+                        <p className="AccountDivisionItem">
+                            Receive Product Offers: 
+                            <button
+                                onClick={() => setUserData((prevData) => ({...prevData, AccountSettings: {
+                                    ...prevData.AccountSettings,
+                                    PushAdvertisement: !UserData.AccountSettings.PushAdvertisement
+                                }}))}
+                            > 
+                                {UserData.AccountSettings.PushAdvertisement ? "On" : "Off"}
+                            </button> 
+                        </p>
+                        <p className="AccountDivisionItem">
+                            SelectedTheme:
+                            <button
+                                onClick={() => {
+                                    setUserData((prevData) => ({...prevData, AccountSettings: {
+                                    ...prevData.AccountSettings,
+                                    SelectedTheme: UserData.AccountSettings.SelectedTheme === "Light" ? "Dark" : "Light"
+                                }}))
+                                setTheme(UserData.AccountSettings.SelectedTheme === "Dark" ? "Light" : "Dark")
+                                setThemeAlt(UserData.AccountSettings.SelectedTheme === "Dark" ? "altLight" : "altDark")   
+                                }}
+                            > 
+                                {UserData.AccountSettings.SelectedTheme}
+                            </button>  
+                        </p>                        
+                        <div className="AccountDivisionItemDropDown"
+                        >
+                            Language: {UserData.LanguageAndLocation.Language}
+                            <DropDownMenu MenuChoice={"Language"}/>
+                        </div>                        
+                        <div className="AccountDivisionItemDropDown">
+                            TimeZone: {UserData.LanguageAndLocation.TimeZone}
+                            <DropDownMenu MenuChoice={"TimeZone"}/>
+                        </div>                         
                     </div>
                 </div>
                 <div className="AccountDivisionContainer">
@@ -220,19 +302,118 @@ export default function AccountAndBilling(){
                 >
                     SAVE
                 </button>
-                <button className="SaveButton"
-                    onClick={() => Test()}
-                >
-                    TestConnection
-                </button>
             </section>
         </main>
 
     )
-}    
-function GetAge(StartDate){
-    const StartAsDate = new Date(StartDate);
-    const CurrDate = new Date();
+    function GetAge(StartDate){
+        const StartAsDate = new Date(StartDate);
+        const CurrDate = new Date();
 
-    return ((CurrDate.getTime() - StartAsDate.getTime()) / 1000 / 60 / 60 / 24).toFixed(0);
-}
+        return ((CurrDate.getTime() - StartAsDate.getTime()) / 1000 / 60 / 60 / 24).toFixed(0);
+    }
+
+    function DropDownMenu({MenuChoice}){
+        const [visible, setVisible] = useState(false);
+        
+        const Languages = [
+            "English",
+            "Español",
+            "Français",
+            "Deutsch",
+            "日本語",
+            "Italiano",
+            "New ze.. ACk new ze COUGH COUGH i cant, i cant do this",
+        ];
+        const TimeZones = [
+            "UTC-12:00 (Baker Island, Howland Island)",
+            "UTC-11:00 (American Samoa, Niue)",
+            "UTC-10:00 (Hawaii, Tahiti)",
+            "UTC-9:30 (Marquesas Islands)",
+            "UTC-9:00 (Alaska, Gambier Islands)",
+            "UTC-8:00 (Pacific Time - Los Angeles, Vancouver)",
+            "UTC-7:00 (Mountain Time - Denver, Phoenix)",
+            "UTC-6:00 (Central Time - Chicago, Mexico City)",
+            "UTC-5:00 (Eastern Time - New York, Toronto, Lima)",
+            "UTC-4:30 (Venezuela Time - Caracas)",
+            "UTC-4:00 (Atlantic Time - Santiago, La Paz, Halifax)",
+            "UTC-3:30 (Newfoundland Time - St. John's)",
+            "UTC-3:00 (Buenos Aires, São Paulo, Montevideo)",
+            "UTC-2:00 (South Georgia & South Sandwich Islands)",
+            "UTC-1:00 (Azores, Cape Verde)",
+            "UTC+0:00 (Greenwich Mean Time - London, Lisbon, Accra)",
+            "UTC+1:00 (Central European Time - Berlin, Paris, Rome, Madrid)",
+            "UTC+2:00 (Eastern European Time - Athens, Cairo, Johannesburg)",
+            "UTC+3:00 (Moscow, Istanbul, Nairobi, Riyadh)",
+            "UTC+3:30 (Iran Standard Time - Tehran)",
+            "UTC+4:00 (Dubai, Baku, Samara)",
+            "UTC+4:30 (Afghanistan - Kabul)",
+            "UTC+5:00 (Pakistan, Yekaterinburg, Maldives)",
+            "UTC+5:30 (India, Sri Lanka)",
+            "UTC+5:45 (Nepal - Kathmandu)",
+            "UTC+6:00 (Bangladesh, Bhutan, Omsk)",
+            "UTC+6:30 (Myanmar, Cocos Islands)",
+            "UTC+7:00 (Bangkok, Jakarta, Ho Chi Minh City)",
+            "UTC+8:00 (China, Singapore, Perth, Manila)",
+            "UTC+8:45 (Western Australia - Eucla)",
+            "UTC+9:00 (Japan, Korea, Yakutsk)",
+            "UTC+9:30 (Central Australia - Adelaide, Darwin)",
+            "UTC+10:00 (Eastern Australia - Sydney, Melbourne, Vladivostok)",
+            "UTC+10:30 (Lord Howe Island)",
+            "UTC+11:00 (Solomon Islands, Magadan, Nouméa)",
+            "UTC+12:00 (New Zealand, Fiji, Kamchatka)",
+            "UTC+12:45 (New Zealand - Chatham Islands)",
+            "UTC+13:00 (Samoa, Tonga, Tokelau)",
+            "UTC+14:00 (Line Islands, Kiritimati)",
+        ];
+
+        if (!visible){
+            return (
+                <button
+                    onClick={() => setVisible(!visible)}
+                >
+                    Menu
+                </button>
+            );
+        }
+        return (
+            <ul
+                className="AccountDivisionList"
+            >
+                {MenuChoice === "Language" && Languages.map((Language, index) => (
+                    <button key={index} className="AccountDivisionListItem"
+                        onClick={() => {
+                            setUserData((prevData) => ({
+                                ...prevData,
+                                LanguageAndLocation: {
+                                    ...prevData.LanguageAndLocation,
+                                    Language: Language
+                                }
+                            }))
+                            setVisible(false);
+                        }}
+                    >
+                        {Language}
+                    </button>
+                ))}
+                {MenuChoice === "TimeZone" && TimeZones.map((TimeZone, index) => (
+                    <button key={index} className="AccountDivisionListItem"
+                        onClick={() => {
+                            setUserData((prevData) => ({
+                                ...prevData,
+                                LanguageAndLocation: {
+                                    ...prevData.LanguageAndLocation,
+                                    TimeZone: TimeZone
+                                }
+                            }))
+                            setVisible(false);
+                        }}
+                    >
+                        {TimeZone}
+                    </button>
+                ))}
+            </ul>
+        )
+    }    
+}    
+

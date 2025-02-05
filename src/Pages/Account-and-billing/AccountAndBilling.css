@@ -39,9 +39,10 @@
     }
     .AccountDivisionItem{
         border-bottom: 1px solid;
-        width: 30%;
+        width: 70%;
         padding: 5px;
-        text-align: end;
+        display: flex;
+        justify-content: space-between;
     }
     .AccountDivisionList{
         display: flex;
@@ -64,9 +65,8 @@
     }
     .AccountDivisionListItem{
         border-bottom: 1px solid black;
-        min-width: 20%;
-        max-width: 60%;
         text-align: center;
+        justify-content: space-between;
     }
     .AccountDivisionDivision{
         padding: 5px;
@@ -74,8 +74,12 @@
     .AccountDivisionDivisionItem{
         padding: 5px;
         border-bottom: 1px solid;
-        text-align: end;
         width: 40%;
+        display: flex;
+        justify-content: space-between;
+    }
+    .AccountDivisionDivisionItem button{
+        padding: 3px;
     }
     .SaveButton{
         display: flex;
@@ -86,5 +90,14 @@
         color: white;
         padding: 5px;
         padding-bottom: 10px;
+    }
+    .AccountDivisionItemDropDown {
+        border-bottom: 1px solid;
+        width: 70%;
+        padding: 5px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
     }
 }

@@ -13,6 +13,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.use(express.json())
+
 const UserDataRoute = require("./ServerRoutes/Klex_UserData/UserDataHandler.js");
 const UserDataEnergyRoute = require("./ServerRoutes/Klex_UserData_EnergyUse/UserEnergyHandler.js");
 
