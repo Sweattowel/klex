@@ -4,7 +4,7 @@ const router = express.Router();
 const DB = neon(process.env.REACT_APP_DATABASE_URL);
 
 // GET
-router.get("/", async (req, res) => {
+router.get("/Support/", async (req, res) => {
     try {
 
     } catch (error) {
@@ -13,7 +13,7 @@ router.get("/", async (req, res) => {
     }
 })
 // POST
-router.post("/", async (req, res) => {
+router.post("/Support/", async (req, res) => {
     try {
 
     } catch (error) {
@@ -22,7 +22,7 @@ router.post("/", async (req, res) => {
     }
 })
 // UPDATE
-router.update("/", async (req, res) => {
+router.patch("/Support/", async (req, res) => {
     try {
 
     } catch (error) {
@@ -31,7 +31,7 @@ router.update("/", async (req, res) => {
     }
 })
 // DELETE
-router.delete("/", async (req, res) => {
+router.delete("/Support/", async (req, res) => {
     try {
 
     } catch (error) {

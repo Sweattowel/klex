@@ -21,22 +21,20 @@ export default function AccountAndBilling(){
     
     async function CollectUserData(){
         try {
-
             setLoading(true);
             if (!UserData.AccountID || !UserData.AccountName) return;
             
-            const response = await API.get(`/API/UserData/CollectSingleUser/${UserData.AccountID}`, {}, 
-                {
-                    headers: {
-                        RequestType: "CollectUserDataRequest",
-                        RequestDateSent: new Date(),
-                        RelevantID: `${UserData.AccountID}`,
-                        UserType: "Standard"
-                    }             
-                });
+            const Billings = await API.get(`API/Billings/GetBillings/${UserData.AccountID}`, {}, {headers: { RequestType: "BillingRequest", RequestDateSent: new Date(), RelevantID: `NULL`, UserType: "N/A" }});
+            const Subscriptions = await API.get(`API/Subscription/GetSubscriptionDetails/${UserData.AccountID}`, {}, {headers: { RequestType: "SubscriptionsRequest", RequestDateSent: new Date(), RelevantID: `NULL`, UserType: "N/A" }});
+            const Support = await API.get(`API/Support/GetSupport/${UserData.AccountID}`, {}, {headers: { RequestType: "SupportRequest", RequestDateSent: new Date(), RelevantID: `NULL`, UserType: "N/A" }});
 
-            if (response.status === 200) {
-                setUserData((prevData) => ({...prevData, ...response.data}));
+            if (Billings.status === 200 && Subscriptions.status === 200 && Support.status === 200) {
+                setUserData((prevData) => ({
+                    ...prevData, 
+                    ...Billings.data,
+                    ...Subscriptions.data,
+                    ...Support.data,
+                }));
             }
             
         } catch (error) {

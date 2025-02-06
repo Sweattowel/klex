@@ -8,7 +8,7 @@ export default function Login(){
     
     const {theme, setTheme, themeAlt, setThemeAlt} = useContext(ThemeContext);
     const {UserData, setUserData} = useContext(UserContext);
-
+    const [loading, setLoading] = useState(false);
     const [loginFormData, setLoginFormData] = useState({
         UserName: "",
         Email: "",
@@ -16,29 +16,29 @@ export default function Login(){
     });
     async function HandleLogin(e){
         e.preventDefault();
-
+        setLoading(true);
         try {
-            const response = await API.post(`API/UserData/UserLogin`, loginFormData, {
-                headers: {
-                    RequestType: "LoginRequest",
-                    RequestDateSent: new Date(),
-                    RelevantID: `NULL`,
-                    UserType: "N/A"
-                }  
+            const responseGeneral = await API.post(`API/General/LoginAccount`, loginFormData, {
+                headers: { RequestType: "LoginRequest", RequestDateSent: new Date(), RelevantID: `NULL`, UserType: "General" }  
             })
-            if (response.status === 200){
+            if (responseGeneral.status === 200){
+                const UserSettings = await API.get(`API/AccountSettings/GetAccountSettings/${responseGeneral.data.UserData[0].AccountID}`, {}, {headers: { RequestType: "SettingRequest", RequestDateSent: new Date(), RelevantID: responseGeneral.data.UserData[0].AccountID, UserType: "General" }});
+
                 setUserData((prevData) => ({
                     ...prevData,
-                    ...response.data.UserData
+                    ...responseGeneral.data.UserData[0],
+                    ...UserSettings.data.AccountSettings[0]
                 }));
-                setTheme(response.data.SelectedTheme[0].SelectedTheme);
-                setThemeAlt(response.data.SelectedTheme[0].SelectedTheme === "Light" ? "altLight" : "altDark")
+                setTheme(UserSettings.data.AccountSettings[0].SelectedTheme);
+                setThemeAlt(UserSettings.data.AccountSettings[0].SelectedTheme === "Light" ? "altLight" : "altDark")
                 console.log("Logged in")                    
             }
 
             
         } catch (error) {
             console.error(error)
+        } finally {
+            setLoading(false);
         }
     }
     
@@ -64,9 +64,13 @@ export default function Login(){
                     <input onChange={(e) => setLoginFormData((prevData) => ({...prevData, Password: e.target.value}))} value={ loginFormData.Password}
                         className="LoginTextInput" placeholder="Enter Password"
                     />
+                    {!loading ?
                     <button type="submit" className={`LoginSubmitButton ${themeAlt}`}>
                         Login
                     </button>
+                    :
+                    <p>Loading</p>
+                    }
                 </form>                
             </section>
 

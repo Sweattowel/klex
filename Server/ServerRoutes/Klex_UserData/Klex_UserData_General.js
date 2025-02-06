@@ -10,7 +10,7 @@ const DB = neon(process.env.REACT_APP_DATABASE_URL);
     Request["UserType"]]
 */
 // GET
-router.update("/General/GetAccount", async (req, res) => {
+router.get("/General/GetAccount", async (req, res) => {
     try {
         console.log(`Get Account endpoint called for ${req.header["RelevantID"]}`);
         
@@ -46,7 +46,7 @@ router.post("/General/LoginAccount", async (req, res) => {
             res.header["RelevantID"] = req.header["RelevantID"]
             res.header["UserType"] = req.header["UserType"]
 
-            return res.status(200).json({ Message: "Successfully verified account"})
+            return res.status(200).json({ Message: "Successfully verified account", UserData})
         } else {
             return res.status(500).json({ error: "Failed to verify"});
         }
@@ -137,7 +137,7 @@ router.post("/General/CreateAccount", async (req, res) => {
     }
 })
 // UPDATE
-router.update("/General/UpdateAccount", async (req, res) => {
+router.patch("/General/UpdateAccount", async (req, res) => {
     try {
         console.log(`Update Account endpoint called for ${req.header["RelevantID"]}`);
         
