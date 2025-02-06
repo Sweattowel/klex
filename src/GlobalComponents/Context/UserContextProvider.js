@@ -35,24 +35,24 @@ export const UserContextProvider = ( { children } ) => {
             PrivacySettings: {
                 PrivacySensitiveData: false,
                 PrivacyDataShare: false
-            }
+            },
+            Security: {
+                SecurityTwoFactor: false,
+                LoginAlert: false,
+                SecurityQuestions: [],
+                RegisteredLoginLocations: [
+                    {
+                        HardWare: "", IP: "", LoginCount: 2
+                    }
+                ]
+            },
+            LanguageAndLocation: {
+                Language: "English",
+                TimeZone: "Etc/GMT-16"  
+            },            
         },
-        LastLoginDate: new Date("1/12/2015"),
+        LastLoginDate: new Date("1/12/2000"),
         CountLogins: 0,
-        Security: {
-            SecurityTwoFactor: false,
-            LoginAlert: false,
-            SecurityQuestions: [],
-            RegisteredLoginLocations: [
-                {
-                    HardWare: "JohnDoePC", IP: "192.168.0.1", LoginCount: 2
-                }
-            ]
-        },
-        LanguageAndLocation: {
-            Language: "English",
-            TimeZone: "Etc/GMT-16"  
-        },
         PriorSupport: [ ]
     });
 
@@ -62,23 +62,3 @@ export const UserContextProvider = ( { children } ) => {
         </UserContext.Provider>
     );
 };
-/*
-                "SelectedTheme" = ${UserData.AccountSettings.SelectedTheme},
-                "PushAdvertisement" = ${UserData.AccountSettings.PushAdvertisement},
-                "Active" = ${UserData.AccountSettings.Active},
-
-                "NotifyByEmail" = ${UserData.AccountSettings.NotificationPreferences.NotifyByEmail},
-                "NotifyBySMS" = ${UserData.AccountSettings.NotificationPreferences.NotifyBySMS},
-                "NotifyByPH" = ${UserData.AccountSettings.NotificationPreferences.NotifyByPH},
-
-                "PushNotifications" = ${UserData.AccountSettings.NotificationPreferences.PushNotifications},
-
-                "PrivacySensitiveData" = ${UserData.AccountSettings.PrivacySettings.PrivacySensitiveData},
-                "PrivacyDataShare" = ${UserData.AccountSettings.PrivacySettings.PrivacyDataShare},
-
-                "SecurityTwoFactor" = ${UserData.Security.SecurityTwoFactor},
-                "LoginAlert" = ${UserData.Security.LoginAlert},
-
-                "Language" = ${UserData.LanguageAndLocation.Language},
-                "TimeZone" = ${UserData.LanguageAndLocation.TimeZone}
-*/

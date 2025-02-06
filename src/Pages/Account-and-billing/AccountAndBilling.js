@@ -29,14 +29,38 @@ export default function AccountAndBilling(){
             const Support = await API.get(`API/Support/GetSupport/${UserData.AccountID}`, {}, {headers: { RequestType: "SupportRequest", RequestDateSent: new Date(), RelevantID: UserData.AccountID, UserType: "General" }});
 
             if (Settings.status === 200 && Billings.status === 200 && Subscriptions.status === 200 && Support.status === 200) {
-                console.log(Settings);
-
+                console.log(UserData)
                 setUserData((prevData) => ({
                     ...prevData, 
-                    ...Settings.data[0],
-                    ...Billings.data,
-                    ...Subscriptions.data,
-                    ...Support.data,
+                    AccountSettings: {
+                        ...prevData.AccountSettings,
+                        AccountID: Settings.data.AccountSettings[0].AccountID,
+                        Active: Settings.data.AccountSettings[0].Active,
+                        Language: Settings.data.AccountSettings[0].Language,
+                        LoginAlert: Settings.data.AccountSettings[0].LoginAlert,
+                        NotificationPreferences: {
+                            NotifyByEmail: Settings.data.AccountSettings[0].NotifyByEmail,
+                            NotifyBySMS: Settings.data.AccountSettings[0].NotifyBySMS,
+                            NotifyByPH: Settings.data.AccountSettings[0].NotifyByPH,
+                            PushNotifications: Settings.data.AccountSettings[0].PushNotifications,
+                        },
+                        PrivacySettings: {
+                            PrivacySensitiveData: Settings.data.AccountSettings[0].PrivacySensitiveData,
+                            PrivacyDataShare: Settings.data.AccountSettings[0].PrivacyDataShare
+                        }
+                    },
+                    AccountPriorBillings: {
+                        ...prevData.AccountPriorBillings,
+                        ...Billings.data.SelectStatement,
+                    },
+                    SubScriptionDetails: {
+                        ...prevData.SubScriptionDetails,
+                        ...Subscriptions.data.SubscriptionDetails[0],
+                    },
+                    PriorSupport: {
+                        ...prevData.PriorSupport,
+                        ...Support.data.SelectStatement,
+                    },
                 }));
                 console.log(UserData)
             }
@@ -138,7 +162,7 @@ export default function AccountAndBilling(){
                                 : "No"}
                         </p>
                         <p className="AccountDivisionDivisionItem">
-                            FollowUpDate: {UserData.SubScriptionDetails.FollowUpDate && UserData.SubScriptionDetails.FollowUpDate.toISOString().split("T")[0]}
+                            FollowUpDate: {/*UserData.SubScriptionDetails.FollowUpDate && UserData.SubScriptionDetails.FollowUpDate.toISOString().split("T")[0]*/}
                         </p>
                     </div>
                 </div>
@@ -285,11 +309,11 @@ export default function AccountAndBilling(){
                         </p>                        
                         <div className="AccountDivisionItemDropDown"
                         >
-                            Language: {UserData.LanguageAndLocation.Language}
+                            Language: {UserData.AccountSettings.LanguageAndLocation.Language}
                             <DropDownMenu MenuChoice={"Language"}/>
                         </div>                        
                         <div className="AccountDivisionItemDropDown">
-                            TimeZone: {UserData.LanguageAndLocation.TimeZone}
+                            TimeZone: {UserData.AccountSettings.LanguageAndLocation.TimeZone}
                             <DropDownMenu MenuChoice={"TimeZone"}/>
                         </div>                         
                     </div>
@@ -315,7 +339,7 @@ export default function AccountAndBilling(){
                             Support
                         </h3>
                         <ul className="AccountDivisionList">
-                            {UserData.PriorSupport.map((Support, index) => (
+                            {UserData.PriorSupport.length > 0 && UserData.PriorSupport.map((Support, index) => (
                                 <li key={index} className="AccountDivisionListItemContainer">
                                     <p className="AccountDivisionListItem">Officer: {Support.CustomerSupportOfficer}</p>
                                     <p className="AccountDivisionListItem">OfficerID: {Support.CustomerSupportOfficerID}</p>
@@ -418,9 +442,12 @@ export default function AccountAndBilling(){
                         onClick={() => {
                             setUserData((prevData) => ({
                                 ...prevData,
-                                LanguageAndLocation: {
-                                    ...prevData.LanguageAndLocation,
-                                    Language: Language
+                                AccountSettings: {
+                                    ...prevData.AccountSettings,                                    
+                                    LanguageAndLocation: {
+                                        ...prevData.AccountSettings.LanguageAndLocation,
+                                        Language: Language
+                                    }
                                 }
                             }))
                             setVisible(false);
@@ -434,9 +461,12 @@ export default function AccountAndBilling(){
                         onClick={() => {
                             setUserData((prevData) => ({
                                 ...prevData,
-                                LanguageAndLocation: {
-                                    ...prevData.LanguageAndLocation,
-                                    TimeZone: TimeZone
+                                AccountSettings: {
+                                    ...prevData.AccountSettings,                                    
+                                    LanguageAndLocation: {
+                                        ...prevData.AccountSettings.LanguageAndLocation,
+                                        TimeZone: TimeZone
+                                    }
                                 }
                             }))
                             setVisible(false);

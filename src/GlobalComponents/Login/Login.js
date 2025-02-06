@@ -23,13 +23,41 @@ export default function Login(){
             })
             if (responseGeneral.status === 200){
                 const UserSettings = await API.get(`API/AccountSettings/GetAccountSettings/${responseGeneral.data.UserData[0].AccountID}`, {}, {headers: { RequestType: "SettingRequest", RequestDateSent: new Date(), RelevantID: responseGeneral.data.UserData[0].AccountID, UserType: "General" }});
-                
+                console.log({                    
+                    ...responseGeneral.data.UserData[0],
+                    ...UserSettings.data.AccountSettings[0]
+                })
                 setUserData((prevData) => ({
                     ...prevData,
                     ...responseGeneral.data.UserData[0],
-                    ...UserSettings.data.AccountSettings[0]
+                    AccountSettings: {
+                        ...prevData.AccountSettings,
+                        AccountID: UserSettings.data.AccountSettings[0].AccountID,
+                        Active: UserSettings.data.AccountSettings[0].Active,
+                        Language: UserSettings.data.AccountSettings[0].Language,
+                        LoginAlert: UserSettings.data.AccountSettings[0].LoginAlert,
+                        NotificationPreferences: {
+                            NotifyByEmail: UserSettings.data.AccountSettings[0].NotifyByEmail,
+                            NotifyBySMS: UserSettings.data.AccountSettings[0].NotifyBySMS,
+                            NotifyByPH: UserSettings.data.AccountSettings[0].NotifyByPH,
+                            PushNotifications: UserSettings.data.AccountSettings[0].PushNotifications,
+                        },
+                        Security: {
+                            SecurityTwoFactor: UserSettings.data.AccountSettings[0].SecurityTwoFactor,
+                            LoginAlert: UserSettings.data.AccountSettings[0].LoginAlert,
+                            SecurityQuestions: [],
+                            RegisteredLoginLocations: [
+                                {
+                                    HardWare: "", IP: "", LoginCount: 2
+                                }
+                            ]
+                        },
+                        LanguageAndLocation: {
+                            Language: UserSettings.data.AccountSettings[0].Language,
+                            TimeZone: UserSettings.data.AccountSettings[0].TimeZone,
+                        },      
+                    },
                 }));
-                
                 setTheme(UserSettings.data.AccountSettings[0].SelectedTheme);
                 setThemeAlt(UserSettings.data.AccountSettings[0].SelectedTheme === "Light" ? "altLight" : "altDark")
                 console.log("Logged in")                    

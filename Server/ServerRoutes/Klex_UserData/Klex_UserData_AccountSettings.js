@@ -48,7 +48,7 @@ router.patch("/AccountSettings/UpdateAccount", async (req, res) => {
     try {
         console.log(`Update AccountSettings endpoint called for User ${req.headers["RelevantID"]}...`);
         const UserData = req.body;
-
+        console.log(UserData)
         await DB`
             UPDATE "Klex_UserData_AccountSettings"
                 SET 
@@ -65,11 +65,11 @@ router.patch("/AccountSettings/UpdateAccount", async (req, res) => {
                 "PrivacySensitiveData" = ${UserData.AccountSettings.PrivacySettings.PrivacySensitiveData},
                 "PrivacyDataShare" = ${UserData.AccountSettings.PrivacySettings.PrivacyDataShare},
 
-                "SecurityTwoFactor" = ${UserData.Security.SecurityTwoFactor},
-                "LoginAlert" = ${UserData.Security.LoginAlert},
+                "SecurityTwoFactor" = ${UserData.AccountSettings.Security.SecurityTwoFactor},
+                "LoginAlert" = ${UserData.AccountSettings.Security.LoginAlert},
 
-                "Language" = ${UserData.LanguageAndLocation.Language},
-                "TimeZone" = ${UserData.LanguageAndLocation.TimeZone}
+                "Language" = ${UserData.AccountSettings.LanguageAndLocation.Language},
+                "TimeZone" = ${UserData.AccountSettings.LanguageAndLocation.TimeZone}
             WHERE "AccountID" = ${UserData.AccountID}
         `;
         return res.status(200).json({ message: "Successfully updated AccountSettings"});
