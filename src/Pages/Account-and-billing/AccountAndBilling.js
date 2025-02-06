@@ -281,7 +281,7 @@ export default function AccountAndBilling(){
                         <h3 className={`${themeAlt}`}>
                             Other
                         </h3>
-                        <p className="AccountDivisionItem">
+                        <p className="AccountDivisionDivisionItem">
                             Receive Product Offers: 
                             <button
                                 onClick={() => setUserData((prevData) => ({...prevData, AccountSettings: {
@@ -292,7 +292,7 @@ export default function AccountAndBilling(){
                                 {UserData.AccountSettings.PushAdvertisement ? "On" : "Off"}
                             </button> 
                         </p>
-                        <p className="AccountDivisionItem">
+                        <p className="AccountDivisionDivisionItem">
                             SelectedTheme:
                             <button
                                 onClick={() => {
@@ -423,7 +423,7 @@ export default function AccountAndBilling(){
 
         if (!visible){
             return (
-                <button className="AccountDivisionItem"
+                <button className="AccountDivisionItem AccountDivisionListItemButton"
                     onClick={() => {
                         setVisible(!visible)
                     }}
@@ -438,7 +438,7 @@ export default function AccountAndBilling(){
                 className="AccountDivisionList"
             >
                 {MenuChoice === "Language" && Languages.map((Language, index) => (
-                    <button key={index} className="AccountDivisionListItem"
+                    <button key={index} className="AccountDivisionListItem AccountDivisionListItemButton"
                         onClick={() => {
                             setUserData((prevData) => ({
                                 ...prevData,
@@ -457,7 +457,7 @@ export default function AccountAndBilling(){
                     </button>
                 ))}
                 {MenuChoice === "TimeZone" && TimeZones.map((TimeZone, index) => (
-                    <button key={index} className="AccountDivisionListItem"
+                    <button key={index} className="AccountDivisionListItem AccountDivisionListItemButton"
                         onClick={() => {
                             setUserData((prevData) => ({
                                 ...prevData,

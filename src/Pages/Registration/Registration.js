@@ -17,7 +17,7 @@ export default function Registration(){
     async function HandleRegister(e){
         try {
             e.preventDefault();
-            const response = await API.post("/API/UserData/HandleRegistration", registerFormData, 
+            const response = await API.post("/API/General/CreateAccount", registerFormData, 
             {
                 headers: {
                     RequestType: "RegistrationOfUserRequest",
