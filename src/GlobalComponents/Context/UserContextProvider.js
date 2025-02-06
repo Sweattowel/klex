@@ -29,6 +29,7 @@ export const UserContextProvider = ( { children } ) => {
             NotificationPreferences: {
                 Email: false,
                 SMS: false,
+                PH: false,
                 PushNotifications: false
             },
             PrivacySettings: {

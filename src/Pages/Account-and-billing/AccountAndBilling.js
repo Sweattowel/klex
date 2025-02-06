@@ -24,11 +24,7 @@ export default function AccountAndBilling(){
 
             setLoading(true);
             if (!UserData.AccountID || !UserData.AccountName) return;
-            let cachedData = sessionStorage.getItem("AccountData");
-            if (cachedData && cachedData !== ""){
-                setUserData((prevData) => ({...prevData, ...JSON.parse(cachedData)}));
-                return
-            }
+            
             const response = await API.get(`/API/UserData/CollectSingleUser/${UserData.AccountID}`, {}, 
                 {
                     headers: {
@@ -41,7 +37,6 @@ export default function AccountAndBilling(){
 
             if (response.status === 200) {
                 setUserData((prevData) => ({...prevData, ...response.data}));
-                sessionStorage.setItem("AccountData", JSON.stringify(response));
             }
             
         } catch (error) {
@@ -52,6 +47,29 @@ export default function AccountAndBilling(){
         }
     };  
       
+    async function UpdateAccount(){
+        try {
+            setLoading(true);
+            console.log({...UserData})
+            const response = await API.patch(`/API/UpdateUserData/${UserData.AccountID}`, {...UserData}, {
+                headers: {
+                    RequestType: "UpdateUserData",
+                    RequestDateSent: new Date(),
+                    RelevantID: `${UserData.AccountID}`,
+                    UserType: "Standard"
+                }   
+            });
+            if (response.status === 200)
+            {
+                CollectUserData();
+            }
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setLoading(false)
+        }
+        
+    }
     if (!UserData || UserData.AccountID === -1){
         return(
             <main className={`${theme}`}>
@@ -185,6 +203,22 @@ export default function AccountAndBilling(){
                                 {UserData.AccountSettings.NotificationPreferences.SMS ? "ON" : "OFF"}
                             </button>  
                         </p>
+                        <p className="AccountDivisionDivisionItem">
+                            PH: 
+                            <button
+                                onClick={() => 
+                                    setUserData((prevData) => ({...prevData, AccountSettings: {
+                                        ...prevData.AccountSettings,
+                                            NotificationPreferences: {
+                                                ...prevData.AccountSettings.NotificationPreferences,
+                                                PH: !UserData.AccountSettings.NotificationPreferences.PH
+                                            }
+                                    }}))
+                                }
+                            > 
+                                {UserData.AccountSettings.NotificationPreferences.PH ? "ON" : "OFF"}
+                            </button>  
+                        </p>
                     </div>
                     <div className="AccountDivisionDivision">
                         <h3 className={`${themeAlt}`}>
@@ -250,7 +284,7 @@ export default function AccountAndBilling(){
                                 setThemeAlt(UserData.AccountSettings.SelectedTheme === "Dark" ? "altLight" : "altDark")   
                                 }}
                             > 
-                                {UserData.AccountSettings.SelectedTheme}
+                                {theme}
                             </button>  
                         </p>                        
                         <div className="AccountDivisionItemDropDown"
@@ -298,7 +332,7 @@ export default function AccountAndBilling(){
                     </div>
                 </div>
                 <button className="SaveButton"
-                    onClick={() => CollectUserData()}
+                    onClick={() => UpdateAccount()}
                 >
                     SAVE
                 </button>
@@ -369,13 +403,16 @@ export default function AccountAndBilling(){
 
         if (!visible){
             return (
-                <button
-                    onClick={() => setVisible(!visible)}
+                <button className="AccountDivisionItem"
+                    onClick={() => {
+                        setVisible(!visible)
+                    }}
                 >
                     Menu
                 </button>
             );
         }
+
         return (
             <ul
                 className="AccountDivisionList"

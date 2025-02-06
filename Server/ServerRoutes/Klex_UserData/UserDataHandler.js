@@ -188,18 +188,53 @@ router.put("/UserData", (req, res) => {
     }
 })
 // PATCH
-router.patch("/UserData:AccountID", async (req, res) => {
+router.patch("/UpdateUserData/:AccountID", async (req, res) => {
     try {
         console.log("Received Request to update UserData")
         const { AccountID } = req.params
         const userData = req.body
-        const postGresManufacturedSetQuery = Object.keys(userData).map((key) => `"${key} = ${userData[key]}"`).join(", ")
+        delete userData.AccountID;
+        console.log(userData.AccountSettings)
+        // Update AccountSettings
         await DB`
-        UPDATE Klex_UserData_General
-        SET * = ${postGresManufacturedSetQuery}
-        WHERE "AccountID" = ${AccountID}}
-        `;
+            UPDATE "Klex_UserData_AccountSettings"
+                SET 
+                "SelectedTheme" = ${userData.AccountSettings.SelectedTheme},
+                "PushAdvertisement" = ${userData.AccountSettings.PushAdvertisement},
+                "Active" = ${userData.AccountSettings.Active},
 
+                "NotifyByEmail" = ${userData.AccountSettings.NotificationPreferences.Email},
+                "NotifyBySMS" = ${userData.AccountSettings.NotificationPreferences.SMS},
+                "NotifyByPH" = ${userData.AccountSettings.NotificationPreferences.PH},
+
+                "PushNotifications" = ${userData.AccountSettings.NotificationPreferences.PushNotifications},
+
+                "PrivacySensitiveData" = ${userData.AccountSettings.PrivacySettings.SensitiveData},
+                "PrivacyDataShare" = ${userData.AccountSettings.PrivacySettings.DataShare},
+
+                "SecurityTwoFactor" = ${userData.Security.TwoFactorAuthentication},
+                "LoginAlert" = ${userData.Security.LoginAlert},
+
+                "Language" = ${userData.LanguageAndLocation.Language},
+                "TimeZone" = ${userData.LanguageAndLocation.TimeZone}
+            WHERE "AccountID" = ${AccountID}
+        `;
+        // Update General
+
+        await DB`
+            UPDATE "Klex_UserData_General"
+            SET 
+            "AccountEmail" = ${userData.AccountEmail},
+            "AccountName" = ${userData.AccountName},
+            "AccountPassword" = ${userData.AccountPassword}
+            WHERE "AccountID" = ${AccountID}
+        `;
+        // Update SubscriptionDetails
+        await DB`
+            UPDATE "Klex_UserData_SubscriptionDetails"
+            SET "AutoRenew" = ${userData.SubScriptionDetails.AutoRenew ? true: false}
+            WHERE "AccountID" = ${AccountID}
+        `;
         res.status(200).json({ message: "UserData successfully Updated"})
     } catch (error) {
         console.error(error);
@@ -222,6 +257,9 @@ router.delete("/UserData/:AccountID", async (req, res) => {
         res.status(500).json({ error: "internal Server Errror"});
     }
 })
+// SECURITY QUESTION ADD AND REMOVE ONLY
+
+
 // TESTING
 router.get("/UserData/TEST", (req, res) => {
     return res.status(200).json({ message: "UserDataSuccess"})

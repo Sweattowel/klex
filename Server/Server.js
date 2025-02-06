@@ -14,16 +14,25 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json())
 
-const UserDataRoute = require("./ServerRoutes/Klex_UserData/UserDataHandler.js");
-const UserDataEnergyRoute = require("./ServerRoutes/Klex_UserData_EnergyUse/UserEnergyHandler.js");
+const AccountSettingRoute = require("./ServerRoutes/Klex_UserData/Klex_UserData_AccountSettings.js");
+const DiscrepencyRoute = require("./ServerRoutes/Klex_UserData/Klex_UserData_Discrepency.js");
+const GeneralRoute = require("./ServerRoutes/Klex_UserData/Klex_UserData_General.js");
+const PriorBillingsRoute = require("./ServerRoutes/Klex_UserData/Klex_UserData_PriorBillings.js");
+const SecurityQuestionsRoute = require("./ServerRoutes/Klex_UserData/Klex_UserData_SecurityQuestions.js");
+const SubScriptionDetailsRoute = require("./ServerRoutes/Klex_UserData/Klex_UserData_SubScriptionDetails.js");
+const UserSupportDataRoute = require("./ServerRoutes/Klex_UserData/Klex_UserData_UserSupportData.js");
 
-app.use("/API", UserDataRoute);
-app.use("/API", UserDataEnergyRoute);
+app.use("/API", AccountSettingRoute);
+app.use("/API", DiscrepencyRoute);
+app.use("/API", GeneralRoute);
+app.use("/API", PriorBillingsRoute);
+app.use("/API", SecurityQuestionsRoute);
+app.use("/API", SubScriptionDetailsRoute);
+app.use("/API", UserSupportDataRoute);
 
-
-// TESTING
+// TEST CONNECTION
 app.get("/API/TEST", (req, res) => {
-    return res.status(200).json({ message: "Test Complete"});
+    return res.status(200).json({ message: "Connection Successfull"});
 })
 
 app.listen(3001, () => {
