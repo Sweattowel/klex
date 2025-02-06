@@ -27,20 +27,20 @@ export const UserContextProvider = ( { children } ) => {
             PushAdvertisement: false,
             Active: false,
             NotificationPreferences: {
-                Email: false,
-                SMS: false,
-                PH: false,
+                NotifyByEmail: false,
+                NotifyBySMS: false,
+                NotifyByPH: false,
                 PushNotifications: false
             },
             PrivacySettings: {
-                SensitiveData: false,
-                DataShare: false
+                PrivacySensitiveData: false,
+                PrivacyDataShare: false
             }
         },
         LastLoginDate: new Date("1/12/2015"),
         CountLogins: 0,
         Security: {
-            TwoFactorAuthentication: false,
+            SecurityTwoFactor: false,
             LoginAlert: false,
             SecurityQuestions: [],
             RegisteredLoginLocations: [
@@ -62,3 +62,23 @@ export const UserContextProvider = ( { children } ) => {
         </UserContext.Provider>
     );
 };
+/*
+                "SelectedTheme" = ${UserData.AccountSettings.SelectedTheme},
+                "PushAdvertisement" = ${UserData.AccountSettings.PushAdvertisement},
+                "Active" = ${UserData.AccountSettings.Active},
+
+                "NotifyByEmail" = ${UserData.AccountSettings.NotificationPreferences.NotifyByEmail},
+                "NotifyBySMS" = ${UserData.AccountSettings.NotificationPreferences.NotifyBySMS},
+                "NotifyByPH" = ${UserData.AccountSettings.NotificationPreferences.NotifyByPH},
+
+                "PushNotifications" = ${UserData.AccountSettings.NotificationPreferences.PushNotifications},
+
+                "PrivacySensitiveData" = ${UserData.AccountSettings.PrivacySettings.PrivacySensitiveData},
+                "PrivacyDataShare" = ${UserData.AccountSettings.PrivacySettings.PrivacyDataShare},
+
+                "SecurityTwoFactor" = ${UserData.Security.SecurityTwoFactor},
+                "LoginAlert" = ${UserData.Security.LoginAlert},
+
+                "Language" = ${UserData.LanguageAndLocation.Language},
+                "TimeZone" = ${UserData.LanguageAndLocation.TimeZone}
+*/

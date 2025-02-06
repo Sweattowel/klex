@@ -23,18 +23,22 @@ export default function AccountAndBilling(){
         try {
             setLoading(true);
             if (!UserData.AccountID || !UserData.AccountName) return;
-            
-            const Billings = await API.get(`API/Billings/GetBillings/${UserData.AccountID}`, {}, {headers: { RequestType: "BillingRequest", RequestDateSent: new Date(), RelevantID: `NULL`, UserType: "N/A" }});
-            const Subscriptions = await API.get(`API/Subscription/GetSubscriptionDetails/${UserData.AccountID}`, {}, {headers: { RequestType: "SubscriptionsRequest", RequestDateSent: new Date(), RelevantID: `NULL`, UserType: "N/A" }});
-            const Support = await API.get(`API/Support/GetSupport/${UserData.AccountID}`, {}, {headers: { RequestType: "SupportRequest", RequestDateSent: new Date(), RelevantID: `NULL`, UserType: "N/A" }});
+            const Settings = await API.get(`API/AccountSettings/GetAccountSettings/${UserData.AccountID}`, {}, {headers: { RequestType: "SettingsRequest", RequestDateSent: new Date(), RelevantID: UserData.AccountID, UserType: "General" }});
+            const Billings = await API.get(`API/Billings/GetBillings/${UserData.AccountID}`, {}, {headers: { RequestType: "BillingRequest", RequestDateSent: new Date(), RelevantID: UserData.AccountID, UserType: "General" }});
+            const Subscriptions = await API.get(`API/Subscription/GetSubscriptionDetails/${UserData.AccountID}`, {}, {headers: { RequestType: "SubscriptionsRequest", RequestDateSent: new Date(), RelevantID: UserData.AccountID, UserType: "General" }});
+            const Support = await API.get(`API/Support/GetSupport/${UserData.AccountID}`, {}, {headers: { RequestType: "SupportRequest", RequestDateSent: new Date(), RelevantID: UserData.AccountID, UserType: "General" }});
 
-            if (Billings.status === 200 && Subscriptions.status === 200 && Support.status === 200) {
+            if (Settings.status === 200 && Billings.status === 200 && Subscriptions.status === 200 && Support.status === 200) {
+                console.log(Settings);
+
                 setUserData((prevData) => ({
                     ...prevData, 
+                    ...Settings.data[0],
                     ...Billings.data,
                     ...Subscriptions.data,
                     ...Support.data,
                 }));
+                console.log(UserData)
             }
             
         } catch (error) {
@@ -48,15 +52,9 @@ export default function AccountAndBilling(){
     async function UpdateAccount(){
         try {
             setLoading(true);
-            console.log({...UserData})
-            const response = await API.patch(`/API/UpdateUserData/${UserData.AccountID}`, {...UserData}, {
-                headers: {
-                    RequestType: "UpdateUserData",
-                    RequestDateSent: new Date(),
-                    RelevantID: `${UserData.AccountID}`,
-                    UserType: "Standard"
-                }   
-            });
+            
+            const response = await API.patch(`API/AccountSettings/UpdateAccount`, UserData, {headers: { RequestType: "SupportRequest", RequestDateSent: new Date(), RelevantID: UserData.AccountID, UserType: "N/A" }});
+
             if (response.status === 200)
             {
                 CollectUserData();
@@ -161,12 +159,12 @@ export default function AccountAndBilling(){
                                         ...prevData.AccountSettings,
                                             NotificationPreferences: {
                                                 ...prevData.AccountSettings.NotificationPreferences,
-                                                Email: !prevData.AccountSettings.NotificationPreferences.Email
+                                                NotifyByEmail: !UserData.AccountSettings.NotificationPreferences.NotifyByEmail
                                             }
                                     }}))
                                 }
                             > 
-                                {UserData.AccountSettings.NotificationPreferences.Email && UserData.AccountSettings.NotificationPreferences.Email ? "ON" : "OFF"}
+                                {UserData.AccountSettings.NotificationPreferences.NotifyByEmail ? "ON" : "OFF"}
                             </button> 
                         </p>
                         <p className="AccountDivisionDivisionItem">
@@ -177,7 +175,7 @@ export default function AccountAndBilling(){
                                         ...prevData.AccountSettings,
                                             NotificationPreferences: {
                                                 ...prevData.AccountSettings.NotificationPreferences,
-                                                PushNotifications: !prevData.AccountSettings.NotificationPreferences.PushNotifications
+                                                PushNotifications: !UserData.AccountSettings.NotificationPreferences.PushNotifications
                                             }
                                     }}))
                                 }
@@ -193,12 +191,12 @@ export default function AccountAndBilling(){
                                         ...prevData.AccountSettings,
                                             NotificationPreferences: {
                                                 ...prevData.AccountSettings.NotificationPreferences,
-                                                SMS: !UserData.AccountSettings.NotificationPreferences.SMS
+                                                NotifyBySMS: !UserData.AccountSettings.NotificationPreferences.NotifyBySMS
                                             }
                                     }}))
                                 }
                             > 
-                                {UserData.AccountSettings.NotificationPreferences.SMS ? "ON" : "OFF"}
+                                {UserData.AccountSettings.NotificationPreferences.NotifyBySMS ? "ON" : "OFF"}
                             </button>  
                         </p>
                         <p className="AccountDivisionDivisionItem">
@@ -209,12 +207,12 @@ export default function AccountAndBilling(){
                                         ...prevData.AccountSettings,
                                             NotificationPreferences: {
                                                 ...prevData.AccountSettings.NotificationPreferences,
-                                                PH: !UserData.AccountSettings.NotificationPreferences.PH
+                                                NotifyByPH: !UserData.AccountSettings.NotificationPreferences.NotifyByPH
                                             }
                                     }}))
                                 }
                             > 
-                                {UserData.AccountSettings.NotificationPreferences.PH ? "ON" : "OFF"}
+                                {UserData.AccountSettings.NotificationPreferences.NotifyByPH ? "ON" : "OFF"}
                             </button>  
                         </p>
                     </div>

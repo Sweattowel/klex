@@ -47,30 +47,30 @@ router.post("/AccountSettings/CreateSettings/:AccountID", async (req, res) => {
 router.patch("/AccountSettings/UpdateAccount", async (req, res) => {
     try {
         console.log(`Update AccountSettings endpoint called for User ${req.headers["RelevantID"]}...`);
-        const AccountUpdateDetails = req.body;
+        const UserData = req.body;
 
         await DB`
             UPDATE "Klex_UserData_AccountSettings"
                 SET 
-                "SelectedTheme" = ${AccountUpdateDetails.AccountSettings.SelectedTheme},
-                "PushAdvertisement" = ${AccountUpdateDetails.AccountSettings.PushAdvertisement},
-                "Active" = ${AccountUpdateDetails.AccountSettings.Active},
+                "SelectedTheme" = ${UserData.AccountSettings.SelectedTheme},
+                "PushAdvertisement" = ${UserData.AccountSettings.PushAdvertisement},
+                "Active" = ${UserData.AccountSettings.Active},
 
-                "NotifyByEmail" = ${AccountUpdateDetails.AccountSettings.NotificationPreferences.NotifyByEmail},
-                "NotifyBySMS" = ${AccountUpdateDetails.AccountSettings.NotificationPreferences.NotifyBySMS},
-                "NotifyByPH" = ${AccountUpdateDetails.AccountSettings.NotificationPreferences.NotifyByPH},
+                "NotifyByEmail" = ${UserData.AccountSettings.NotificationPreferences.NotifyByEmail},
+                "NotifyBySMS" = ${UserData.AccountSettings.NotificationPreferences.NotifyBySMS},
+                "NotifyByPH" = ${UserData.AccountSettings.NotificationPreferences.NotifyByPH},
 
-                "PushNotifications" = ${AccountUpdateDetails.AccountSettings.NotificationPreferences.PushNotifications},
+                "PushNotifications" = ${UserData.AccountSettings.NotificationPreferences.PushNotifications},
 
-                "PrivacySensitiveData" = ${AccountUpdateDetails.AccountSettings.PrivacySettings.PrivacySensitiveData},
-                "PrivacyDataShare" = ${AccountUpdateDetails.AccountSettings.PrivacySettings.PrivacyDataShare},
+                "PrivacySensitiveData" = ${UserData.AccountSettings.PrivacySettings.PrivacySensitiveData},
+                "PrivacyDataShare" = ${UserData.AccountSettings.PrivacySettings.PrivacyDataShare},
 
-                "SecurityTwoFactor" = ${AccountUpdateDetails.Security.SecurityTwoFactor},
-                "LoginAlert" = ${AccountUpdateDetails.Security.LoginAlert},
+                "SecurityTwoFactor" = ${UserData.Security.SecurityTwoFactor},
+                "LoginAlert" = ${UserData.Security.LoginAlert},
 
-                "Language" = ${AccountUpdateDetails.LanguageAndLocation.Language},
-                "TimeZone" = ${AccountUpdateDetails.LanguageAndLocation.TimeZone}
-            WHERE "AccountID" = ${AccountID}
+                "Language" = ${UserData.LanguageAndLocation.Language},
+                "TimeZone" = ${UserData.LanguageAndLocation.TimeZone}
+            WHERE "AccountID" = ${UserData.AccountID}
         `;
         return res.status(200).json({ message: "Successfully updated AccountSettings"});
     } catch (error) {

@@ -23,12 +23,13 @@ export default function Login(){
             })
             if (responseGeneral.status === 200){
                 const UserSettings = await API.get(`API/AccountSettings/GetAccountSettings/${responseGeneral.data.UserData[0].AccountID}`, {}, {headers: { RequestType: "SettingRequest", RequestDateSent: new Date(), RelevantID: responseGeneral.data.UserData[0].AccountID, UserType: "General" }});
-
+                
                 setUserData((prevData) => ({
                     ...prevData,
                     ...responseGeneral.data.UserData[0],
                     ...UserSettings.data.AccountSettings[0]
                 }));
+                
                 setTheme(UserSettings.data.AccountSettings[0].SelectedTheme);
                 setThemeAlt(UserSettings.data.AccountSettings[0].SelectedTheme === "Light" ? "altLight" : "altDark")
                 console.log("Logged in")                    
