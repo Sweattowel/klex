@@ -15,7 +15,7 @@ app.use(cors(corsOptions));
 app.use(express.json())
 // Start Handle Active Users Loop
 CheckUsersLoop();
-
+// postGreSQL Routes
 const AccountSettingRoute = require("./ServerRoutes/Klex_UserData/Klex_UserData_AccountSettings.js");
 const DiscrepencyRoute = require("./ServerRoutes/Klex_UserData/Klex_UserData_Discrepency.js");
 const GeneralRoute = require("./ServerRoutes/Klex_UserData/Klex_UserData_General.js");
@@ -31,6 +31,10 @@ app.use("/API", PriorBillingsRoute);
 app.use("/API", SecurityQuestionsRoute);
 app.use("/API", SubScriptionDetailsRoute);
 app.use("/API", UserSupportDataRoute);
+// Local Routes
+const EneryRoutes = require("./ServerRoutes/Klex_UserData/EnergyHandling/Klex_UserData_EnergyRoutesLocal.js");
+
+app.use("/API", EneryRoutes);
 
 // TEST CONNECTION
 app.get("/API/TEST", (req, res) => {

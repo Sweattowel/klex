@@ -5,57 +5,65 @@ import { useParams } from "react-router-dom";
 import API from "../../GlobalComponents/Interceptor/Interceptor";
 import Login from "../../GlobalComponents/Login/Login";
 import { ThemeContext } from "../../GlobalComponents/Context/ThemeContextProvider";
+import { UserContext } from "../../GlobalComponents/Context/UserContextProvider";
 
-const dummyData = [
-    {
-      Month: "January",
-      EnergyUse: Array.from({ length: 31 }, () => Math.floor(Math.random() * 100) + 1),
-    },
-    {
-      Month: "February",
-      EnergyUse: Array.from({ length: 28 }, () => Math.floor(Math.random() * 100) + 1),
-    },
-    {
-      Month: "March",
-      EnergyUse: Array.from({ length: 31 }, () => Math.floor(Math.random() * 100) + 1),
-    },
-    {
-      Month: "April",
-      EnergyUse: Array.from({ length: 30 }, () => Math.floor(Math.random() * 100) + 1),
-    },
-    {
-      Month: "May",
-      EnergyUse: Array.from({ length: 31 }, () => Math.floor(Math.random() * 100) + 1),
-    },
-    {
-      Month: "June",
-      EnergyUse: Array.from({ length: 30 }, () => Math.floor(Math.random() * 100) + 1),
-    },
-    {
-      Month: "July",
-      EnergyUse: Array.from({ length: 31 }, () => Math.floor(Math.random() * 100) + 1),
-    },
-    {
-      Month: "August",
-      EnergyUse: Array.from({ length: 31 }, () => Math.floor(Math.random() * 100) + 1),
-    },
-    {
-      Month: "September",
-      EnergyUse: Array.from({ length: 30 }, () => Math.floor(Math.random() * 100) + 1),
-    },
-    {
-      Month: "October",
-      EnergyUse: Array.from({ length: 31 }, () => Math.floor(Math.random() * 100) + 1),
-    },
-    {
-      Month: "November",
-      EnergyUse: Array.from({ length: 30 }, () => Math.floor(Math.random() * 100) + 1),
-    },
-    {
-      Month: "December",
-      EnergyUse: Array.from({ length: 31 }, () => Math.floor(Math.random() * 100) + 1),
-    },
-  ];
+function createNewYear(){
+  return [
+      {
+        Year: 2022,
+        EnergyYear: [
+          {
+            Month: "January",
+            EnergyUse: Array.from({ length: 31 }, () => Math.floor(Math.random() * 100) + 1),
+          },
+          {
+            Month: "February",
+            EnergyUse: Array.from({ length: 28 }, () => Math.floor(Math.random() * 100) + 1),
+          },
+          {
+            Month: "March",
+            EnergyUse: Array.from({ length: 31 }, () => Math.floor(Math.random() * 100) + 1),
+          },
+          {
+            Month: "April",
+            EnergyUse: Array.from({ length: 30 }, () => Math.floor(Math.random() * 100) + 1),
+          },
+          {
+            Month: "May",
+            EnergyUse: Array.from({ length: 31 }, () => Math.floor(Math.random() * 100) + 1),
+          },
+          {
+            Month: "June",
+            EnergyUse: Array.from({ length: 30 }, () => Math.floor(Math.random() * 100) + 1),
+          },
+          {
+            Month: "July",
+            EnergyUse: Array.from({ length: 31 }, () => Math.floor(Math.random() * 100) + 1),
+          },
+          {
+            Month: "August",
+            EnergyUse: Array.from({ length: 31 }, () => Math.floor(Math.random() * 100) + 1),
+          },
+          {
+            Month: "September",
+            EnergyUse: Array.from({ length: 30 }, () => Math.floor(Math.random() * 100) + 1),
+          },
+          {
+            Month: "October",
+            EnergyUse: Array.from({ length: 31 }, () => Math.floor(Math.random() * 100) + 1),
+          },
+          {
+            Month: "November",
+            EnergyUse: Array.from({ length: 30 }, () => Math.floor(Math.random() * 100) + 1),
+          },
+          {
+            Month: "December",
+            EnergyUse: Array.from({ length: 31 }, () => Math.floor(Math.random() * 100) + 1),
+          }
+        ]
+      }
+    ];
+  }
   const defaultGraphLabels = [
     "Jan",
     "Feb",
@@ -76,57 +84,53 @@ const dummyData = [
     {Name: "MG", Multiplier: 1000},
     {Name: "GW", Multiplier: 10000},
   ];
-/////////////////////////////////////////////////////////////////////////////////
-export default function EnergyStatistics(){
+  /////////////////////////////////////////////////////////////////////////////////
+  export default function EnergyStatistics(){
     // CONTEXT
     const {theme, setTheme, themeAlt, setThemeAlt} = useContext(ThemeContext);
+    const {UserData, setUserData} = useContext(UserContext);
     // SCALING AND MEASURMENT OF USE
     const [measureScale, setMeasureScale] = useState(1);
     const [totalUse, setTotalUse] = useState(0);
     // DATA TO SEND INTO CHART COMPONENT
-    const [ChartData, setChartData] = useState(dummyData);
+    const [ChartData, setChartData] = useState();
     const [chartLabels, setChartLabels] = useState(defaultGraphLabels);
     const [chartDesc, setChartDesc] = useState("Average monthly use");
     // COLLECTED ENERGY USE DATA
-    const [userEnergyYearData, setUserEnergyYearData] = useState(dummyData);
+    const [userEnergyYearData, setUserEnergyYearData] = useState();
     const { UserID } = useParams();
     const [loading, setLoading] = useState(false);
     
-    // COLLECT USER DATA 
-    async function CollectUserData(){  
-      console.log(`Requesting Data for User:${UserID}`)
+    async function CreateLocalUserProfile(){
       try {
-        setLoading(true)
-        const response = await API.get(`/api/CollectUserEnergyData/${UserID}`,
-          {
-            headers: {
-              "RequestType": "UserEnergyDataRequest",
-              "RequestDateSent": new Date().toISOString(),
-              "RelevantID": UserID,
-              "UserType": "StandardUser"
-            }
-          }
-        )
-
-        console.log(response.data);
-        setUserEnergyYearData(dummyData);
-
+        setLoading(true);
+        const EnergyYear = await createNewYear();
+        await API.post("API/EnergyHandling/CreateLocalUserProfile", UserData);
+        await API.patch("API/EnergyHandling/UpdateEnergy", {UserData, EnergyYear});
+        const Data = await API.get(`API/EnergyHandling/GetEnergyHandling/${UserData.AccountName}`);
+        console.log(Data);
       } catch (error) {
-        console.error(error, "Failed to complete request");
+        console.error(error);
       } finally {
         setLoading(false);
       }
-      
     }
-
-
+ 
+    async function collectLocalUserProfileData(){
+      try {
+        setLoading(true);
+        const response = await API.get(`API/EnergyHandling/GetEnergyHandling/${UserData.AccountName}`);
+        console.log(response.data.ParsedUserProfile);
+        setChartData(response.data.ParsedUserProfile.EnergyYears[0][0].EnergyYear);
+        setUserEnergyYearData(response.data.ParsedUserProfile.EnergyYears[0][0].EnergyYear);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    }
     useEffect(() => {
-      // STARTUP METHODS
-      setTotalUse(collectTotal(userEnergyYearData))
-      // COLLECT AND TRANSFORM DATA FOR USE IN GRAPH
-      let newGraphData = generateYearlyGraph(dummyData);
-      setChartData(newGraphData);
-      //CollectUserData()
+      collectLocalUserProfileData();
     },[])
 
     if (!UserID) {
@@ -135,11 +139,25 @@ export default function EnergyStatistics(){
           <Login />
         </main>
       )
+    };
+    if (loading) {
+      return (
+        <main className="EnergyStatisticsPage">
+          Loading
+        </main>
+      )
+    }
+    if (!ChartData || !userEnergyYearData) {
+      return (
+        <main className="EnergyStatisticsPage">
+          No Data <button onClick={() => CreateLocalUserProfile()}>CREATEACCOUNTONPAGE</button>
+        </main>
+      )
     }
     return (
         <main className={`EnergyStatisticsPage ${theme}`}>
             <h1 className={`EnergyStatisticsPageTitle ${themeAlt}`}>
-                Enjoy a personalised report on your usage
+                Enjoy a personalised report on your usage 
             </h1>
             <section className="TotalUseAndMeasurementContainer">
                 <div className="TotalUseAveragesContainer">
@@ -241,10 +259,10 @@ function collectTotal(YearData){
   );
   return newTotalUse;
 }
-function generateYearlyGraph(dummyData){
+function generateYearlyGraph(EnergyYear){
   let result = []
 
-  for (const Data of Object.entries(dummyData)){
+  for (const Data of Object.entries(EnergyYear)){
     let memory = 0;
     let endingDay = 0;
     for(const day of Data[1].EnergyUse){
