@@ -2,6 +2,7 @@ const { neon } = require("@neondatabase/serverless");
 const express = require("express");
 const router = express.Router();
 const DB = neon(process.env.REACT_APP_DATABASE_URL);
+const {CheckUsersLoop, RegisterUser, isUserActive, CanUserChangeDetails, ViewUsers} = require("../Admin/ActiveUserHandler");
 
 // GET
 router.get("/AccountSettings/GetAccountSettings/:AccountID", async (req, res) => {
@@ -48,6 +49,8 @@ router.patch("/AccountSettings/UpdateAccount", async (req, res) => {
     try {
         console.log(`Update AccountSettings endpoint called for User ${req.headers["RelevantID"]}...`);
         const UserData = req.body;
+        if (!CanUserChangeDetails(UserData.AccountID)) return res.status(401).json({ message: "Too many changes in the last hour please wait"});
+
         console.log(UserData)
         await DB`
             UPDATE "Klex_UserData_AccountSettings"

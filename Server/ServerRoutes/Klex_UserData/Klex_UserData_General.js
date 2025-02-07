@@ -2,6 +2,8 @@ const { neon } = require("@neondatabase/serverless");
 const express = require("express");
 const router = express.Router();
 const DB = neon(process.env.REACT_APP_DATABASE_URL);
+const {CheckUsersLoop, RegisterUser, isUserActive, CanUserChangeDetails, ViewUsers} = require("../Admin/ActiveUserHandler");
+
 // Request Header Schema
 /*
     Request["RequestType"]
@@ -46,6 +48,8 @@ router.post("/General/LoginAccount", async (req, res) => {
             res.header["RelevantID"] = req.header["RelevantID"]
             res.header["UserType"] = req.header["UserType"]
 
+            RegisterUser(UserData[0]);
+            ViewUsers();
             return res.status(200).json({ Message: "Successfully verified account", UserData})
         } else {
             return res.status(500).json({ error: "Failed to verify"});

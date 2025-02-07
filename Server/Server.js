@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const PORT = 3001;
 const cors = require("cors");
-
+const {CheckUsersLoop, RegisterUser, isUserActive, CanUserChangeDetails, ViewUsers} = require("./ServerRoutes/Admin/ActiveUserHandler.js");
 require("dotenv").config();
 
 const corsOptions = {
@@ -13,6 +13,8 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.use(express.json())
+// Start Handle Active Users Loop
+CheckUsersLoop();
 
 const AccountSettingRoute = require("./ServerRoutes/Klex_UserData/Klex_UserData_AccountSettings.js");
 const DiscrepencyRoute = require("./ServerRoutes/Klex_UserData/Klex_UserData_Discrepency.js");
