@@ -1,28 +1,33 @@
 const { neon } = require("@neondatabase/serverless");
 const express = require("express");
 const router = express.Router();
-const {CheckUsersLoop, RegisterUser, isUserActive, CanUserChangeDetails, ViewUsers} = require("../../Admin/ActiveUserHandler");
+const {CheckUsersLoop, RegisterUser, VerifyUser, CanUserChangeDetails, ViewUsers} = require("../../Admin/ActiveUserHandler");
 const FS = require("fs");
 const Path = require("path");
 
 // GET
-router.get("/EnergyHandling/GetEnergyHandling/:AccountName", async (req, res) => {
+router.get("/EnergyHandling/GetEnergyHandling/:AccountName/:SelectedYear", async (req, res) => {
     try {
         console.log(`Get EnergyHandling endpoint called for User ${req.headers["RelevantID"]}...`);
+        const {AccountName, SelectedYear} = req.params;
         
-        console.log(`Update EnergyHandling endpoint called for User ${req.headers["RelevantID"]}...`);
-        const AccountName = req.params.AccountName;
-        if (!AccountName) return res.status(404).json({ error: "Missing Data"});
+        //if (!AccountName || !VerifyUser(AccountName)) return res.status(404).json({ error: "Missing Data"});
+
         const Directory = Path.join(__dirname, "EnergyUsers");
         const filePath = Path.join(Directory, `Account_${AccountName}.json`);
-
+        
         if (!FS.existsSync(Directory)) {
             FS.mkdirSync(Directory, { recursive: true });
         }
+
         let UserProfile = await FS.promises.readFile(filePath);
         let ParsedUserProfile = JSON.parse(UserProfile);
-
-        return res.status(200).json({ message: "Successfully pullled information", ParsedUserProfile});
+        let ParsedUserData = ParsedUserProfile?.EnergyYears?.find(yearData => yearData.Year === Number(SelectedYear));
+        
+        return ParsedUserData 
+            ? res.status(200).json({ message: "Successfully pullled information", ParsedUserData}) 
+            : res.status(404).json({ message: "No Data for Year"});
+            
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "internal Server Errror"});
@@ -33,6 +38,8 @@ router.post("/EnergyHandling/CreateLocalUserProfile", async (req, res) => {
     try {
         console.log(`Post EnergyHandling endpoint called for User ${req.headers["RelevantID"]}...`);
         const UserData = req.body;
+
+        if (!VerifyUser(AccountName)) return res.status(401).json({ error: "Failed to verify"});
 
         console.log(UserData);
 
@@ -59,6 +66,9 @@ router.patch("/EnergyHandling/UpdateEnergy", async (req, res) => {
     try {
         console.log(`Update EnergyHandling endpoint called for User ${req.headers["RelevantID"]}...`);
         const UpdateData = req.body;
+        
+        if (!VerifyUser(UpdateData.UserData.AccountName)) return res.status(401).json({ error: "Failed to verify"});
+
         const Directory = Path.join(__dirname, "EnergyUsers");
         const filePath = Path.join(Directory, `Account_${UpdateData.UserData.AccountName}.json`);
 
@@ -80,9 +90,10 @@ router.patch("/EnergyHandling/UpdateEnergy", async (req, res) => {
     }
 })
 // DELETE
-router.delete("/EnergyHandling/", async (req, res) => {
+router.delete("/EnergyHandling/DeleteLocalUserProfile", async (req, res) => {
     try {
-
+        console.log(`Delete EnergyHandling endpoint called for User ${req.headers["RelevantID"]}...`);
+        if (!VerifyUser(UpdateData.UserData.AccountName)) return res.status(401).json({ error: "Failed to verify"});
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "internal Server Errror"});

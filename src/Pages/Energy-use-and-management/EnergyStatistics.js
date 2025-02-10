@@ -7,6 +7,192 @@ import Login from "../../GlobalComponents/Login/Login";
 import { ThemeContext } from "../../GlobalComponents/Context/ThemeContextProvider";
 import { UserContext } from "../../GlobalComponents/Context/UserContextProvider";
 
+  const Months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec"
+  ];
+  const measurementScales = [
+    {Name: "W", Multiplier: 0.001},
+    {Name: "kW", Multiplier: 1},
+    {Name: "MG", Multiplier: 1000},
+    {Name: "GW", Multiplier: 10000},
+  ];
+  /////////////////////////////////////////////////////////////////////////////////
+
+  export default function EnergyStatistics(){
+    // CONTEXT
+    const {theme, setTheme, themeAlt, setThemeAlt} = useContext(ThemeContext);
+    const {UserData, setUserData} = useContext(UserContext);
+    const [loading, setLoading] = useState(false);
+    const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+    const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
+    const [responseCache, setResponseCache] = useState([]);
+    const [displayData, setDisplayData] = useState([]);
+    const [error, setError] = useState("");
+
+    async function CreateLocalUserProfile(){
+      try {
+        setLoading(true);
+        const EnergyYear = await createNewYear();
+        await API.post("API/EnergyHandling/CreateLocalUserProfile", UserData);
+        await API.patch("API/EnergyHandling/UpdateEnergy", {UserData, EnergyYear});
+        const Data = await API.get(`API/EnergyHandling/GetEnergyHandling/${UserData.AccountName}`);
+        console.log(Data);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    }
+ 
+    async function CollectYearData(e) {
+      try {
+        e.preventDefault();
+        setLoading(true);
+        setError("");
+    
+        const response = await API.get(`API/EnergyHandling/GetEnergyHandling/${UserData.AccountName}/${selectedYear}`);
+        
+        setResponseCache(response.data.ParsedUserData.EnergyYear);
+        setError(`Data collected for Year ${selectedYear}`);
+      } catch (error) {
+        console.error(error);
+    
+        if (error.response) {
+          switch (error.response.status) {
+            case 404:
+              setError("No Data for that year");
+              break;
+            case 500:
+              setError("Server Error");
+              break;
+            default:
+              setError("Unknown error occurred");
+              break;
+          }
+        } else {
+          setError("Network error");
+        }
+      } finally {
+        setLoading(false);
+      }
+    }
+
+
+    if (!UserData.AccountID || UserData.AccountID === -1) {
+      return (
+        <main className={`NoDataContingent ${theme}`}>
+          <Login />
+        </main>
+      )
+    };
+
+    return (
+        <main className="EnergyStatisticsContainer">
+          <section className="EnergyStatisticsTopBar">
+            <div>
+              Select Year <input type="number" min="2000" max="2099" step="1" value={selectedYear} onChange={(e) => setSelectedYear(e.target.value)}/>
+            </div>
+            {loading ? (
+              <p>
+                Loading...
+              </p>
+            ) : (
+              <button
+                onClick={(e) => CollectYearData(e)}
+              >
+                Get Data 
+              </button>              
+            )}
+            <p className="ErrorMessage">{error}</p>
+          </section>
+          <section className="EnergyStatisticsMainContainer">
+            <ol className="EnergyStatisticsSideBar">
+              {Months.map((month, index) => (
+                <button key={index}
+                  className={`EnergyStatisticsSideBarItem ${selectedMonth === index && "EnergyStatisticsSelectedMonth"}`}
+                  onClick={() => setSelectedMonth(index)}
+                >
+                  {month}
+                </button>
+              ))}
+            </ol>
+            <div className="EnergyStatisticsDataDisplay">
+              <ul className="EnergyStatisticsMonthList">
+                {responseCache.length > 0 ? responseCache[selectedMonth].EnergyUse.map((Use, index) => (
+                  <li key={index}
+                    className="EnergyStatisticsMonthDay"
+                  >
+                    <p>{index + 1}{getDayEnd(index)}</p>
+                    <p>{Use}</p>
+                  </li>
+                ))
+                : 
+                <div>
+                  No Data
+                </div>
+              }                
+              </ul>
+              {responseCache.length > 0 && responseCache[selectedMonth] && (
+                  <EnergyChart 
+                      ChartData={responseCache[selectedMonth].EnergyUse} 
+                      Labels={Array.from({ length: responseCache[selectedMonth].EnergyUse.length }, (_, index) => index + 1)}
+                      DESC={responseCache[selectedMonth].Month}
+                  />
+              )}
+            </div>
+          </section>
+        </main>
+    )
+};
+
+function collectTotal(YearData){      
+  const newTotalUse = YearData.reduce(
+    (sum, data) => sum + data.EnergyUse.reduce((monthSum, value) => monthSum + value, 0),
+    0
+  );
+  return newTotalUse;
+}
+function generateYearlyGraph(EnergyYear){
+  let result = []
+
+  for (const Data of Object.entries(EnergyYear)){
+    let memory = 0;
+    let endingDay = 0;
+    for(const day of Data[1].EnergyUse){
+      memory += day
+      endingDay++
+    }
+    result.push(memory / endingDay)
+  };
+
+  return result
+}
+
+function getDayEnd(day){
+  if (day > 3 && day < 21) return "th";
+
+  switch (day % 10) {
+    case 1:
+      return "st";
+    case 2:
+      return "nd";
+    case 3:
+      return "rd";
+    default:
+      return "th";
+  };
+};
 function createNewYear(){
   return [
       {
@@ -64,228 +250,3 @@ function createNewYear(){
       }
     ];
   }
-  const defaultGraphLabels = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec"
-  ];
-  const measurementScales = [
-    {Name: "W", Multiplier: 0.001},
-    {Name: "kW", Multiplier: 1},
-    {Name: "MG", Multiplier: 1000},
-    {Name: "GW", Multiplier: 10000},
-  ];
-  /////////////////////////////////////////////////////////////////////////////////
-  export default function EnergyStatistics(){
-    // CONTEXT
-    const {theme, setTheme, themeAlt, setThemeAlt} = useContext(ThemeContext);
-    const {UserData, setUserData} = useContext(UserContext);
-    // SCALING AND MEASURMENT OF USE
-    const [measureScale, setMeasureScale] = useState(1);
-    const [totalUse, setTotalUse] = useState(0);
-    // DATA TO SEND INTO CHART COMPONENT
-    const [ChartData, setChartData] = useState();
-    const [chartLabels, setChartLabels] = useState(defaultGraphLabels);
-    const [chartDesc, setChartDesc] = useState("Average monthly use");
-    // COLLECTED ENERGY USE DATA
-    const [userEnergyYearData, setUserEnergyYearData] = useState();
-    const { UserID } = useParams();
-    const [loading, setLoading] = useState(false);
-    
-    async function CreateLocalUserProfile(){
-      try {
-        setLoading(true);
-        const EnergyYear = await createNewYear();
-        await API.post("API/EnergyHandling/CreateLocalUserProfile", UserData);
-        await API.patch("API/EnergyHandling/UpdateEnergy", {UserData, EnergyYear});
-        const Data = await API.get(`API/EnergyHandling/GetEnergyHandling/${UserData.AccountName}`);
-        console.log(Data);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
-      }
-    }
- 
-    async function collectLocalUserProfileData(){
-      try {
-        setLoading(true);
-        const response = await API.get(`API/EnergyHandling/GetEnergyHandling/${UserData.AccountName}`);
-        console.log(response.data.ParsedUserProfile);
-        setChartData(response.data.ParsedUserProfile.EnergyYears[0][0].EnergyYear);
-        setUserEnergyYearData(response.data.ParsedUserProfile.EnergyYears[0][0].EnergyYear);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
-      }
-    }
-    useEffect(() => {
-      collectLocalUserProfileData();
-    },[])
-
-    if (!UserID) {
-      return (
-        <main className={`NoDataContingent ${theme}`}>
-          <Login />
-        </main>
-      )
-    };
-    if (loading) {
-      return (
-        <main className="EnergyStatisticsPage">
-          Loading
-        </main>
-      )
-    }
-    if (!ChartData || !userEnergyYearData) {
-      return (
-        <main className="EnergyStatisticsPage">
-          No Data <button onClick={() => CreateLocalUserProfile()}>CREATEACCOUNTONPAGE</button>
-        </main>
-      )
-    }
-    return (
-        <main className={`EnergyStatisticsPage ${theme}`}>
-            <h1 className={`EnergyStatisticsPageTitle ${themeAlt}`}>
-                Enjoy a personalised report on your usage 
-            </h1>
-            <section className="TotalUseAndMeasurementContainer">
-                <div className="TotalUseAveragesContainer">
-                <h2 className="TotalUseTitle">
-                    Total Usage {(totalUse / measurementScales[measureScale].Multiplier).toFixed(2)} {measurementScales[measureScale].Name}
-                </h2>   
-                <div className="AveragesContainer">
-                  <p className="MonthlyUseAverage">
-                      Average Monthly Use: {((totalUse / 12).toFixed(2) / measurementScales[measureScale].Multiplier).toFixed(2) } {measurementScales[measureScale].Name}
-                  </p>
-                  <p className="DailyUseAverage">
-                      Average Daily Use: {((totalUse / 356).toFixed(2) / measurementScales[measureScale].Multiplier).toFixed(2)} {measurementScales[measureScale].Name}
-                  </p>                  
-                </div>               
-                </div>
-                <div className="MeasurementContainer">
-                  <h2 className="MeasurementTitle">
-                    Measurement scale
-                  </h2>
-                  <li className="MeasurementsScaleContainer">
-                    {measurementScales.map((measurement, index) => (
-                      <button className={`MeasurementScales ${measurementScales[measureScale].Name === measurement.Name && "selected"}`}
-                        onClick={() => setMeasureScale(index)}
-                        key={index}
-                      >
-                        {measurement.Name}
-                      </button>
-                    ))}                    
-                  </li>
-
-                </div>
-            </section>
-            <ul className="MonthItemsContainer">
-                {userEnergyYearData.map((Data, index) => (
-                    <li className="MonthItem" key={index} id={index}>
-                      <section className="MonthItemTitleButtonAndStatistics">
-                          <h2 className={`MonthItemTitle ${themeAlt}`}>
-                              {Data.Month}
-                          </h2>
-                          <div className="MonthItemStatistic">
-                            <p className="MonthlyItemTotalUse">
-                              Monthly Total: {(Data.EnergyUse.reduce((sum, currentValue) => {
-                                                  return sum + currentValue
-                                              }, 0) / measurementScales[measureScale].Multiplier).toFixed(2)} {measurementScales[measureScale].Name}                            
-                            </p>
-                          <div className="ScrollButtonsContainer">
-                            <button
-                              className={`ScrollButton ${themeAlt}`}
-                              id={index}
-                              onClick={() => {
-                                const prevElement = document.getElementById(Math.max(0, index - 1));
-                                if (prevElement) {
-                                  prevElement.scrollIntoView({ behavior: "smooth", block: "center" });
-                                }
-                              }}
-                            >
-                              Up
-                            </button>
-                            <button
-                              className={`ScrollButton ${themeAlt}`}
-                              id={index}
-                              onClick={() => {
-                                const prevElement = document.getElementById(Math.min(12, index + 1));
-                                if (prevElement) {
-                                  prevElement.scrollIntoView({ behavior: "smooth", block: "center" });
-                                }
-                              }}
-                            >
-                              Down
-                            </button>
-                            </div>
-                          </div>   
-                          <ul className="DailyEnergyUseContainer" >
-                              {Data.EnergyUse.map((DayUse, DayUseIndex) => (
-                                  <li className={`DailyEnergyUseItem ${DayUseIndex % 2 === 0 && themeAlt}`} key={DayUseIndex}>
-                                      {DayUseIndex + 1}{getDayEnd(DayUseIndex + 1)} {(DayUse / measurementScales[measureScale].Multiplier).toFixed(2)} {measurementScales[measureScale].Name} <sup className="PeakDay">{DayUse === Math.max(...Data.EnergyUse) ? "PEAK" : DayUse === Math.min(...Data.EnergyUse) ? "MIN" : ""}</sup>
-                                  </li>
-                              ))}
-                          </ul>                                          
-                      </section>
-                        <section className={`MonthGraph ${themeAlt}`}>
-                          <EnergyChart ChartData={Data.EnergyUse} Labels={new Array(Data.EnergyUse.length).fill().map((_, i) => i)} DESC={`${Data.Month} Data`}/>                          
-                        </section>
-                    </li>
-                ))}
-            </ul>
-            <section className={`YearGraph ${themeAlt}`}>
-              {ChartData && <EnergyChart ChartData={ChartData} Labels={chartLabels} DESC={chartDesc}/>}
-              
-            </section>
-        </main>
-    )
-};
-
-function collectTotal(YearData){      
-  const newTotalUse = YearData.reduce(
-    (sum, data) => sum + data.EnergyUse.reduce((monthSum, value) => monthSum + value, 0),
-    0
-  );
-  return newTotalUse;
-}
-function generateYearlyGraph(EnergyYear){
-  let result = []
-
-  for (const Data of Object.entries(EnergyYear)){
-    let memory = 0;
-    let endingDay = 0;
-    for(const day of Data[1].EnergyUse){
-      memory += day
-      endingDay++
-    }
-    result.push(memory / endingDay)
-  };
-
-  return result
-}
-
-function getDayEnd(day){
-  if (day > 3 && day < 21) return "th";
-
-  switch (day % 10) {
-    case 1:
-      return "st";
-    case 2:
-      return "nd";
-    case 3:
-      return "rd";
-    default:
-      return "th";
-  };
-};

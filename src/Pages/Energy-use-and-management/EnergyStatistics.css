@@ -1,304 +1,89 @@
-.EnergyUseContainer {
 
-}
-.EnergyUseTitle {
-}
-.MonthlyUseContainer{
-
-}
-.MonthlyUseItem{
-
-}
-.MonthlyUseTitle{
-
-}
-.MonthlyUseStatistic{
-
-}
-.MonthlyDayToDayContainer {
-
-}
-.MonthlyDayToDayItems {
-
-}
-.TotalUseAndMeasurementContainer {
-
-}
-.TotalUseTitle {
-
-}
-.TotalUseAveragesContainer {
-
-}
-.selected {
-    font-size: large;
-    font-weight: bolder;
-    opacity: 60%;
-}
-.PeakDay {
-    color: red;
-}
 @media (max-width: 756px){
-    .EnergyStatisticsPage{
-        display: flex;
-        flex-direction: column;
-        max-width: 100%;
-        margin: auto;
-        justify-content: space-evenly;
-        align-items: center;
-    }
-    .EnergyStatisticsPageTitle{
-        max-width: 100%;
-        padding-top: 5px;
-        padding-bottom: 5px;
-        border-top: 1px solid;
-        text-align: center;
-    }
 
-    .TotalUseAndMeasurementContainer{
-        list-style: none;
-        display: flex;
-        justify-content: space-evenly;
-        max-width: 100%;
-        padding-top: 5px;
-        padding-bottom: 5px;
-    }
-    .TotalUseAveragesContainer{
-        width: 50%;
-        text-align: center;
-    }
-    .TotalUseTitle{}
-
-    .AveragesContainer{}
-    .MonthlyUseAverage{}
-    .DailyUseAverage{}
-
-    .MeasurementContainer{
-        display: flex;
-        flex-direction: column;
-        width: 50%;
-        text-align: center;
-    }
-    .MeasurementTitle{}
-    .MeasurementsScaleContainer{
-        display: flex;
-        flex-direction: row;
-        justify-content: space-evenly;
-    }
-    .MeasurementScales{
-        width: 20%;
-        padding: 5px;
-        border: none;
-    }
-
-    .MonthItemsContainer{
-        display: flex;
-        flex-direction: column;
-        justify-content: space-evenly;
-        width: 100%;
-    }
-    .MonthItem{
-    }
-    .MonthItemTitleButtonAndStatistics{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
-    .MonthItemTitle{
-        text-align: center;
-        padding: 5px;
-    }
-    .MonthItemStatistic{
-    }
-    .MonthlyItemTotalUse{
-        border-bottom: 1px solid black;
-        padding: 5px;
-        width: 70%;
-        text-align: end;
-        margin: 5px;
-        margin-left: 0px;
-        margin-top: 0px;
-    }
-    .ScrollButtonsContainer{
-        display: flex;
-        width: 100%;
-        justify-content: space-evenly;
-        margin-top: 5px;
-        margin-bottom: 5px;
-    }
-    .ScrollButton{
-        padding: 5px;
-        width: 25%;
-    }
-
-    .DailyEnergyUseContainer{
-        list-style: none;
-        display: flex;
-        flex-wrap: wrap;
-        flex-direction: column;
-        max-height: 47vh;
-        border-top: 1px solid;
-    }
-    .DailyEnergyUseItem{
-        width: 50%;
-        text-align: center;
-    }
-
-    .MonthGraph{
-        visibility: hidden;
-        height: 0px;
-        width: 0px;
-    }
-    .YearGraph{
-        width: 100%;
-        height: 80vh;
-        margin: auto;
-        text-align: center;
-    }
-
-    .ResetGraphButton{
-        padding: 5px;
-        border: 1px solid;
-        margin: 5px;
-    }
-    .GraphContainer{
-        width: 100%;
-        height: 100%;
-    }
 }
 @media (min-width: 757px){
-    .EnergyStatisticsPage{
+    .EnergyStatisticsContainer {
         display: flex;
         flex-direction: column;
-        
-        max-width: 100%;
+
+        width: 80%;
+        height: 70vh;
         margin: auto;
+        padding-top: 2%;
+        padding-bottom: 2%;
+    }    
+    .EnergyStatisticsTopBar {
+        display: flex;
         justify-content: space-evenly;
         align-items: center;
+        min-height: 10%;
+        border: 1px solid;
+    }   
+    .EnergyStatisticsMainContainer {
+        display: flex;
+        height: 100%;
     }
-    .EnergyStatisticsPageTitle{
-        width: 100%;
-        padding-top: 5px;
-        padding-bottom: 5px;
-        text-align: center;
-    }
-
-    .TotalUseAndMeasurementContainer{
+    .EnergyStatisticsSideBar {
         list-style: none;
         display: flex;
-        justify-content: space-evenly;
-        min-width: 100%;
-        padding-top: 5px;
-        padding-bottom: 5px;
-    }
-    .TotalUseAveragesContainer{
-        width: 50%;
-        text-align: center;
-    }
-    .TotalUseTitle{}
-
-    .AveragesContainer{}
-    .MonthlyUseAverage{}
-    .DailyUseAverage{}
-
-    .MeasurementContainer{
-        display: flex;
         flex-direction: column;
-        width: 50%;
-        text-align: center;
+        width: 5%;
+        min-height: 100%;
+        max-height: 100%;
+    } 
+    .EnergyStatisticsSideBarItem {
+        border: 1px solid black;
+        display: flex;
+        height: 8.33333333333%;
+        justify-content: center;
+        align-items: center;
     }
-    .MeasurementTitle{}
-    .MeasurementsScaleContainer{
+    .EnergyStatisticsSideBarItem:hover {
+        background-color: red;
+        color: white;
+        cursor: pointer;
+    }
+    .EnergyStatisticsSelectedMonth {
+        background-color: red;
+        color: white;
+    }
+
+    .EnergyStatisticsDataDisplay{
+        width: 100%;
+        height: 100%;
         display: flex;
         flex-direction: row;
         justify-content: space-evenly;
+        align-items: center;
     }
-    .MeasurementScales{
-        width: 20%;
-        padding: 5px;
-        border: none;
-    }
-
-    .MonthItemsContainer{
-        display: flex;
-        flex-direction: column;
-        justify-content: space-evenly;
-        width: 100%;
-    }
-    .MonthItem{
-        width: 100%;
-        height: 53vh;
-        border-top: 1px solid;
-        display: flex;
-    }
-    .MonthItemTitleButtonAndStatistics{
-        width: 50%;
-    }
-    .MonthItemTitle{
-        padding: 5px;
-    }
-    .MonthItemStatistic{
-    }
-    .MonthlyItemTotalUse{
-        border-bottom: 1px solid black;
-        padding: 5px;
-        width: 25%;
-        text-align: end;
-        margin: 5px;
-        margin-left: 0px;
-        margin-top: 0px;
-    }
-    .ScrollButtonsContainer{
-        display: flex;
-        width: 100%;
-        justify-content: space-evenly;
-    }
-    .ScrollButton{
-        padding: 5px;
-        margin: 5px;
-        width: 25%;
-    }
-
-    .DailyEnergyUseContainer{
+    .EnergyStatisticsMonthList{
         list-style: none;
         display: flex;
+        flex-direction: row;
         flex-wrap: wrap;
-        flex-direction: column;
-        height: 80%;
-        border-top: 1px solid;
-    }
-    .DailyEnergyUseItem{
-        padding: 5px
-    }
-
-    .MonthGraph{
-        width: 50%;
+        width: 30%;
         height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        margin: auto;
-    }
-    .YearGraph{
-        width: 80%;
-        height: 80vh;
-        margin: auto;
-        text-align: center;
-    }
 
-    .ResetGraphButton{
+    }
+    .EnergyStatisticsMonthDay{
+        border-bottom: 1px solid black;
         padding: 5px;
-        border: 1px solid;
-        margin: 5px;
+        width: 50px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: center;
     }
     .GraphContainer{
+        display: flex;
         width: 100%;
         height: 100%;
-        min-height: 100%;
-        color: black;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        margin: auto
+    }
+    .Graph{
+        height: 100%;
+        width: 100%;
+        margin: auto;
     }
 }

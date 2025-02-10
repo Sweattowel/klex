@@ -13,15 +13,7 @@ async function CheckUsersLoop(){
                 const expirationTime = decoded?.exp * 1000;
                 const timeRemaining = expirationTime - Date.now();
 
-                if (timeRemaining < 600000) {
-                    console.log(`Refreshing for User ${User.AccountName}`)
-                    User.Cookie = JWT.sign(UserData, process.env.REACT_APP_DATABASE_JWT_KEY,
-                        {
-                            expiresIn: "1h"
-                        }
-                    );
-                }
-                return decoded ? User : null;
+                return timeRemaining > 10000 ? User : null;
             } catch (err) {
                 return null;
             }
@@ -57,8 +49,10 @@ function RegisterUser(UserData){
     }
 };
 
-function isUserActive(UserName) {
-    return CurrentUsers.some(_ => _.AccountName === UserName);
+function VerifyUser(UserName) {
+    const User = CurrentUsers.find(_ => _.AccountName === UserName);
+    
+    return User && JWT.verify(User.Cookie, process.env.REACT_APP_DATABASE_JWT_KEY);
 };
 
 function CanUserChangeDetails(AccountID) {
@@ -109,4 +103,4 @@ class CurrentUserClass {
     }
 }
 
-module.exports = { CheckUsersLoop, RegisterUser, isUserActive, CanUserChangeDetails, ViewUsers };
+module.exports = { CheckUsersLoop, RegisterUser, VerifyUser, CanUserChangeDetails, ViewUsers };
