@@ -40,14 +40,20 @@ import { UserContext } from "../../GlobalComponents/Context/UserContextProvider"
     const [displayData, setDisplayData] = useState([]);
     const [error, setError] = useState("");
 
+    async function TestInsertData(){
+      const EnergyYear = createNewYear(2025);
+
+      await API.patch("API/EnergyHandling/UpdateEnergy", {UserData, EnergyYear});
+    };
+
     async function CreateLocalUserProfile(){
       try {
         setLoading(true);
-        const EnergyYear = await createNewYear();
+        
         await API.post("API/EnergyHandling/CreateLocalUserProfile", UserData);
-        await API.patch("API/EnergyHandling/UpdateEnergy", {UserData, EnergyYear});
-        const Data = await API.get(`API/EnergyHandling/GetEnergyHandling/${UserData.AccountName}`);
-        console.log(Data);
+        
+        
+        setError("New AccountData created, please try again, if errors persist contact administrator")
       } catch (error) {
         console.error(error);
       } finally {
@@ -75,6 +81,11 @@ import { UserContext } from "../../GlobalComponents/Context/UserContextProvider"
               break;
             case 500:
               setError("Server Error");
+              CreateLocalUserProfile();
+              break;
+            case 1404:
+              setError("File has not been created, creating now");
+              CreateLocalUserProfile();
               break;
             default:
               setError("Unknown error occurred");
@@ -152,6 +163,16 @@ import { UserContext } from "../../GlobalComponents/Context/UserContextProvider"
               )}
             </div>
           </section>
+          { responseCache.length > 0 &&
+            <section className="EnergyStatisticsDataSum">
+              <p>Total use for {Months[selectedMonth]}: {responseCache[selectedMonth]?.EnergyUse.reduce((sum, data) => sum + data, 0)}</p>
+              <p>Min use Day: {Math.min(...responseCache[selectedMonth]?.EnergyUse)}</p>
+              <p>Peak use Day: {Math.max(...responseCache[selectedMonth]?.EnergyUse)}</p>
+              <p>Percent of total for {Months[selectedMonth]}: {((responseCache[selectedMonth]?.EnergyUse.reduce((sum, data) => sum + data, 0) / collectTotal(responseCache)) * 100).toFixed(2)}%</p>
+              <p>Total yearly use: {collectTotal(responseCache)}</p>
+            </section>            
+          }
+        <button onClick={() => TestInsertData()}>Test</button>
         </main>
     )
 };
@@ -193,60 +214,58 @@ function getDayEnd(day){
       return "th";
   };
 };
-function createNewYear(){
-  return [
-      {
-        Year: 2022,
-        EnergyYear: [
-          {
-            Month: "January",
-            EnergyUse: Array.from({ length: 31 }, () => Math.floor(Math.random() * 100) + 1),
-          },
-          {
-            Month: "February",
-            EnergyUse: Array.from({ length: 28 }, () => Math.floor(Math.random() * 100) + 1),
-          },
-          {
-            Month: "March",
-            EnergyUse: Array.from({ length: 31 }, () => Math.floor(Math.random() * 100) + 1),
-          },
-          {
-            Month: "April",
-            EnergyUse: Array.from({ length: 30 }, () => Math.floor(Math.random() * 100) + 1),
-          },
-          {
-            Month: "May",
-            EnergyUse: Array.from({ length: 31 }, () => Math.floor(Math.random() * 100) + 1),
-          },
-          {
-            Month: "June",
-            EnergyUse: Array.from({ length: 30 }, () => Math.floor(Math.random() * 100) + 1),
-          },
-          {
-            Month: "July",
-            EnergyUse: Array.from({ length: 31 }, () => Math.floor(Math.random() * 100) + 1),
-          },
-          {
-            Month: "August",
-            EnergyUse: Array.from({ length: 31 }, () => Math.floor(Math.random() * 100) + 1),
-          },
-          {
-            Month: "September",
-            EnergyUse: Array.from({ length: 30 }, () => Math.floor(Math.random() * 100) + 1),
-          },
-          {
-            Month: "October",
-            EnergyUse: Array.from({ length: 31 }, () => Math.floor(Math.random() * 100) + 1),
-          },
-          {
-            Month: "November",
-            EnergyUse: Array.from({ length: 30 }, () => Math.floor(Math.random() * 100) + 1),
-          },
-          {
-            Month: "December",
-            EnergyUse: Array.from({ length: 31 }, () => Math.floor(Math.random() * 100) + 1),
-          }
-        ]
-      }
-    ];
+function createNewYear(year){
+  return {
+      Year: year,
+      EnergyYear: [
+        {
+          Month: "January",
+          EnergyUse: Array.from({ length: 31 }, () => Math.floor(Math.random() * 100) + 1),
+        },
+        {
+          Month: "February",
+          EnergyUse: Array.from({ length: 28 }, () => Math.floor(Math.random() * 100) + 1),
+        },
+        {
+          Month: "March",
+          EnergyUse: Array.from({ length: 31 }, () => Math.floor(Math.random() * 100) + 1),
+        },
+        {
+          Month: "April",
+          EnergyUse: Array.from({ length: 30 }, () => Math.floor(Math.random() * 100) + 1),
+        },
+        {
+          Month: "May",
+          EnergyUse: Array.from({ length: 31 }, () => Math.floor(Math.random() * 100) + 1),
+        },
+        {
+          Month: "June",
+          EnergyUse: Array.from({ length: 30 }, () => Math.floor(Math.random() * 100) + 1),
+        },
+        {
+          Month: "July",
+          EnergyUse: Array.from({ length: 31 }, () => Math.floor(Math.random() * 100) + 1),
+        },
+        {
+          Month: "August",
+          EnergyUse: Array.from({ length: 31 }, () => Math.floor(Math.random() * 100) + 1),
+        },
+        {
+          Month: "September",
+          EnergyUse: Array.from({ length: 30 }, () => Math.floor(Math.random() * 100) + 1),
+        },
+        {
+          Month: "October",
+          EnergyUse: Array.from({ length: 31 }, () => Math.floor(Math.random() * 100) + 1),
+        },
+        {
+          Month: "November",
+          EnergyUse: Array.from({ length: 30 }, () => Math.floor(Math.random() * 100) + 1),
+        },
+        {
+          Month: "December",
+          EnergyUse: Array.from({ length: 31 }, () => Math.floor(Math.random() * 100) + 1),
+        }
+      ]
+    };
   }
